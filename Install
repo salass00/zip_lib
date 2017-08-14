@@ -1,0 +1,9 @@
+(welcome)
+(set @default-dest "LIBS:")
+(copylib
+	(prompt "Copying zip.library")
+	(help @copylib-help)
+	(source "Libs/zip.library")
+	(dest @default-dest)
+)
+(exit)
