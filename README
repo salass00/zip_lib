@@ -1,0 +1,17 @@
+An AmigaOS shared library implementation of libzip. Currently based on the
+1.1.3 version.
+
+Installation:
+
+Copy Libs/zip.library LIBS:
+
+Source code:
+
+The source code for current and older versions is available on github:
+
+https://github.com/salass00/zip_lib
+
+Changes:
+
+For a list of changes in this and earlier versions see the releasenotes file.
+
