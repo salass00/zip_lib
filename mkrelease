@@ -15,7 +15,8 @@ makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
 
 copy clone Install ${destdir}/zip_lib-$numvers
-copy clone COPYING ${destdir}/zip_lib-$numvers
+copy clone LICENSE ${destdir}/zip_lib-$numvers
+copy clone ${libzipdir}/LICENSE ${destdir}/zip_lib-$numvers/LICENSE-libzip
 copy clone releasenotes ${destdir}/zip_lib-$numvers
 copy clone zip.library ${destdir}/zip_lib-$numvers/Libs
 copy clone include/proto/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/proto
@@ -39,7 +40,8 @@ type README                                                >> ${destdir}/zip_lib
 copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib-$numvers.info
 copy clone ENV:Sys/def_install.info ${destdir}/zip_lib-$numvers/Install.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/zip_lib.readme.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/COPYING.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE-libzip.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/releasenotes.info
 
 changetooltype ${destdir}/zip_lib-$numvers/Install.info ADD "APPNAME=zip.library"
