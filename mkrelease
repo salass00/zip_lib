@@ -13,6 +13,8 @@ makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/proto
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/interfaces
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 copy clone Install ${destdir}/zip_lib-$numvers
 copy clone LICENSE ${destdir}/zip_lib-$numvers
@@ -24,7 +26,10 @@ copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib
 copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
 copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
 copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include
-copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include
+copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
+copy clone libzip.a ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
+copy clone libzip-build/lib/libzip.la ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
+copy clone libzip-build/libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 sed "s/zip_lib-xx.xx/zip_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
 
