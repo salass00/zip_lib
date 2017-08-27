@@ -1,5 +1,5 @@
-An AmigaOS shared library implementation of libzip. Currently based on the
-1.1.3 version.
+An AmigaOS shared library implementation of libzip. Currently it is based on
+the 1.2.0 version.
 
 Installation:
 
