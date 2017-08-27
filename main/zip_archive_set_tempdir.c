@@ -58,6 +58,14 @@
 */
 
 zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, struct zip *za, CONST_STRPTR tempdir) {
+	/* This function was never documented and no longer exists in libzip 1.2.0 */
+#if LIBZIP_VERSION_MAJOR > 1 || (LIBZIP_VERSION_MAJOR == 1 && LIBZIP_VERSION_MINOR >= 2)
+	if (tempdir) {
+		return -1;
+	}
+	return 0;
+#else
 	return zip_archive_set_tempdir(za, tempdir);
+#endif
 }
 

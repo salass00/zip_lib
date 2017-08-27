@@ -2,7 +2,7 @@
 
 make all
 
-set libzipdir libzip-1.1.3
+set libzipdir libzip-1.2.0
 set destdir RAM:mkrelease
 set fullvers `version file zip.library`
 set numvers `cut "$fullvers" word 2`

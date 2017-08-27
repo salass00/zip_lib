@@ -1,7 +1,7 @@
 TARGET  := zip.library
 VERSION := 53
 
-LIBZIPDIR := libzip-1.1.3
+LIBZIPDIR := libzip-1.2.0
 
 CC     := ppc-amigaos-gcc
 STRIP  := ppc-amigaos-strip
