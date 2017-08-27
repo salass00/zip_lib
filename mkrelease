@@ -27,8 +27,8 @@ copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/in
 copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
 copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include
 copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
-copy clone libzip.a ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
-copy clone libzip-build/lib/libzip.la ${destdir}/pixman_lib-$numvers/SDK/local/newlib/lib
+copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
+copy clone libzip-build/lib/libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip-build/libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 
 sed "s/zip_lib-xx.xx/zip_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
