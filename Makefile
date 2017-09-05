@@ -1,7 +1,7 @@
 TARGET  := zip.library
 VERSION := 53
 
-LIBZIPDIR := libzip-1.2.0
+LIBZIPDIR := libzip-1.3.0
 
 CC     := ppc-amigaos-gcc
 STRIP  := ppc-amigaos-strip
@@ -24,7 +24,7 @@ LIBS    :=
 main_SRCS := $(wildcard main/*.c)
 main_OBJS := $(main_SRCS:.c=.o)
 
-OBJS := init.o zlib-stubs.o $(main_OBJS)
+OBJS := init.o zlib-stubs.o bzip2-stubs.o $(main_OBJS)
 
 STATIC_SRCS := $(wildcard static/*.c)
 STATIC_OBJS := $(STATIC_SRCS:.c=.o)

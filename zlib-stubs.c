@@ -27,9 +27,7 @@
 
 #define LIBRARIES_Z_H
 #include <zlib.h>
-#include <interfaces/z.h>
-
-extern struct ZIFace *IZ;
+#include <proto/z.h>
 
 const char *zlibVersion(void) {
 	return IZ->ZlibVersion();

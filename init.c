@@ -28,19 +28,17 @@
 #include <dos/dos.h>
 #include <proto/exec.h>
 #include <proto/z.h>
+#include <proto/bzip2.h>
 #include <proto/zip.h>
 
 /* Version Tag */
 #include "zip.library_rev.h"
-STATIC CONST UBYTE USED verstag[] = VERSTAG;
+static CONST UBYTE USED verstag[] = VERSTAG;
 
-struct ExecIFace *IExec;
-
-struct Library *NewlibBase;
+struct ExecIFace   *IExec;
 struct NewlibIFace *INewlib;
-
-struct Library *ZBase;
-struct ZIFace *IZ;
+struct ZIFace      *IZ;
+struct BZip2IFace  *IBZip2;
 
 struct ZipBase {
 	struct Library libNode;
@@ -65,8 +63,37 @@ int32 _start(void) {
 	return RETURN_FAIL;
 }
 
+static struct Interface *OpenInterface(CONST_STRPTR name, ULONG version) {
+	struct Library   *library;
+	struct Interface *interface;
+
+	library = IExec->OpenLibrary(name, version);
+	if (library == NULL)
+		return NULL;
+
+	interface = IExec->GetInterface(library, "main", 1, NULL);
+	if (interface == NULL) {
+		IExec->CloseLibrary(library);
+		return NULL;
+	}
+
+	return interface;
+}
+
+static void CloseInterface(struct Interface *interface) {
+	struct Library *library;
+
+	if (interface == NULL)
+		return;
+
+	library = interface->Data.LibBase;
+
+	IExec->DropInterface(interface);
+	IExec->CloseLibrary(library);
+}
+
 /* Open the library */
-STATIC struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG version) {
+static struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG version) {
 	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase; 
 
 	if (version > VERSION)
@@ -81,7 +108,7 @@ STATIC struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG versi
 }
 
 /* Close the library */
-STATIC BPTR libClose(struct LibraryManagerInterface *Self) {
+static BPTR libClose(struct LibraryManagerInterface *Self) {
 	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase;
 
 	/* Make sure to undo what open did */
@@ -94,7 +121,7 @@ STATIC BPTR libClose(struct LibraryManagerInterface *Self) {
 
 
 /* Expunge the library */
-STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
+static BPTR libExpunge(struct LibraryManagerInterface *Self) {
 	/* If your library cannot be expunged, return 0 */
 	BPTR result = ZERO;
 	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase;
@@ -102,11 +129,9 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		result = libBase->segList;
 
 		/* Undo what the init code did */
-		IExec->DropInterface((struct Interface *)IZ);
-		IExec->CloseLibrary(ZBase);
-
-		IExec->DropInterface((struct Interface *)INewlib);
-		IExec->CloseLibrary(NewlibBase);
+		CloseInterface((struct Interface *)IBZip2);
+		CloseInterface((struct Interface *)IZ);
+		CloseInterface((struct Interface *)INewlib);
 
 		IExec->Remove((struct Node *)libBase);
 		IExec->DeleteLibrary((struct Library *)libBase);
@@ -118,7 +143,7 @@ STATIC BPTR libExpunge(struct LibraryManagerInterface *Self) {
 }
 
 /* The ROMTAG Init Function */
-STATIC struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct ExecIFace *iexec) {
+static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct ExecIFace *iexec) {
 	IExec = iexec;
 
 	libBase->libNode.lib_Node.ln_Type = NT_LIBRARY;
@@ -131,23 +156,31 @@ STATIC struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 
 	libBase->segList = seglist;
 
-	NewlibBase = IExec->OpenLibrary("newlib.library", 53);
-	INewlib = (struct NewlibIFace *)IExec->GetInterface(NewlibBase, "main", 1, NULL);
-
-	if (INewlib != NULL) {
-		ZBase = IExec->OpenLibrary("z.library", 53);
-		IZ = (struct ZIFace *)IExec->GetInterface(ZBase, "main", 1, NULL);
-
-		if (IZ != NULL && LIB_IS_AT_LEAST(ZBase, 53, 5)) {
-			return libBase;
-		}
-
-		IExec->DropInterface((struct Interface *)IZ);
-		IExec->CloseLibrary(ZBase);
+	INewlib = (struct NewlibIFace *)OpenInterface("newlib.library", 53);
+	if (INewlib == NULL) {
+		IExec->Alert(AG_OpenLib|AO_NewlibLib);
+		goto cleanup;
 	}
 
-	IExec->DropInterface((struct Interface *)INewlib);
-	IExec->CloseLibrary(NewlibBase);
+	IZ = (struct ZIFace *)OpenInterface("z.library", 53);
+	if (IZ == NULL || !LIB_IS_AT_LEAST(IZ->Data.LibBase, 53, 5)) {
+		IExec->Alert(AG_OpenLib|AO_Unknown);
+		goto cleanup;
+	}
+
+	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
+	if (IBZip2 == NULL) {
+		IExec->Alert(AG_OpenLib|AO_Unknown);
+		goto cleanup;
+	}
+
+	return libBase;
+
+cleanup:
+
+	CloseInterface((struct Interface *)IBZip2);
+	CloseInterface((struct Interface *)IZ);
+	CloseInterface((struct Interface *)INewlib);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
 	return NULL;
@@ -155,7 +188,7 @@ STATIC struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 
 /* ------------------- Manager Interface ------------------------ */
 /* These are generic. Replace if you need more fancy stuff */
-STATIC uint32 _manager_Obtain(struct LibraryManagerInterface *Self) {
+static uint32 _manager_Obtain(struct LibraryManagerInterface *Self) {
 	uint32 res;
 	__asm__ __volatile__(
 	"1:	lwarx	%0,0,%1\n"
@@ -169,7 +202,7 @@ STATIC uint32 _manager_Obtain(struct LibraryManagerInterface *Self) {
 	return res;
 }
 
-STATIC uint32 _manager_Release(struct LibraryManagerInterface *Self) {
+static uint32 _manager_Release(struct LibraryManagerInterface *Self) {
 	uint32 res;
 	__asm__ __volatile__(
 	"1:	lwarx	%0,0,%1\n"
@@ -184,7 +217,7 @@ STATIC uint32 _manager_Release(struct LibraryManagerInterface *Self) {
 }
 
 /* Manager interface vectors */
-STATIC CONST APTR lib_manager_vectors[] = {
+static CONST APTR lib_manager_vectors[] = {
 	_manager_Obtain,
 	_manager_Release,
 	NULL,
@@ -197,7 +230,7 @@ STATIC CONST APTR lib_manager_vectors[] = {
 };
 
 /* "__library" interface tag list */
-STATIC CONST struct TagItem lib_managerTags[] = {
+static CONST struct TagItem lib_managerTags[] = {
 	{ MIT_Name,			(Tag)"__library"		},
 	{ MIT_VectorTable,	(Tag)lib_manager_vectors},
 	{ MIT_Version,		1						},
@@ -211,20 +244,20 @@ STATIC CONST struct TagItem lib_managerTags[] = {
 /* Uncomment this line (and see below) if your library has a 68k jump table */
 /* extern APTR VecTable68K[]; */
 
-STATIC CONST struct TagItem main_v1_Tags[] = {
+static CONST struct TagItem main_v1_Tags[] = {
 	{ MIT_Name,			(Tag)"main"			},
 	{ MIT_VectorTable,	(Tag)main_v1_vectors	},
 	{ MIT_Version,		1					},
 	{ TAG_DONE,			0					}
 };
 
-STATIC CONST CONST_APTR libInterfaces[] = {
+static CONST CONST_APTR libInterfaces[] = {
 	lib_managerTags,
 	main_v1_Tags,
 	NULL
 };
 
-STATIC CONST struct TagItem libCreateTags[] = {
+static CONST struct TagItem libCreateTags[] = {
 	{ CLT_DataSize,		sizeof(struct ZipBase)	},
 	{ CLT_InitFunc,		(Tag)libInit			},
 	{ CLT_Interfaces,	(Tag)libInterfaces		},
@@ -235,7 +268,7 @@ STATIC CONST struct TagItem libCreateTags[] = {
 
 
 /* ------------------- ROM Tag ------------------------ */
-STATIC CONST struct Resident lib_res USED = {
+static CONST struct Resident lib_res USED = {
 	RTC_MATCHWORD,
 	(struct Resident *)&lib_res,
 	(APTR)(&lib_res + 1),
