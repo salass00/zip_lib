@@ -169,7 +169,7 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 	}
 
 	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
-	if (IBZip2 == NULL) {
+	if (IBZip2 == NULL || !LIB_IS_AT_LEAST(IBZip2->Data.LibBase, 53, 4)) {
 		IExec->Alert(AG_OpenLib|AO_Unknown);
 		goto cleanup;
 	}
