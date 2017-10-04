@@ -287,3 +287,48 @@ int zip_unchange_archive(struct zip *za) {
 	return IZip->zip_unchange_archive(za);
 }
 
+zip_error_t *zip_get_error(struct zip *za) {
+	return IZip->zip_get_error(za);
+}
+
+int zip_error_code_zip(const struct zip_error *error) {
+	return IZip->zip_error_code_zip(error);
+}
+
+int zip_error_code_system(const struct zip_error *error) {
+	return IZip->zip_error_code_system(error);
+}
+
+void zip_error_fini(struct zip_error *error) {
+	IZip->zip_error_fini(error);
+}
+
+void zip_error_init(struct zip_error *error) {
+	IZip->zip_error_init(error);
+}
+
+void zip_error_init_with_code(struct zip_error *error, int ze) {
+	IZip->zip_error_init_with_code(error, ze);
+}
+
+void zip_error_set(struct zip_error *error, int ze, int se) {
+	IZip->zip_error_set(error, ze, se);
+}
+
+const char *zip_error_strerror(struct zip_error *error) {
+	return IZip->zip_error_strerror(error);
+}
+
+int zip_error_system_type(const struct zip_error *error) {
+	return IZip->zip_error_system_type(error);
+}
+
+zip_int64_t zip_error_to_data(const struct zip_error *error, void *data, zip_uint64_t length) {
+	return IZip->zip_error_to_data(error, data, length);
+}
+
+struct zip *zip_open_from_source(struct zip_source *zs, int flags, struct zip_error *ze) {
+	return IZip->zip_open_from_source(zs, flags, ze);
+}
+
+

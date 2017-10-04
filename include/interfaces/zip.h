@@ -91,6 +91,17 @@ struct ZipIFace
 	zip_int32_t APICALL (*zip_unchange)(struct ZipIFace *Self, struct zip * za, zip_uint64_t idx);
 	zip_int32_t APICALL (*zip_unchange_all)(struct ZipIFace *Self, struct zip * za);
 	zip_int32_t APICALL (*zip_unchange_archive)(struct ZipIFace *Self, struct zip * za);
+	zip_error_t * APICALL (*zip_get_error)(struct ZipIFace *Self, struct zip * za);
+	int APICALL (*zip_error_code_zip)(struct ZipIFace *Self, const struct zip_error * error);
+	int APICALL (*zip_error_code_system)(struct ZipIFace *Self, const struct zip_error * error);
+	void APICALL (*zip_error_fini)(struct ZipIFace *Self, struct zip_error * error);
+	void APICALL (*zip_error_init)(struct ZipIFace *Self, struct zip_error * error);
+	void APICALL (*zip_error_init_with_code)(struct ZipIFace *Self, struct zip_error * error, int ze);
+	void APICALL (*zip_error_set)(struct ZipIFace *Self, struct zip_error * error, int ze, int se);
+	const char * APICALL (*zip_error_strerror)(struct ZipIFace *Self, struct zip_error * error);
+	int APICALL (*zip_error_system_type)(struct ZipIFace *Self, const struct zip_error * error);
+	zip_int64_t APICALL (*zip_error_to_data)(struct ZipIFace *Self, const struct zip_error * error, void * data, zip_uint64_t length);
+	struct zip * APICALL (*zip_open_from_source)(struct ZipIFace *Self, struct zip_source * zs, int flags, struct zip_error * ze);
 };
 
 #ifdef __cplusplus

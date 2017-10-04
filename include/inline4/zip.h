@@ -82,5 +82,16 @@
 #define zip_unchange(za, idx) IZip->zip_unchange((za), (idx))
 #define zip_unchange_all(za) IZip->zip_unchange_all((za))
 #define zip_unchange_archive(za) IZip->zip_unchange_archive((za))
+#define zip_get_error(za) IZip->zip_get_error((za))
+#define zip_error_code_zip(error) IZip->zip_error_code_zip((error))
+#define zip_error_code_system(error) IZip->zip_error_code_system((error))
+#define zip_error_fini(error) IZip->zip_error_fini((error))
+#define zip_error_init(error) IZip->zip_error_init((error))
+#define zip_error_init_with_code(error, ze) IZip->zip_error_init_with_code((error), (ze))
+#define zip_error_set(error, ze, se) IZip->zip_error_set((error), (ze), (se))
+#define zip_error_strerror(error) IZip->zip_error_strerror((error))
+#define zip_error_system_type(error) IZip->zip_error_system_type((error))
+#define zip_error_to_data(error, data, length) IZip->zip_error_to_data((error), (data), (length))
+#define zip_open_from_source(zs, flags, ze) IZip->zip_open_from_source((zs), (flags), (ze))
 
 #endif /* INLINE4_ZIP_H */

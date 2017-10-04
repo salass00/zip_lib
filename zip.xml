@@ -350,5 +350,56 @@
 		<method name="zip_unchange_archive" result="zip_int32_t">
 			<arg name="za" type="struct zip *"/>
 		</method>
+
+		<method name="zip_get_error" result="zip_error_t *">
+			<arg name="za" type="struct zip *"/>
+		</method>
+
+		<method name="zip_error_code_zip" result="int">
+			<arg name="error" type="const struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_code_system" result="int">
+			<arg name="error" type="const struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_fini" result="void">
+			<arg name="error" type="struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_init" result="void">
+			<arg name="error" type="struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_init_with_code" result="void">
+			<arg name="error" type="struct zip_error *"/>
+			<arg name="ze" type="int"/>
+		</method>
+
+		<method name="zip_error_set" result="void">
+			<arg name="error" type="struct zip_error *"/>
+			<arg name="ze" type="int"/>
+			<arg name="se" type="int"/>
+		</method>
+
+		<method name="zip_error_strerror" result="const char *">
+			<arg name="error" type="struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_system_type" result="int">
+			<arg name="error" type="const struct zip_error *"/>
+		</method>
+
+		<method name="zip_error_to_data" result="zip_int64_t">
+			<arg name="error" type="const struct zip_error *"/>
+			<arg name="data" type="void *"/>
+			<arg name="length" type="zip_uint64_t"/>
+		</method>
+
+		<method name="zip_open_from_source" result="struct zip *">
+			<arg name="zs" type="struct zip_source *"/>
+			<arg name="flags" type="int"/>
+			<arg name="ze" type="struct zip_error *"/>
+		</method>
 	</interface>
 </library>
