@@ -28,3 +28,6 @@ zip.library 53.5 (xx.xx.2017)
   zip_error_strerror, zip_error_system_type, zip_error_to_data,
   zip_open_from_source and zip_file_set_encryption functions.
 
+- Implemented zip_random() using the timer.device entropy unit instead of
+  /dev/urandom which does not exist on AmigaOS.
+
