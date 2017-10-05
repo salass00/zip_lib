@@ -21,7 +21,7 @@ zip.library 53.4 (6.9.2017)
 - Now requires bzip2.library as well as z.library.
 
 
-zip.library 53.5 (xx.xx.2017)
+zip.library 53.5 (5.10.2017)
 
 - Added support for zip_get_error, zip_error_code_zip, zip_error_code_system,
   zip_error_fini, zip_error_init, zip_error_init_with_code, zip_error_set,
