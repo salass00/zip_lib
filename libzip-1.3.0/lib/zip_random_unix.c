@@ -62,7 +62,7 @@ zip_random(zip_uint8_t *buffer, zip_uint16_t length)
  * AmigaOS doesn't have /dev/urandom so we use the timer.device
  * entropy unit instead.
  *
- * There is also RANDOM: but many people don't have it enabled,
+ * There is also RANDOM: but many people don't have it enabled
  * as it's not mounted by default.
  */
 
