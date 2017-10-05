@@ -30,7 +30,7 @@ enum {
 };
 
 static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level, CONST_STRPTR password) {
-	zip_t             *za;
+	zip_t             *za = NULL;
 	int                i, error, status;
 	zip_error_t        ze;
 	CONST_STRPTR       path;
@@ -39,8 +39,18 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 	zip_int64_t        idx;
 	BOOL               result = FALSE;
 
-	/* Create zip archive, truncate if already exists */
-	za = IZip->zip_open(archive, ZIP_CREATE | ZIP_TRUNCATE, &error);
+	/* Delete any existing files by the same name */
+	status = IDOS->Delete(archive);
+	if (status == 0) {
+		error = IDOS->IoErr();
+		if (error != ERROR_OBJECT_NOT_FOUND) {
+			IDOS->PrintFault(error, archive);
+			goto cleanup;
+		}
+	}
+
+	/* Create zip archive */
+	za = IZip->zip_open(archive, ZIP_CREATE, &error);
 	if (za == NULL) {
 		IZip->zip_error_init_with_code(&ze, error);
 		fprintf(stderr, "%s: %s (line %d)\n", archive, IZip->zip_error_strerror(&ze), __LINE__);
