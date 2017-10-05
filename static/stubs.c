@@ -331,4 +331,7 @@ struct zip *zip_open_from_source(struct zip_source *zs, int flags, struct zip_er
 	return IZip->zip_open_from_source(zs, flags, ze);
 }
 
+int zip_file_set_encryption(struct zip *za, zip_uint64_t idx, zip_uint16_t method, const char *password) {
+	return IZip->zip_file_set_encryption(za, idx, method, password);
+}
 

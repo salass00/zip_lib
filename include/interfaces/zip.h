@@ -102,6 +102,7 @@ struct ZipIFace
 	int APICALL (*zip_error_system_type)(struct ZipIFace *Self, const struct zip_error * error);
 	zip_int64_t APICALL (*zip_error_to_data)(struct ZipIFace *Self, const struct zip_error * error, void * data, zip_uint64_t length);
 	struct zip * APICALL (*zip_open_from_source)(struct ZipIFace *Self, struct zip_source * zs, int flags, struct zip_error * ze);
+	int APICALL (*zip_file_set_encryption)(struct ZipIFace *Self, struct zip * za, zip_uint64_t idx, zip_uint16_t method, const char * password);
 };
 
 #ifdef __cplusplus

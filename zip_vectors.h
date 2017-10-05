@@ -86,3 +86,4 @@ extern const char *         VARARGS68K _main_zip_error_strerror(struct ZipIFace 
 extern int                  VARARGS68K _main_zip_error_system_type(struct ZipIFace *, const struct zip_error * error);
 extern zip_int64_t          VARARGS68K _main_zip_error_to_data(struct ZipIFace *, const struct zip_error * error, void * data, zip_uint64_t length);
 extern struct zip *         VARARGS68K _main_zip_open_from_source(struct ZipIFace *, struct zip_source * zs, int flags, struct zip_error * ze);
+extern int                  VARARGS68K _main_zip_file_set_encryption(struct ZipIFace *, struct zip * za, zip_uint64_t idx, zip_uint16_t method, const char * password);

@@ -93,5 +93,6 @@
 #define zip_error_system_type(error) IZip->zip_error_system_type((error))
 #define zip_error_to_data(error, data, length) IZip->zip_error_to_data((error), (data), (length))
 #define zip_open_from_source(zs, flags, ze) IZip->zip_open_from_source((zs), (flags), (ze))
+#define zip_file_set_encryption(za, idx, method, password) IZip->zip_file_set_encryption((za), (idx), (method), (password))
 
 #endif /* INLINE4_ZIP_H */

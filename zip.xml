@@ -401,5 +401,12 @@
 			<arg name="flags" type="int"/>
 			<arg name="ze" type="struct zip_error *"/>
 		</method>
+
+		<method name="zip_file_set_encryption" result="int">
+			<arg name="za" type="struct zip *"/>
+			<arg name="idx" type="zip_uint64_t"/>
+			<arg name="method" type="zip_uint16_t"/>
+			<arg name="password" type="const char *"/>
+		</method>
 	</interface>
 </library>
