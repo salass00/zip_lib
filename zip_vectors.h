@@ -87,3 +87,5 @@ extern int                  VARARGS68K _main_zip_error_system_type(struct ZipIFa
 extern zip_int64_t          VARARGS68K _main_zip_error_to_data(struct ZipIFace *, const zip_error_t * error, void * data, zip_uint64_t length);
 extern zip_t *              VARARGS68K _main_zip_open_from_source(struct ZipIFace *, zip_source_t * zs, int flags, zip_error_t * ze);
 extern int                  VARARGS68K _main_zip_file_set_encryption(struct ZipIFace *, zip_t * za, zip_uint64_t idx, zip_uint16_t method, const char * password);
+extern void                 VARARGS68K _main_zip_register_progress_callback(struct ZipIFace *, zip_t * za, zip_progress_callback_t cb);
+extern int                  VARARGS68K _main_zip_register_progress_callback_with_state(struct ZipIFace *, zip_t * za, double precision, zip_progress_callback cb, void (*ud_free)(void *), void * ud);

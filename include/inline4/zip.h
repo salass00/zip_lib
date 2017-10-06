@@ -94,5 +94,7 @@
 #define zip_error_to_data(error, data, length) IZip->zip_error_to_data((error), (data), (length))
 #define zip_open_from_source(zs, flags, ze) IZip->zip_open_from_source((zs), (flags), (ze))
 #define zip_file_set_encryption(za, idx, method, password) IZip->zip_file_set_encryption((za), (idx), (method), (password))
+#define zip_register_progress_callback(za, cb) IZip->zip_register_progress_callback((za), (cb))
+#define zip_register_progress_callback_with_state(za, precision, cb, ud_free, ud) IZip->zip_register_progress_callback_with_state((za), (precision), (cb), (ud_free), (ud))
 
 #endif /* INLINE4_ZIP_H */

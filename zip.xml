@@ -408,5 +408,18 @@
 			<arg name="method" type="zip_uint16_t"/>
 			<arg name="password" type="const char *"/>
 		</method>
+
+		<method name="zip_register_progress_callback" result="void">
+			<arg name="za" type="zip_t *"/>
+			<arg name="cb" type="zip_progress_callback_t"/>
+		</method>
+
+		<method name="zip_register_progress_callback_with_state" result="int">
+			<arg name="za" type="zip_t *"/>
+			<arg name="precision" type="double"/>
+			<arg name="cb" type="zip_progress_callback"/>
+			<arg name="ud_free" type="void (*)(void *)"/>
+			<arg name="ud" type="void *"/>
+		</method>
 	</interface>
 </library>

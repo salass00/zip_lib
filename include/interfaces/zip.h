@@ -103,6 +103,8 @@ struct ZipIFace
 	zip_int64_t APICALL (*zip_error_to_data)(struct ZipIFace *Self, const zip_error_t * error, void * data, zip_uint64_t length);
 	zip_t * APICALL (*zip_open_from_source)(struct ZipIFace *Self, zip_source_t * zs, int flags, zip_error_t * ze);
 	int APICALL (*zip_file_set_encryption)(struct ZipIFace *Self, zip_t * za, zip_uint64_t idx, zip_uint16_t method, const char * password);
+	void APICALL (*zip_register_progress_callback)(struct ZipIFace *Self, zip_t * za, zip_progress_callback_t cb);
+	int APICALL (*zip_register_progress_callback_with_state)(struct ZipIFace *Self, zip_t * za, double precision, zip_progress_callback cb, void (*ud_free)(void *), void * ud);
 };
 
 #ifdef __cplusplus

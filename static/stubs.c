@@ -279,6 +279,8 @@ int zip_unchange_archive(zip_t *za) {
 	return IZip->zip_unchange_archive(za);
 }
 
+/* Functions added in V53.5 */
+
 zip_error_t *zip_get_error(zip_t *za) {
 	return IZip->zip_get_error(za);
 }
@@ -327,5 +329,17 @@ int zip_file_set_encryption(zip_t *za, zip_uint64_t idx, zip_uint16_t method,
 	const char *password)
 {
 	return IZip->zip_file_set_encryption(za, idx, method, password);
+}
+
+/* Functions added in V53.6 */
+
+void zip_register_progress_callback(zip_t *za, zip_progress_callback_t cb) {
+	return IZip->zip_register_progress_callback(za, cb);
+}
+
+int zip_register_progress_callback_with_state(zip_t *za, double precision,
+	zip_progress_callback cb, void (*ud_free)(void *), void *ud)
+{
+	return IZip->zip_register_progress_callback_with_state(za, precision, cb, ud_free, ud);
 }
 

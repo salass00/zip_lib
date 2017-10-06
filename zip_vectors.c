@@ -81,5 +81,7 @@ STATIC CONST APTR main_v1_vectors[] =
     _main_zip_error_to_data,
     _main_zip_open_from_source,
     _main_zip_file_set_encryption,
+    _main_zip_register_progress_callback,
+    _main_zip_register_progress_callback_with_state,
     (APTR)-1
 };
