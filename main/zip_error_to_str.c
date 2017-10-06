@@ -34,7 +34,7 @@
 *      zip_error_to_str -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_error_to_str(STRPTR buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se);
+*      zip_int32_t zip_error_to_str(char *buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se);
 *
 *   FUNCTION
 *
@@ -59,7 +59,7 @@
 *
 */
 
-zip_int32_t _main_zip_error_to_str(struct ZipIFace *Self, STRPTR buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se) {
+zip_int32_t _main_zip_error_to_str(struct ZipIFace *Self, char *buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se) {
 	return zip_error_to_str(buf, len, ze, se);
 }
 

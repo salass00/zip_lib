@@ -34,7 +34,7 @@
 *      zip_file_get_comment -- Description
 *
 *   SYNOPSIS
-*      CONST_STRPTR zip_file_get_comment(zip_t *za, zip_uint64_t idx, 
+*      const char *zip_file_get_comment(zip_t *za, zip_uint64_t idx, 
 *          zip_uint32_t * lenp, zip_flags_t flags);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-CONST_STRPTR _main_zip_file_get_comment(struct ZipIFace *Self, zip_t *za,
+const char *_main_zip_file_get_comment(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_uint32_t *lenp, zip_flags_t flags)
 {
 	return zip_file_get_comment(za, idx, (zip_uint32_t *)lenp, flags);

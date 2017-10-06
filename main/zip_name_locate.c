@@ -34,7 +34,7 @@
 *      zip_name_locate -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_name_locate(zip_t *za, CONST_STRPTR fname, 
+*      zip_int64_t zip_name_locate(zip_t *za, const char *fname, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 */
 
 zip_int64_t _main_zip_name_locate(struct ZipIFace *Self, zip_t *za,
-	CONST_STRPTR fname, zip_flags_t flags)
+	const char *fname, zip_flags_t flags)
 {
 	return zip_name_locate(za, fname, flags);
 }

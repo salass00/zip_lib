@@ -34,7 +34,7 @@
 *      zip_file_rename -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_file_rename(zip_t *za, zip_uint64_t idx, CONST_STRPTR name, 
+*      zip_int32_t zip_file_rename(zip_t *za, zip_uint64_t idx, const char *name, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -61,7 +61,7 @@
 */
 
 zip_int32_t _main_zip_file_rename(struct ZipIFace *Self, zip_t *za,
-	zip_uint64_t idx, CONST_STRPTR name, zip_flags_t flags)
+	zip_uint64_t idx, const char *name, zip_flags_t flags)
 {
 	return zip_file_rename(za, idx, name, flags);
 }

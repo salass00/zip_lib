@@ -34,7 +34,7 @@
 *      zip_get_archive_comment -- Description
 *
 *   SYNOPSIS
-*      CONST_STRPTR zip_get_archive_comment(zip_t *za, zip_int32_t *lenp, 
+*      const char *zip_get_archive_comment(zip_t *za, zip_int32_t *lenp, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-CONST_STRPTR _main_zip_get_archive_comment(struct ZipIFace *Self, zip_t *za,
+const char *_main_zip_get_archive_comment(struct ZipIFace *Self, zip_t *za,
 	zip_int32_t *lenp, zip_flags_t flags)
 {
 	return zip_get_archive_comment(za, (zip_int32_t *)lenp, flags);

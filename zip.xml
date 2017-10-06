@@ -10,7 +10,7 @@
 
 		<method name="zip_archive_set_tempdir" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="tempdir" type="CONST_STRPTR"/>
+			<arg name="tempdir" type="const char *"/>
 		</method>
 
 		<method name="zip_close" result="zip_int32_t">
@@ -24,7 +24,7 @@
 
 		<method name="zip_dir_add" result="zip_int64_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="name" type="CONST_STRPTR"/>
+			<arg name="name" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
@@ -47,7 +47,7 @@
 		</method>
 
 		<method name="zip_error_to_str" result="zip_int32_t">
-			<arg name="buf" type="STRPTR"/>
+			<arg name="buf" type="char *"/>
 			<arg name="len" type="zip_uint64_t"/>
 			<arg name="ze" type="zip_int32_t"/>
 			<arg name="se" type="zip_int32_t"/>
@@ -65,7 +65,7 @@
 
 		<method name="zip_file_add" result="zip_int64_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="name" type="CONST_STRPTR"/>
+			<arg name="name" type="const char *"/>
 			<arg name="source" type="zip_source_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
@@ -136,7 +136,7 @@
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_file_get_comment" result="CONST_STRPTR">
+		<method name="zip_file_get_comment" result="const char *">
 			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="lenp" type="zip_uint32_t *"/>
@@ -154,7 +154,7 @@
 		<method name="zip_file_rename" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
-			<arg name="name" type="CONST_STRPTR"/>
+			<arg name="name" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
@@ -168,7 +168,7 @@
 		<method name="zip_file_set_comment" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
-			<arg name="comment" type="CONST_STRPTR"/>
+			<arg name="comment" type="const char *"/>
 			<arg name="len" type="zip_uint16_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
@@ -181,21 +181,21 @@
 			<arg name="attributes" type="zip_uint32_t"/>
 		</method>
 
-		<method name="zip_file_strerror" result="CONST_STRPTR">
+		<method name="zip_file_strerror" result="const char *">
 			<arg name="zf" type="zip_file_t *"/>
 		</method>
 
 		<method name="zip_fopen" result="zip_file_t *">
 			<arg name="za" type="zip_t *"/>
-			<arg name="fname" type="CONST_STRPTR"/>
+			<arg name="fname" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_fopen_encrypted" result="zip_file_t *">
 			<arg name="za" type="zip_t *"/>
-			<arg name="fname" type="CONST_STRPTR"/>
+			<arg name="fname" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
-			<arg name="password" type="CONST_STRPTR"/>
+			<arg name="password" type="const char *"/>
 		</method>
 
 		<method name="zip_fopen_index" result="zip_file_t *">
@@ -208,7 +208,7 @@
 			<arg name="za" type="zip_t *"/>
 			<arg name="index" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
-			<arg name="password" type="CONST_STRPTR"/>
+			<arg name="password" type="const char *"/>
 		</method>
 
 		<method name="zip_fread" result="zip_int64_t">
@@ -217,7 +217,7 @@
 			<arg name="toread" type="zip_uint64_t"/>
 		</method>
 
-		<method name="zip_get_archive_comment" result="CONST_STRPTR">
+		<method name="zip_get_archive_comment" result="const char *">
 			<arg name="za" type="zip_t *"/>
 			<arg name="lenp" type="zip_int32_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
@@ -229,7 +229,7 @@
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_get_name" result="CONST_STRPTR">
+		<method name="zip_get_name" result="const char *">
 			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
@@ -242,19 +242,19 @@
 
 		<method name="zip_name_locate" result="zip_int64_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="fname" type="CONST_STRPTR"/>
+			<arg name="fname" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_open" result="zip_t *">
-			<arg name="fn" type="CONST_STRPTR"/>
+			<arg name="fn" type="const char *"/>
 			<arg name="_flags" type="zip_int32_t"/>
 			<arg name="zep" type="zip_int32_t *"/>
 		</method>
 
 		<method name="zip_set_archive_comment" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="comment" type="CONST_STRPTR"/>
+			<arg name="comment" type="const char *"/>
 			<arg name="len" type="zip_uint16_t"/>
 		</method>
 
@@ -266,7 +266,7 @@
 
 		<method name="zip_set_default_password" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="passwd" type="CONST_STRPTR"/>
+			<arg name="passwd" type="const char *"/>
 		</method>
 
 		<method name="zip_set_file_compression" result="zip_int32_t">
@@ -285,7 +285,7 @@
 
 		<method name="zip_source_file" result="zip_source_t *">
 			<arg name="za" type="zip_t *"/>
-			<arg name="fname" type="CONST_STRPTR"/>
+			<arg name="fname" type="const char *"/>
 			<arg name="start" type="zip_uint64_t"/>
 			<arg name="len" type="zip_int64_t"/>
 		</method>
@@ -318,7 +318,7 @@
 
 		<method name="zip_stat" result="zip_int32_t">
 			<arg name="za" type="zip_t *"/>
-			<arg name="fname" type="CONST_STRPTR"/>
+			<arg name="fname" type="const char *"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="st" type="zip_stat_t *"/>
 		</method>
@@ -334,7 +334,7 @@
 			<arg name="st" type="zip_stat_t *"/>
 		</method>
 
-		<method name="zip_strerror" result="CONST_STRPTR">
+		<method name="zip_strerror" result="const char *">
 			<arg name="za" type="zip_t *"/>
 		</method>
 

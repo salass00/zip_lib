@@ -35,7 +35,7 @@
 *
 *   SYNOPSIS
 *      zip_file_t * zip_fopen_encrypted(zip_t *za, 
-*          CONST_STRPTR fname, zip_flags_t flags, CONST_STRPTR password);
+*          const char *fname, zip_flags_t flags, const char *password);
 *
 *   FUNCTION
 *
@@ -61,7 +61,7 @@
 */
 
 zip_file_t *_main_zip_fopen_encrypted(struct ZipIFace *Self, zip_t *za,
-	CONST_STRPTR fname, zip_flags_t flags, CONST_STRPTR password)
+	const char *fname, zip_flags_t flags, const char *password)
 {
 	return zip_fopen_encrypted(za, fname, flags, password);
 }

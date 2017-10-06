@@ -34,7 +34,7 @@
 *      zip_stat -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_stat(zip_t *za, CONST_STRPTR fname, zip_flags_t flags, 
+*      zip_int32_t zip_stat(zip_t *za, const char *fname, zip_flags_t flags, 
 *          zip_stat_t * st);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-zip_int32_t _main_zip_stat(struct ZipIFace *Self, zip_t *za, CONST_STRPTR fname,
+zip_int32_t _main_zip_stat(struct ZipIFace *Self, zip_t *za, const char *fname,
 	zip_flags_t flags, zip_stat_t *st)
 {
 	return zip_stat(za, fname, flags, st);

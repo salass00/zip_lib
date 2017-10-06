@@ -34,7 +34,7 @@
 *      zip_set_default_password -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_set_default_password(zip_t *za, CONST_STRPTR passwd);
+*      zip_int32_t zip_set_default_password(zip_t *za, const char *passwd);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 */
 
 zip_int32_t _main_zip_set_default_password(struct ZipIFace *Self, zip_t *za,
-	CONST_STRPTR passwd)
+	const char *passwd)
 {
 	return zip_set_default_password(za, passwd);
 }

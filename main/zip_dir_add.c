@@ -34,7 +34,7 @@
 *      zip_dir_add -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_dir_add(zip_t *za, CONST_STRPTR name, zip_flags_t flags);
+*      zip_int64_t zip_dir_add(zip_t *za, const char *name, zip_flags_t flags);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-zip_int64_t _main_zip_dir_add(struct ZipIFace *Self, zip_t *za, CONST_STRPTR name, zip_flags_t flags) {
+zip_int64_t _main_zip_dir_add(struct ZipIFace *Self, zip_t *za, const char *name, zip_flags_t flags) {
 	return zip_dir_add(za, name, flags);
 }
 

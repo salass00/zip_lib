@@ -34,7 +34,7 @@
 *      zip_archive_set_tempdir -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_archive_set_tempdir(zip_t *za, CONST_STRPTR tempdir);
+*      zip_int32_t zip_archive_set_tempdir(zip_t *za, const char *tempdir);
 *
 *   FUNCTION
 *
@@ -57,7 +57,7 @@
 *
 */
 
-zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, zip_t *za, CONST_STRPTR tempdir) {
+zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, zip_t *za, const char *tempdir) {
 	/* This function was never documented and no longer exists in libzip 1.2.0 */
 #if LIBZIP_VERSION_MAJOR > 1 || (LIBZIP_VERSION_MAJOR == 1 && LIBZIP_VERSION_MINOR >= 2)
 	if (tempdir) {

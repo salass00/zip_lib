@@ -34,7 +34,7 @@
 *      zip_fopen -- Description
 *
 *   SYNOPSIS
-*      zip_file_t * zip_fopen(zip_t *za, CONST_STRPTR fname, 
+*      zip_file_t * zip_fopen(zip_t *za, const char *fname, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 */
 
 zip_file_t *_main_zip_fopen(struct ZipIFace *Self, zip_t *za,
-	CONST_STRPTR fname, zip_flags_t flags)
+	const char *fname, zip_flags_t flags)
 {
 	return zip_fopen(za, fname, flags);
 }

@@ -35,7 +35,7 @@
 *
 *   SYNOPSIS
 *      zip_file_t *zip_fopen_index_encrypted(zip_t *za, 
-*          zip_uint64_t index, zip_flags_t flags, CONST_STRPTR password);
+*          zip_uint64_t index, zip_flags_t flags, const char *password);
 *
 *   FUNCTION
 *
@@ -61,7 +61,7 @@
 */
 
 zip_file_t *_main_zip_fopen_index_encrypted(struct ZipIFace *Self, zip_t *za,
-	zip_uint64_t index, zip_flags_t flags, CONST_STRPTR password)
+	zip_uint64_t index, zip_flags_t flags, const char *password)
 {
 	return zip_fopen_index_encrypted(za, index, flags, password);
 }

@@ -34,7 +34,7 @@
 *      zip_file_strerror -- Description
 *
 *   SYNOPSIS
-*      CONST_STRPTR zip_file_strerror(zip_file_t * zf);
+*      const char *zip_file_strerror(zip_file_t * zf);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-CONST_STRPTR _main_zip_file_strerror(struct ZipIFace *Self, zip_file_t *zf) {
+const char *_main_zip_file_strerror(struct ZipIFace *Self, zip_file_t *zf) {
 	return zip_file_strerror(zf);
 }
 

@@ -34,7 +34,7 @@
 *      zip_open -- Description
 *
 *   SYNOPSIS
-*      zip_t *zip_open(CONST_STRPTR fn, zip_int32_t _flags, zip_int32_t * zep);
+*      zip_t *zip_open(const char *fn, zip_int32_t _flags, zip_int32_t * zep);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-zip_t *_main_zip_open(struct ZipIFace *Self, CONST_STRPTR fn,
+zip_t *_main_zip_open(struct ZipIFace *Self, const char *fn,
 	zip_int32_t _flags, zip_int32_t *zep)
 {
 	return zip_open(fn, _flags, (int *)zep);

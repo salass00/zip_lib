@@ -34,7 +34,7 @@
 *      zip_get_name -- Description
 *
 *   SYNOPSIS
-*      CONST_STRPTR zip_get_name(zip_t *za, zip_uint64_t idx, zip_flags_t flags);
+*      const char *zip_get_name(zip_t *za, zip_uint64_t idx, zip_flags_t flags);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-CONST_STRPTR _main_zip_get_name(struct ZipIFace *Self, zip_t *za,
+const char *_main_zip_get_name(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_flags_t flags)
 {
 	return zip_get_name(za, idx, flags);

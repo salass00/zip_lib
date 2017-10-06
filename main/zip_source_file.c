@@ -35,7 +35,7 @@
 *
 *   SYNOPSIS
 *      zip_source_t * zip_source_file(zip_t *za, 
-*          CONST_STRPTR fname, zip_uint64_t start, zip_int64_t len);
+*          const char *fname, zip_uint64_t start, zip_int64_t len);
 *
 *   FUNCTION
 *
@@ -61,7 +61,7 @@
 */
 
 zip_source_t *_main_zip_source_file(struct ZipIFace *Self, zip_t *za,
-	CONST_STRPTR fname, zip_uint64_t start, zip_int64_t len)
+	const char *fname, zip_uint64_t start, zip_int64_t len)
 {
 	return zip_source_file(za, fname, start, len);
 }

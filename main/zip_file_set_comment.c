@@ -35,7 +35,7 @@
 *
 *   SYNOPSIS
 *      zip_int32_t zip_file_set_comment(zip_t *za, zip_uint64_t idx, 
-*          CONST_STRPTR comment, zip_uint16_t len, zip_flags_t flags);
+*          const char *comment, zip_uint16_t len, zip_flags_t flags);
 *
 *   FUNCTION
 *
@@ -62,7 +62,7 @@
 */
 
 zip_int32_t _main_zip_file_set_comment(struct ZipIFace *Self, zip_t *za,
-	zip_uint64_t idx, CONST_STRPTR comment, zip_uint16_t len, zip_flags_t flags)
+	zip_uint64_t idx, const char *comment, zip_uint16_t len, zip_flags_t flags)
 {
 	return zip_file_set_comment(za, idx, comment, len, flags);
 }
