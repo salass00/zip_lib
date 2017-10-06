@@ -34,7 +34,7 @@
 *      zip_discard -- Description
 *
 *   SYNOPSIS
-*      void zip_discard(struct zip * za);
+*      void zip_discard(zip_t *za);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-void _main_zip_discard(struct ZipIFace *Self, struct zip * za) {
+void _main_zip_discard(struct ZipIFace *Self, zip_t *za) {
 	zip_discard(za);
 }
 

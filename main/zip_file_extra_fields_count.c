@@ -34,7 +34,7 @@
 *      zip_file_extra_fields_count -- Description
 *
 *   SYNOPSIS
-*      zip_int16_t zip_file_extra_fields_count(struct zip * za, zip_uint64_t idx, 
+*      zip_int16_t zip_file_extra_fields_count(zip_t *za, zip_uint64_t idx, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-zip_int16_t _main_zip_file_extra_fields_count(struct ZipIFace *Self, struct zip *za,
+zip_int16_t _main_zip_file_extra_fields_count(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_flags_t flags)
 {
 	return zip_file_extra_fields_count(za, idx, flags);

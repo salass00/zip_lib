@@ -34,7 +34,7 @@
 *      zip_error_system_type -- Description
 *
 *   SYNOPSIS
-*      int zip_error_system_type(const struct zip_error *error);
+*      int zip_error_system_type(const zip_error_t *error);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-int _main_zip_error_system_type(struct ZipIFace *Self, const struct zip_error *error) {
+int _main_zip_error_system_type(struct ZipIFace *Self, const zip_error_t *error) {
 	return zip_error_system_type(error);
 }
 

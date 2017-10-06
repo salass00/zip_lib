@@ -34,7 +34,7 @@
 *      zip_source_filep -- Description
 *
 *   SYNOPSIS
-*      struct zip_source * zip_source_filep(struct zip * za, FILE * file, 
+*      zip_source_t * zip_source_filep(zip_t *za, FILE * file, 
 *          zip_uint64_t start, zip_int64_t len);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-struct zip_source *_main_zip_source_filep(struct ZipIFace *Self, struct zip *za,
+zip_source_t *_main_zip_source_filep(struct ZipIFace *Self, zip_t *za,
 	FILE *file, zip_uint64_t start, zip_int64_t len)
 {
 	return zip_source_filep(za, file, start, len);

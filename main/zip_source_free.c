@@ -34,7 +34,7 @@
 *      zip_source_free -- Description
 *
 *   SYNOPSIS
-*      void zip_source_free(struct zip_source * src);
+*      void zip_source_free(zip_source_t * src);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-void _main_zip_source_free(struct ZipIFace *Self, struct zip_source *src)
+void _main_zip_source_free(struct ZipIFace *Self, zip_source_t *src)
 {
 	zip_source_free(src);
 }

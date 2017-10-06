@@ -34,7 +34,7 @@
 *      zip_error_get -- Description
 *
 *   SYNOPSIS
-*      void zip_error_get(struct zip * za, zip_int32_t * zep, zip_int32_t * sep);
+*      void zip_error_get(zip_t *za, zip_int32_t * zep, zip_int32_t * sep);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-void _main_zip_error_get(struct ZipIFace *Self, struct zip *za, zip_int32_t *zep, zip_int32_t *sep) {
+void _main_zip_error_get(struct ZipIFace *Self, zip_t *za, zip_int32_t *zep, zip_int32_t *sep) {
 	zip_error_get(za, zep, sep);
 }
 

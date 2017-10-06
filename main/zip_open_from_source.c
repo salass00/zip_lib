@@ -34,8 +34,8 @@
 *      zip_open_from_source -- Description
 *
 *   SYNOPSIS
-*      struct zip *zip_open_from_source(struct zip_source *zs, int flags, 
-*          struct zip_error *ze);
+*      zip_t *zip_open_from_source(zip_source_t *zs, int flags, 
+*          zip_error_t *ze);
 *
 *   FUNCTION
 *
@@ -59,8 +59,8 @@
 *
 */
 
-struct zip *_main_zip_open_from_source(struct ZipIFace *Self, struct zip_source *zs, int flags,
-	struct zip_error *ze)
+zip_t *_main_zip_open_from_source(struct ZipIFace *Self, zip_source_t *zs, int flags,
+	zip_error_t *ze)
 {
 	return zip_open_from_source(zs, flags, ze);
 }

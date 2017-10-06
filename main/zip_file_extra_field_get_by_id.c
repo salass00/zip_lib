@@ -34,7 +34,7 @@
 *      zip_file_extra_field_get_by_id -- Description
 *
 *   SYNOPSIS
-*      const zip_uint8_t * zip_file_extra_field_get_by_id(struct zip * za, 
+*      const zip_uint8_t * zip_file_extra_field_get_by_id(zip_t *za, 
 *          zip_uint64_t idx, zip_uint16_t ef_id, zip_uint16_t ef_idx, zip_uint16_t * lenp, 
 *          zip_flags_t flags);
 *
@@ -63,7 +63,7 @@
 *
 */
 
-const zip_uint8_t *_main_zip_file_extra_field_get_by_id(struct ZipIFace *Self, struct zip *za,
+const zip_uint8_t *_main_zip_file_extra_field_get_by_id(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_uint16_t ef_id, zip_uint16_t ef_idx, zip_uint16_t *lenp, zip_flags_t flags)
 {
 	return zip_file_extra_field_get_by_id(za, idx, ef_id, ef_idx, lenp, flags);

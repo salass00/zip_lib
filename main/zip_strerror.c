@@ -34,7 +34,7 @@
 *      zip_strerror -- Description
 *
 *   SYNOPSIS
-*      CONST_STRPTR zip_strerror(struct zip * za);
+*      CONST_STRPTR zip_strerror(zip_t *za);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-CONST_STRPTR _main_zip_strerror(struct ZipIFace *Self, struct zip *za) {
+CONST_STRPTR _main_zip_strerror(struct ZipIFace *Self, zip_t *za) {
 	return zip_strerror(za);
 }
 

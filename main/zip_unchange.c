@@ -34,7 +34,7 @@
 *      zip_unchange -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_unchange(struct zip * za, zip_uint64_t idx);
+*      zip_int32_t zip_unchange(zip_t *za, zip_uint64_t idx);
 *
 *   FUNCTION
 *
@@ -57,7 +57,7 @@
 *
 */
 
-zip_int32_t _main_zip_unchange(struct ZipIFace *Self, struct zip *za, zip_uint64_t idx) {
+zip_int32_t _main_zip_unchange(struct ZipIFace *Self, zip_t *za, zip_uint64_t idx) {
 	return zip_unchange(za, idx);
 }
 

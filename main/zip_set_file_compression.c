@@ -34,7 +34,7 @@
 *      zip_set_file_compression -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_set_file_compression(struct zip * za, zip_uint64_t idx, 
+*      zip_int32_t zip_set_file_compression(zip_t *za, zip_uint64_t idx, 
 *          zip_int32_t method, zip_flags_t flags);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-zip_int32_t _main_zip_set_file_compression(struct ZipIFace *Self, struct zip *za,
+zip_int32_t _main_zip_set_file_compression(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_int32_t method, zip_flags_t flags)
 {
 	return zip_set_file_compression(za, idx, method, flags);

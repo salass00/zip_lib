@@ -34,7 +34,7 @@
 *      zip_stat_init -- Description
 *
 *   SYNOPSIS
-*      void zip_stat_init(struct zip_stat * st);
+*      void zip_stat_init(zip_stat_t * st);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-void _main_zip_stat_init(struct ZipIFace *Self, struct zip_stat *st)
+void _main_zip_stat_init(struct ZipIFace *Self, zip_stat_t *st)
 {
 	zip_stat_init(st);
 }

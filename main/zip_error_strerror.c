@@ -34,7 +34,7 @@
 *      zip_error_strerror -- Description
 *
 *   SYNOPSIS
-*      const char * zip_error_strerror(struct zip_error *error);
+*      const char * zip_error_strerror(zip_error_t *error);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-const char * _main_zip_error_strerror(struct ZipIFace *Self, struct zip_error *error) {
+const char * _main_zip_error_strerror(struct ZipIFace *Self, zip_error_t *error) {
 	return zip_error_strerror(error);
 }
 

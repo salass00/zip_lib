@@ -34,7 +34,7 @@
 *      zip_error_init_with_code -- Description
 *
 *   SYNOPSIS
-*      void zip_error_init_with_code(struct zip_error *error, int ze);
+*      void zip_error_init_with_code(zip_error_t *error, int ze);
 *
 *   FUNCTION
 *
@@ -57,7 +57,7 @@
 *
 */
 
-void _main_zip_error_init_with_code(struct ZipIFace *Self, struct zip_error *error, int ze)
+void _main_zip_error_init_with_code(struct ZipIFace *Self, zip_error_t *error, int ze)
 {
 	zip_error_init_with_code(error, ze);
 }

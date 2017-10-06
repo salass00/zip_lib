@@ -34,8 +34,8 @@
 *      zip_stat_index -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_stat_index(struct zip * za, zip_uint64_t index, zip_flags_t flags, 
-*          struct zip_stat * st);
+*      zip_int32_t zip_stat_index(zip_t *za, zip_uint64_t index, zip_flags_t flags, 
+*          zip_stat_t * st);
 *
 *   FUNCTION
 *
@@ -60,8 +60,8 @@
 *
 */
 
-zip_int32_t _main_zip_stat_index(struct ZipIFace *Self, struct zip *za, zip_uint64_t index,
-	zip_flags_t flags, struct zip_stat *st)
+zip_int32_t _main_zip_stat_index(struct ZipIFace *Self, zip_t *za, zip_uint64_t index,
+	zip_flags_t flags, zip_stat_t *st)
 {
 	return zip_stat_index(za, index, flags, st);
 }

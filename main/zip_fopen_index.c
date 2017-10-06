@@ -34,7 +34,7 @@
 *      zip_fopen_index -- Description
 *
 *   SYNOPSIS
-*      struct zip_file * zip_fopen_index(struct zip * za, zip_uint64_t index, 
+*      zip_file_t * zip_fopen_index(zip_t *za, zip_uint64_t index, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-struct zip_file *_main_zip_fopen_index(struct ZipIFace *Self, struct zip *za,
+zip_file_t *_main_zip_fopen_index(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t index, zip_flags_t flags)
 {
 	return zip_fopen_index(za, index, flags);

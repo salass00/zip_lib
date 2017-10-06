@@ -34,7 +34,7 @@
 *      zip_source_file -- Description
 *
 *   SYNOPSIS
-*      struct zip_source * zip_source_file(struct zip * za, 
+*      zip_source_t * zip_source_file(zip_t *za, 
 *          CONST_STRPTR fname, zip_uint64_t start, zip_int64_t len);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-struct zip_source *_main_zip_source_file(struct ZipIFace *Self, struct zip *za,
+zip_source_t *_main_zip_source_file(struct ZipIFace *Self, zip_t *za,
 	CONST_STRPTR fname, zip_uint64_t start, zip_int64_t len)
 {
 	return zip_source_file(za, fname, start, len);

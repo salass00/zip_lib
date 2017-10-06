@@ -34,7 +34,7 @@
 *      zip_source_buffer -- Description
 *
 *   SYNOPSIS
-*      struct zip_source * zip_source_buffer(struct zip * za, 
+*      zip_source_t * zip_source_buffer(zip_t *za, 
 *          CONST_APTR data, zip_uint64_t len, zip_int32_t freep);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-struct zip_source *_main_zip_source_buffer(struct ZipIFace *Self, struct zip *za,
+zip_source_t *_main_zip_source_buffer(struct ZipIFace *Self, zip_t *za,
 	CONST_APTR data, zip_uint64_t len, zip_int32_t freep)
 {
 	return zip_source_buffer(za, data, len, freep);

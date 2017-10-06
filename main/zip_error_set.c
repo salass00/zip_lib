@@ -34,7 +34,7 @@
 *      zip_error_set -- Description
 *
 *   SYNOPSIS
-*      void zip_error_set(struct zip_error *error, int ze, int se);
+*      void zip_error_set(zip_error_t *error, int ze, int se);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-void _main_zip_error_set(struct ZipIFace *Self, struct zip_error *error, int ze, int se) {
+void _main_zip_error_set(struct ZipIFace *Self, zip_error_t *error, int ze, int se) {
 	zip_error_set(error, ze, se);
 }
 

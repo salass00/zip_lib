@@ -34,8 +34,8 @@
 *      zip_file_add -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_file_add(struct zip * za, CONST_STRPTR name, 
-*          struct zip_source * source, zip_flags_t flags);
+*      zip_int64_t zip_file_add(zip_t *za, CONST_STRPTR name, 
+*          zip_source_t * source, zip_flags_t flags);
 *
 *   FUNCTION
 *
@@ -60,8 +60,8 @@
 *
 */
 
-zip_int64_t _main_zip_file_add(struct ZipIFace *Self, struct zip *za, CONST_STRPTR name,
-	struct zip_source *source, zip_flags_t flags)
+zip_int64_t _main_zip_file_add(struct ZipIFace *Self, zip_t *za, CONST_STRPTR name,
+	zip_source_t *source, zip_flags_t flags)
 {
 	return zip_file_add(za, name, source, flags);
 }

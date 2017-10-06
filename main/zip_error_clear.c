@@ -34,7 +34,7 @@
 *      zip_error_clear -- Description
 *
 *   SYNOPSIS
-*      void zip_error_clear(struct zip * za);
+*      void zip_error_clear(zip_t *za);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-void _main_zip_error_clear(struct ZipIFace *Self, struct zip *za) {
+void _main_zip_error_clear(struct ZipIFace *Self, zip_t *za) {
 	zip_error_clear(za);
 }
 

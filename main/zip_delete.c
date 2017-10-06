@@ -34,7 +34,7 @@
 *      zip_delete -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_delete(struct zip * za, zip_uint64_t idx);
+*      zip_int32_t zip_delete(zip_t *za, zip_uint64_t idx);
 *
 *   FUNCTION
 *
@@ -57,7 +57,7 @@
 *
 */
 
-zip_int32_t _main_zip_delete(struct ZipIFace *Self, struct zip *za, zip_uint64_t idx) {
+zip_int32_t _main_zip_delete(struct ZipIFace *Self, zip_t *za, zip_uint64_t idx) {
 	return zip_delete(za, idx);
 }
 

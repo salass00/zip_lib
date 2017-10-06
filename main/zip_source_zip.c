@@ -34,8 +34,8 @@
 *      zip_source_zip -- Description
 *
 *   SYNOPSIS
-*      struct zip_source * zip_source_zip(struct zip * za, 
-*          struct zip * srcza, zip_uint64_t srcidx, zip_flags_t flags, zip_uint64_t start, 
+*      zip_source_t * zip_source_zip(zip_t *za, 
+*          zip_t *srcza, zip_uint64_t srcidx, zip_flags_t flags, zip_uint64_t start, 
 *          zip_int64_t len);
 *
 *   FUNCTION
@@ -63,8 +63,8 @@
 *
 */
 
-struct zip_source *_main_zip_source_zip(struct ZipIFace *Self, struct zip *za,
-	struct zip *srcza, zip_uint64_t srcidx, zip_flags_t flags, zip_uint64_t start, zip_int64_t len)
+zip_source_t *_main_zip_source_zip(struct ZipIFace *Self, zip_t *za,
+	zip_t *srcza, zip_uint64_t srcidx, zip_flags_t flags, zip_uint64_t start, zip_int64_t len)
 {
 	return zip_source_zip(za, srcza, srcidx, flags, start, len);
 }

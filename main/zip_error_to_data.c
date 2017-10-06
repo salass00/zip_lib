@@ -34,7 +34,7 @@
 *      zip_error_to_data -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_error_to_data(const struct zip_error *error, 
+*      zip_int64_t zip_error_to_data(const zip_error_t *error, 
 *          void *data, zip_uint64_t length);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-zip_int64_t _main_zip_error_to_data(struct ZipIFace *Self, const struct zip_error *error,
+zip_int64_t _main_zip_error_to_data(struct ZipIFace *Self, const zip_error_t *error,
 	void *data, zip_uint64_t length)
 {
 	return zip_error_to_data(error, data, length);

@@ -34,7 +34,7 @@
 *      zip_file_set_encryption -- Description
 *
 *   SYNOPSIS
-*      int zip_file_set_encryption(struct zip *za, zip_uint64_t idx, 
+*      int zip_file_set_encryption(zip_t *za, zip_uint64_t idx, 
 *          zip_uint16_t method, const char *password);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-int _main_zip_file_set_encryption(struct ZipIFace *Self, struct zip *za,
+int _main_zip_file_set_encryption(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_uint16_t method, const char *password)
 {
 	return zip_file_set_encryption(za, idx, method, password);

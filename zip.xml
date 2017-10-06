@@ -9,35 +9,35 @@
 		<method name="Clone" result="struct Interface *" status="unimplemented"/>
 
 		<method name="zip_archive_set_tempdir" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="tempdir" type="CONST_STRPTR"/>
 		</method>
 
 		<method name="zip_close" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_delete" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 		</method>
 
 		<method name="zip_dir_add" result="zip_int64_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="name" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_discard" result="void">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_error_clear" result="void">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_error_get" result="void">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="zep" type="zip_int32_t *"/>
 			<arg name="sep" type="zip_int32_t *"/>
 		</method>
@@ -54,41 +54,41 @@
 		</method>
 
 		<method name="zip_fclose" result="zip_int32_t">
-			<arg name="zf" type="struct zip_file *"/>
+			<arg name="zf" type="zip_file_t *"/>
 		</method>
 
-		<method name="zip_fdopen" result="struct zip *">
+		<method name="zip_fdopen" result="zip_t *">
 			<arg name="fd_orig" type="zip_int32_t"/>
 			<arg name="_flags" type="zip_int32_t"/>
 			<arg name="zep" type="zip_int32_t *"/>
 		</method>
 
 		<method name="zip_file_add" result="zip_int64_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="name" type="CONST_STRPTR"/>
-			<arg name="source" type="struct zip_source *"/>
+			<arg name="source" type="zip_source_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_error_clear" result="void">
-			<arg name="zf" type="struct zip_file *"/>
+			<arg name="zf" type="zip_file_t *"/>
 		</method>
 
 		<method name="zip_file_error_get" result="void">
-			<arg name="zf" type="struct zip_file *"/>
+			<arg name="zf" type="zip_file_t *"/>
 			<arg name="zep" type="zip_int32_t *"/>
 			<arg name="sep" type="zip_int32_t *"/>
 		</method>
 
 		<method name="zip_file_extra_field_delete" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_idx" type="zip_uint16_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_extra_field_delete_by_id" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_id" type="zip_uint16_t"/>
 			<arg name="ef_idx" type="zip_uint16_t"/>
@@ -96,7 +96,7 @@
 		</method>
 
 		<method name="zip_file_extra_field_set" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_id" type="zip_uint16_t"/>
 			<arg name="ef_idx" type="zip_uint16_t"/>
@@ -106,20 +106,20 @@
 		</method>
 
 		<method name="zip_file_extra_fields_count" result="zip_int16_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_extra_fields_count_by_id" result="zip_int16_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_id" type="zip_uint16_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_extra_field_get" result="const zip_uint8_t *">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_idx" type="zip_uint16_t"/>
 			<arg name="idp" type="zip_uint16_t *"/>
@@ -128,7 +128,7 @@
 		</method>
 
 		<method name="zip_file_extra_field_get_by_id" result="const zip_uint8_t *">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="ef_id" type="zip_uint16_t"/>
 			<arg name="ef_idx" type="zip_uint16_t"/>
@@ -137,14 +137,14 @@
 		</method>
 
 		<method name="zip_file_get_comment" result="CONST_STRPTR">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="lenp" type="zip_uint32_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_get_external_attributes" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="opsys" type="zip_uint8_t *"/>
@@ -152,21 +152,21 @@
 		</method>
 
 		<method name="zip_file_rename" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="name" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_replace" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
-			<arg name="source" type="struct zip_source *"/>
+			<arg name="source" type="zip_source_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_file_set_comment" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="comment" type="CONST_STRPTR"/>
 			<arg name="len" type="zip_uint16_t"/>
@@ -174,7 +174,7 @@
 		</method>
 
 		<method name="zip_file_set_external_attributes" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="opsys" type="zip_uint8_t"/>
@@ -182,134 +182,134 @@
 		</method>
 
 		<method name="zip_file_strerror" result="CONST_STRPTR">
-			<arg name="zf" type="struct zip_file *"/>
+			<arg name="zf" type="zip_file_t *"/>
 		</method>
 
-		<method name="zip_fopen" result="struct zip_file *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_fopen" result="zip_file_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="fname" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_fopen_encrypted" result="struct zip_file *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_fopen_encrypted" result="zip_file_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="fname" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="password" type="CONST_STRPTR"/>
 		</method>
 
-		<method name="zip_fopen_index" result="struct zip_file *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_fopen_index" result="zip_file_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="index" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_fopen_index_encrypted" result="struct zip_file *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_fopen_index_encrypted" result="zip_file_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="index" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="password" type="CONST_STRPTR"/>
 		</method>
 
 		<method name="zip_fread" result="zip_int64_t">
-			<arg name="zf" type="struct zip_file *"/>
+			<arg name="zf" type="zip_file_t *"/>
 			<arg name="outbuf" type="APTR"/>
 			<arg name="toread" type="zip_uint64_t"/>
 		</method>
 
 		<method name="zip_get_archive_comment" result="CONST_STRPTR">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="lenp" type="zip_int32_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_get_archive_flag" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="flag" type="zip_uint32_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_get_name" result="CONST_STRPTR">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_get_num_entries" result="zip_int64_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
 		<method name="zip_name_locate" result="zip_int64_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="fname" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_open" result="struct zip *">
+		<method name="zip_open" result="zip_t *">
 			<arg name="fn" type="CONST_STRPTR"/>
 			<arg name="_flags" type="zip_int32_t"/>
 			<arg name="zep" type="zip_int32_t *"/>
 		</method>
 
 		<method name="zip_set_archive_comment" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="comment" type="CONST_STRPTR"/>
 			<arg name="len" type="zip_uint16_t"/>
 		</method>
 
 		<method name="zip_set_archive_flag" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="flag" type="zip_uint32_t"/>
 			<arg name="value" type="zip_int32_t"/>
 		</method>
 
 		<method name="zip_set_default_password" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="passwd" type="CONST_STRPTR"/>
 		</method>
 
 		<method name="zip_set_file_compression" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="method" type="zip_int32_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 		</method>
 
-		<method name="zip_source_buffer" result="struct zip_source *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_source_buffer" result="zip_source_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="data" type="CONST_APTR"/>
 			<arg name="len" type="zip_uint64_t"/>
 			<arg name="freep" type="zip_int32_t"/>
 		</method>
 
-		<method name="zip_source_file" result="struct zip_source *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_source_file" result="zip_source_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="fname" type="CONST_STRPTR"/>
 			<arg name="start" type="zip_uint64_t"/>
 			<arg name="len" type="zip_int64_t"/>
 		</method>
 
-		<method name="zip_source_filep" result="struct zip_source *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_source_filep" result="zip_source_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="file" type="FILE *"/>
 			<arg name="start" type="zip_uint64_t"/>
 			<arg name="len" type="zip_int64_t"/>
 		</method>
 
 		<method name="zip_source_free" result="void">
-			<arg name="src" type="struct zip_source *"/>
+			<arg name="src" type="zip_source_t *"/>
 		</method>
 
-		<method name="zip_source_function" result="struct zip_source *">
-			<arg name="za" type="struct zip *"/>
+		<method name="zip_source_function" result="zip_source_t *">
+			<arg name="za" type="zip_t *"/>
 			<arg name="zcb" type="zip_source_callback"/>
 			<arg name="ud" type="APTR"/>
 		</method>
 
-		<method name="zip_source_zip" result="struct zip_source *">
-			<arg name="za" type="struct zip *"/>
-			<arg name="srcza" type="struct zip *"/>
+		<method name="zip_source_zip" result="zip_source_t *">
+			<arg name="za" type="zip_t *"/>
+			<arg name="srcza" type="zip_t *"/>
 			<arg name="srcidx" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
 			<arg name="start" type="zip_uint64_t"/>
@@ -317,93 +317,93 @@
 		</method>
 
 		<method name="zip_stat" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="fname" type="CONST_STRPTR"/>
 			<arg name="flags" type="zip_flags_t"/>
-			<arg name="st" type="struct zip_stat *"/>
+			<arg name="st" type="zip_stat_t *"/>
 		</method>
 
 		<method name="zip_stat_index" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="index" type="zip_uint64_t"/>
 			<arg name="flags" type="zip_flags_t"/>
-			<arg name="st" type="struct zip_stat *"/>
+			<arg name="st" type="zip_stat_t *"/>
 		</method>
 
 		<method name="zip_stat_init" result="void">
-			<arg name="st" type="struct zip_stat *"/>
+			<arg name="st" type="zip_stat_t *"/>
 		</method>
 
 		<method name="zip_strerror" result="CONST_STRPTR">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_unchange" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 		</method>
 
 		<method name="zip_unchange_all" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_unchange_archive" result="zip_int32_t">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_get_error" result="zip_error_t *">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 		</method>
 
 		<method name="zip_error_code_zip" result="int">
-			<arg name="error" type="const struct zip_error *"/>
+			<arg name="error" type="const zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_code_system" result="int">
-			<arg name="error" type="const struct zip_error *"/>
+			<arg name="error" type="const zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_fini" result="void">
-			<arg name="error" type="struct zip_error *"/>
+			<arg name="error" type="zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_init" result="void">
-			<arg name="error" type="struct zip_error *"/>
+			<arg name="error" type="zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_init_with_code" result="void">
-			<arg name="error" type="struct zip_error *"/>
+			<arg name="error" type="zip_error_t *"/>
 			<arg name="ze" type="int"/>
 		</method>
 
 		<method name="zip_error_set" result="void">
-			<arg name="error" type="struct zip_error *"/>
+			<arg name="error" type="zip_error_t *"/>
 			<arg name="ze" type="int"/>
 			<arg name="se" type="int"/>
 		</method>
 
 		<method name="zip_error_strerror" result="const char *">
-			<arg name="error" type="struct zip_error *"/>
+			<arg name="error" type="zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_system_type" result="int">
-			<arg name="error" type="const struct zip_error *"/>
+			<arg name="error" type="const zip_error_t *"/>
 		</method>
 
 		<method name="zip_error_to_data" result="zip_int64_t">
-			<arg name="error" type="const struct zip_error *"/>
+			<arg name="error" type="const zip_error_t *"/>
 			<arg name="data" type="void *"/>
 			<arg name="length" type="zip_uint64_t"/>
 		</method>
 
-		<method name="zip_open_from_source" result="struct zip *">
-			<arg name="zs" type="struct zip_source *"/>
+		<method name="zip_open_from_source" result="zip_t *">
+			<arg name="zs" type="zip_source_t *"/>
 			<arg name="flags" type="int"/>
-			<arg name="ze" type="struct zip_error *"/>
+			<arg name="ze" type="zip_error_t *"/>
 		</method>
 
 		<method name="zip_file_set_encryption" result="int">
-			<arg name="za" type="struct zip *"/>
+			<arg name="za" type="zip_t *"/>
 			<arg name="idx" type="zip_uint64_t"/>
 			<arg name="method" type="zip_uint16_t"/>
 			<arg name="password" type="const char *"/>

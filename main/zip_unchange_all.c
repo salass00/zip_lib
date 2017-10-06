@@ -34,7 +34,7 @@
 *      zip_unchange_all -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_unchange_all(struct zip * za);
+*      zip_int32_t zip_unchange_all(zip_t *za);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-zip_int32_t _main_zip_unchange_all(struct ZipIFace *Self, struct zip *za) {
+zip_int32_t _main_zip_unchange_all(struct ZipIFace *Self, zip_t *za) {
 	return zip_unchange_all(za);
 }
 

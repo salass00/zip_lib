@@ -34,7 +34,7 @@
 *      zip_file_get_external_attributes -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_file_get_external_attributes(struct zip * za, zip_uint64_t idx, 
+*      zip_int32_t zip_file_get_external_attributes(zip_t *za, zip_uint64_t idx, 
 *          zip_flags_t flags, zip_uint8_t * opsys, zip_uint32_t * attributes);
 *
 *   FUNCTION
@@ -61,7 +61,7 @@
 *
 */
 
-zip_int32_t _main_zip_file_get_external_attributes(struct ZipIFace *Self, struct zip *za,
+zip_int32_t _main_zip_file_get_external_attributes(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_flags_t flags, zip_uint8_t *opsys, zip_uint32_t *attributes)
 {
 	return zip_file_get_external_attributes(za, idx, flags, opsys, (zip_uint32_t *)attributes);

@@ -34,7 +34,7 @@
 *      zip_get_num_entries -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_get_num_entries(struct zip * za, zip_flags_t flags);
+*      zip_int64_t zip_get_num_entries(zip_t *za, zip_flags_t flags);
 *
 *   FUNCTION
 *
@@ -57,7 +57,7 @@
 *
 */
 
-zip_int64_t _main_zip_get_num_entries(struct ZipIFace *Self, struct zip *za,
+zip_int64_t _main_zip_get_num_entries(struct ZipIFace *Self, zip_t *za,
 	zip_flags_t flags)
 {
 	return zip_get_num_entries(za, flags);

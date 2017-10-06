@@ -34,7 +34,7 @@
 *      zip_fdopen -- Description
 *
 *   SYNOPSIS
-*      struct zip * zip_fdopen(zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t * zep);
+*      zip_t *zip_fdopen(zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t * zep);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-struct zip * _main_zip_fdopen(struct ZipIFace *Self, zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t *zep) {
+zip_t *_main_zip_fdopen(struct ZipIFace *Self, zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t *zep) {
 	return zip_fdopen(fd_orig, _flags, zep);
 }
 

@@ -34,7 +34,7 @@
 *      zip_set_archive_comment -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_set_archive_comment(struct zip * za, CONST_STRPTR comment, 
+*      zip_int32_t zip_set_archive_comment(zip_t *za, CONST_STRPTR comment, 
 *          zip_uint16_t len);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-zip_int32_t _main_zip_set_archive_comment(struct ZipIFace *Self, struct zip *za,
+zip_int32_t _main_zip_set_archive_comment(struct ZipIFace *Self, zip_t *za,
 	CONST_STRPTR comment, zip_uint16_t len)
 {
 	return zip_set_archive_comment(za, comment, len);

@@ -34,7 +34,7 @@
 *      zip_error_code_zip -- Description
 *
 *   SYNOPSIS
-*      int zip_error_code_zip(const struct zip_error *error);
+*      int zip_error_code_zip(const zip_error_t *error);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-int _main_zip_error_code_zip(struct ZipIFace *Self, const struct zip_error *error) {
+int _main_zip_error_code_zip(struct ZipIFace *Self, const zip_error_t *error) {
 	return zip_error_code_zip(error);
 }
 

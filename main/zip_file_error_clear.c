@@ -34,7 +34,7 @@
 *      zip_file_error_clear -- Description
 *
 *   SYNOPSIS
-*      void zip_file_error_clear(struct zip_file * zf);
+*      void zip_file_error_clear(zip_file_t * zf);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-void _main_zip_file_error_clear(struct ZipIFace *Self, struct zip_file * zf) {
+void _main_zip_file_error_clear(struct ZipIFace *Self, zip_file_t * zf) {
 	zip_file_error_clear(zf);
 }
 

@@ -34,7 +34,7 @@
 *      zip_get_archive_flag -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_get_archive_flag(struct zip * za, zip_uint32_t flag, 
+*      zip_int32_t zip_get_archive_flag(zip_t *za, zip_uint32_t flag, 
 *          zip_flags_t flags);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-zip_int32_t _main_zip_get_archive_flag(struct ZipIFace *Self, struct zip *za,
+zip_int32_t _main_zip_get_archive_flag(struct ZipIFace *Self, zip_t *za,
 	zip_uint32_t flag, zip_flags_t flags)
 {
 	return zip_get_archive_flag(za, flag, flags);

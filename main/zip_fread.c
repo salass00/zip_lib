@@ -34,7 +34,7 @@
 *      zip_fread -- Description
 *
 *   SYNOPSIS
-*      zip_int64_t zip_fread(struct zip_file * zf, APTR outbuf, zip_uint64_t toread);
+*      zip_int64_t zip_fread(zip_file_t * zf, APTR outbuf, zip_uint64_t toread);
 *
 *   FUNCTION
 *
@@ -58,7 +58,7 @@
 *
 */
 
-zip_int64_t _main_zip_fread(struct ZipIFace *Self, struct zip_file *zf,
+zip_int64_t _main_zip_fread(struct ZipIFace *Self, zip_file_t *zf,
 	APTR outbuf, zip_uint64_t toread)
 {
 	return zip_fread(zf, outbuf, toread);

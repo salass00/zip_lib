@@ -34,7 +34,7 @@
 *      zip_source_function -- Description
 *
 *   SYNOPSIS
-*      struct zip_source * zip_source_function(struct zip * za, 
+*      zip_source_t * zip_source_function(zip_t *za, 
 *          zip_source_callback zcb, APTR ud);
 *
 *   FUNCTION
@@ -59,7 +59,7 @@
 *
 */
 
-struct zip_source *_main_zip_source_function(struct ZipIFace *Self, struct zip *za,
+zip_source_t *_main_zip_source_function(struct ZipIFace *Self, zip_t *za,
 	zip_source_callback zcb, APTR ud)
 {
 	return zip_source_function(za, zcb, ud);

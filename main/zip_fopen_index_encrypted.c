@@ -34,7 +34,7 @@
 *      zip_fopen_index_encrypted -- Description
 *
 *   SYNOPSIS
-*      struct zip_file * zip_fopen_index_encrypted(struct zip * za, 
+*      zip_file_t *zip_fopen_index_encrypted(zip_t *za, 
 *          zip_uint64_t index, zip_flags_t flags, CONST_STRPTR password);
 *
 *   FUNCTION
@@ -60,7 +60,7 @@
 *
 */
 
-struct zip_file *_main_zip_fopen_index_encrypted(struct ZipIFace *Self, struct zip *za,
+zip_file_t *_main_zip_fopen_index_encrypted(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t index, zip_flags_t flags, CONST_STRPTR password)
 {
 	return zip_fopen_index_encrypted(za, index, flags, password);

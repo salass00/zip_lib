@@ -34,7 +34,7 @@
 *      zip_fclose -- Description
 *
 *   SYNOPSIS
-*      zip_int32_t zip_fclose(struct zip_file * zf);
+*      zip_int32_t zip_fclose(zip_file_t * zf);
 *
 *   FUNCTION
 *
@@ -56,7 +56,7 @@
 *
 */
 
-zip_int32_t _main_zip_fclose(struct ZipIFace *Self, struct zip_file *zf) {
+zip_int32_t _main_zip_fclose(struct ZipIFace *Self, zip_file_t *zf) {
 	return zip_fclose(zf);
 }
 
