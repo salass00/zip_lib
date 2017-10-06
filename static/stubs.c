@@ -334,12 +334,110 @@ int zip_file_set_encryption(zip_t *za, zip_uint64_t idx, zip_uint16_t method,
 /* Functions added in V53.6 */
 
 void zip_register_progress_callback(zip_t *za, zip_progress_callback_t cb) {
-	return IZip->zip_register_progress_callback(za, cb);
+	IZip->zip_register_progress_callback(za, cb);
 }
 
 int zip_register_progress_callback_with_state(zip_t *za, double precision,
 	zip_progress_callback cb, void (*ud_free)(void *), void *ud)
 {
 	return IZip->zip_register_progress_callback_with_state(za, precision, cb, ud_free, ud);
+}
+
+zip_error_t *zip_file_get_error(zip_file_t *zf) {
+	return IZip->zip_file_get_error(zf);
+}
+
+int zip_file_set_mtime(zip_t *za, zip_uint64_t idx, time_t mtime, zip_flags_t flags) {
+	return IZip->zip_file_set_mtime(za, idx, mtime, flags);
+}
+
+zip_int8_t zip_fseek(zip_file_t *zf, zip_int64_t offset, int whence) {
+	return IZip->zip_fseek(zf, offset, whence);
+}
+
+zip_int64_t zip_ftell(zip_file_t *zf) {
+	return IZip->zip_ftell(zf);
+}
+
+int zip_source_begin_write(zip_source_t *zs) {
+	return IZip->zip_source_begin_write(zs);
+}
+
+zip_source_t *zip_source_buffer_create(const void *data, zip_uint64_t len, int freep, zip_error_t *error) {
+	return IZip->zip_source_buffer_create(data, len, freep, error);
+}
+
+int zip_source_close(zip_source_t *zs) {
+	return IZip->zip_source_close(zs);
+}
+
+int zip_source_commit_write(zip_source_t *zs) {
+	return IZip->zip_source_commit_write(zs);
+}
+
+zip_error_t *zip_source_error(zip_source_t *zs) {
+	return IZip->zip_source_error(zs);
+}
+
+zip_source_t *zip_source_file_create(const char *fname, zip_uint64_t start, zip_int64_t len, zip_error_t *error) {
+	return IZip->zip_source_file_create(fname, start, len, error);
+}
+
+zip_source_t *zip_source_filep_create(FILE *file, zip_uint64_t start, zip_int64_t len, zip_error_t *error) {
+	return IZip->zip_source_filep_create(file, start, len, error);
+}
+
+zip_source_t *zip_source_function_create(zip_source_callback fn, void *userdata, zip_error_t *error) {
+	return IZip->zip_source_function_create(fn, userdata, error);
+}
+
+int zip_source_is_deleted(zip_source_t *zs) {
+	return IZip->zip_source_is_deleted(zs);
+}
+
+void zip_source_keep(zip_source_t *zs) {
+	IZip->zip_source_keep(zs);
+}
+
+int zip_source_open(zip_source_t *zs) {
+	return IZip->zip_source_open(zs);
+}
+
+zip_int64_t zip_source_read(zip_source_t *zs, void *data, zip_uint64_t len) {
+	return IZip->zip_source_read(zs, data, len);
+}
+
+void zip_source_rollback_write(zip_source_t *zs) {
+	IZip->zip_source_rollback_write(zs);
+}
+
+int zip_source_seek(zip_source_t *zs, zip_int64_t offset, int whence) {
+	return IZip->zip_source_seek(zs, offset, whence);
+}
+
+zip_int64_t zip_source_seek_compute_offset(zip_uint64_t offset, zip_uint64_t length, void *data,
+	zip_uint64_t data_length, zip_error_t *error)
+{
+	return IZip->zip_source_seek_compute_offset(offset, length, data, data_length, error);
+}
+
+int zip_source_seek_write(zip_source_t *zs, zip_int64_t offset, int whence) {
+	return IZip->zip_source_seek_write(zs, offset, whence);
+}
+
+int zip_source_stat(zip_source_t *zs, zip_stat_t *zstat) {
+	return IZip->zip_source_stat(zs, zstat);
+}
+
+zip_int64_t zip_source_tell(zip_source_t *zs) {
+	return IZip->zip_source_tell(zs);
+}
+
+zip_int64_t zip_source_tell_write(zip_source_t *zs) {
+	return IZip->zip_source_tell_write(zs);
+}
+
+zip_int64_t zip_source_write(zip_source_t *zs, const void *data, zip_uint64_t len) {
+	return IZip->zip_source_write(zs, data, len);
 }
 

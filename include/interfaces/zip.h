@@ -105,6 +105,30 @@ struct ZipIFace
 	int APICALL (*zip_file_set_encryption)(struct ZipIFace *Self, zip_t * za, zip_uint64_t idx, zip_uint16_t method, const char * password);
 	void APICALL (*zip_register_progress_callback)(struct ZipIFace *Self, zip_t * za, zip_progress_callback_t cb);
 	int APICALL (*zip_register_progress_callback_with_state)(struct ZipIFace *Self, zip_t * za, double precision, zip_progress_callback cb, void (*ud_free)(void *), void * ud);
+	zip_error_t * APICALL (*zip_file_get_error)(struct ZipIFace *Self, zip_file_t * zf);
+	int APICALL (*zip_file_set_mtime)(struct ZipIFace *Self, zip_t * za, zip_uint64_t idx, time_t mtime, zip_flags_t flags);
+	zip_int8_t APICALL (*zip_fseek)(struct ZipIFace *Self, zip_file_t * zf, zip_int64_t offset, int whence);
+	zip_int64_t APICALL (*zip_ftell)(struct ZipIFace *Self, zip_file_t * zf);
+	int APICALL (*zip_source_begin_write)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_source_t * APICALL (*zip_source_buffer_create)(struct ZipIFace *Self, const void * data, zip_uint64_t len, int freep, zip_error_t * error);
+	int APICALL (*zip_source_close)(struct ZipIFace *Self, zip_source_t * zs);
+	int APICALL (*zip_source_commit_write)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_error_t * APICALL (*zip_source_error)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_source_t * APICALL (*zip_source_file_create)(struct ZipIFace *Self, const char * fname, zip_uint64_t start, zip_int64_t len, zip_error_t * error);
+	zip_source_t * APICALL (*zip_source_filep_create)(struct ZipIFace *Self, FILE * file, zip_uint64_t start, zip_int64_t len, zip_error_t * error);
+	zip_source_t * APICALL (*zip_source_function_create)(struct ZipIFace *Self, zip_source_callback fn, void * userdata, zip_error_t * error);
+	int APICALL (*zip_source_is_deleted)(struct ZipIFace *Self, zip_source_t * zs);
+	void APICALL (*zip_source_keep)(struct ZipIFace *Self, zip_source_t * zs);
+	int APICALL (*zip_source_open)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_int64_t APICALL (*zip_source_read)(struct ZipIFace *Self, zip_source_t * zs, void * data, zip_uint64_t len);
+	void APICALL (*zip_source_rollback_write)(struct ZipIFace *Self, zip_source_t * zs);
+	int APICALL (*zip_source_seek)(struct ZipIFace *Self, zip_source_t * zs, zip_int64_t offset, int whence);
+	zip_int64_t APICALL (*zip_source_seek_compute_offset)(struct ZipIFace *Self, zip_uint64_t offset, zip_uint64_t length, void * data, zip_uint64_t data_length, zip_error_t * error);
+	int APICALL (*zip_source_seek_write)(struct ZipIFace *Self, zip_source_t * zs, zip_int64_t offset, int whence);
+	int APICALL (*zip_source_stat)(struct ZipIFace *Self, zip_source_t * zs, zip_stat_t * zstat);
+	zip_int64_t APICALL (*zip_source_tell)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_int64_t APICALL (*zip_source_tell_write)(struct ZipIFace *Self, zip_source_t * zs);
+	zip_int64_t APICALL (*zip_source_write)(struct ZipIFace *Self, zip_source_t * zs, const void * data, zip_uint64_t len);
 };
 
 #ifdef __cplusplus

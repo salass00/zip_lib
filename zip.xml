@@ -421,5 +421,130 @@
 			<arg name="ud_free" type="void (*)(void *)"/>
 			<arg name="ud" type="void *"/>
 		</method>
+
+		<method name="zip_file_get_error" result="zip_error_t *">
+			<arg name="zf" type="zip_file_t *"/>
+		</method>
+
+		<method name="zip_file_set_mtime" result="int">
+			<arg name="za" type="zip_t *"/>
+			<arg name="idx" type="zip_uint64_t"/>
+			<arg name="mtime" type="time_t"/>
+			<arg name="flags" type="zip_flags_t"/>
+		</method>
+
+		<method name="zip_fseek" result="zip_int8_t">
+			<arg name="zf" type="zip_file_t *"/>
+			<arg name="offset" type="zip_int64_t"/>
+			<arg name="whence" type="int"/>
+		</method>
+
+		<method name="zip_ftell" result="zip_int64_t">
+			<arg name="zf" type="zip_file_t *"/>
+		</method>
+
+		<method name="zip_source_begin_write" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_buffer_create" result="zip_source_t *">
+			<arg name="data" type="const void *"/>
+			<arg name="len" type="zip_uint64_t"/>
+			<arg name="freep" type="int"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
+
+		<method name="zip_source_close" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_commit_write" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_error" result="zip_error_t *">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_file_create" result="zip_source_t *">
+			<arg name="fname" type="const char *"/>
+			<arg name="start" type="zip_uint64_t"/>
+			<arg name="len" type="zip_int64_t"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
+
+		<method name="zip_source_filep_create" result="zip_source_t *">
+			<arg name="file" type="FILE *"/>
+			<arg name="start" type="zip_uint64_t"/>
+			<arg name="len" type="zip_int64_t"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
+
+		<method name="zip_source_function_create" result="zip_source_t *">
+			<arg name="fn" type="zip_source_callback"/>
+			<arg name="userdata" type="void *"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
+
+		<method name="zip_source_is_deleted" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_keep" result="void">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_open" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_read" result="zip_int64_t">
+			<arg name="zs" type="zip_source_t *"/>
+			<arg name="data" type="void *"/>
+			<arg name="len" type="zip_uint64_t"/>
+		</method>
+
+		<method name="zip_source_rollback_write" result="void">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_seek" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+			<arg name="offset" type="zip_int64_t"/>
+			<arg name="whence" type="int"/>
+		</method>
+
+		<method name="zip_source_seek_compute_offset" result="zip_int64_t">
+			<arg name="offset" type="zip_uint64_t"/>
+			<arg name="length" type="zip_uint64_t"/>
+			<arg name="data" type="void *"/>
+			<arg name="data_length" type="zip_uint64_t"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
+
+		<method name="zip_source_seek_write" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+			<arg name="offset" type="zip_int64_t"/>
+			<arg name="whence" type="int"/>
+		</method>
+
+		<method name="zip_source_stat" result="int">
+			<arg name="zs" type="zip_source_t *"/>
+			<arg name="zstat" type="zip_stat_t *"/>
+		</method>
+
+		<method name="zip_source_tell" result="zip_int64_t">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_tell_write" result="zip_int64_t">
+			<arg name="zs" type="zip_source_t *"/>
+		</method>
+
+		<method name="zip_source_write" result="zip_int64_t">
+			<arg name="zs" type="zip_source_t *"/>
+			<arg name="data" type="const void *"/>
+			<arg name="len" type="zip_uint64_t"/>
+		</method>
 	</interface>
 </library>

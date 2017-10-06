@@ -34,6 +34,14 @@ zip.library 53.5 (5.10.2017)
 
 zip.library 53.6 (xx.xx.2017)
 
-- Added support for zip_register_progress_callback and
-  zip_register_progress_callback_with_state functions.
+- Added support for zip_register_progress_callback,
+  zip_register_progress_callback_with_state, zip_file_get_error,
+  zip_file_set_mtime, zip_fseek, zip_ftell, zip_source_begin_write,
+  zip_source_buffer_create, zip_source_close, zip_source_commit_write,
+  zip_source_error, zip_source_file_create, zip_source_filep_create,
+  zip_source_function_create, zip_source_is_deleted, zip_source_keep,
+  zip_source_open, zip_source_read, zip_source_rollback_write,
+  zip_source_seek, zip_source_seek_compute_offset, zip_source_seek_write,
+  zip_source_stat, zip_source_tell, zip_source_tell_write and zip_source_write
+  functions.
 
