@@ -36,8 +36,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#ifndef __amigaos4__
-
 bool
 zip_random(zip_uint8_t *buffer, zip_uint16_t length)
 {
@@ -55,51 +53,4 @@ zip_random(zip_uint8_t *buffer, zip_uint16_t length)
     close(fd);
     return true;
 }
-
-#else
-
-/*
- * AmigaOS doesn't have /dev/urandom so we use the timer.device
- * entropy unit instead.
- *
- * There is also RANDOM: but many people don't have it enabled
- * as it's not mounted by default.
- */
-
-#include <devices/timer.h>
-#include <proto/exec.h>
-
-bool
-zip_random(zip_uint8_t *buffer, zip_uint16_t length)
-{
-	struct MsgPort *mp;
-	struct IOStdReq *io;
-	bool result = false;
-
-	mp = IExec->AllocSysObject(ASOT_PORT, NULL);
-	io = IExec->AllocSysObjectTags(ASOT_IOREQUEST,
-		ASOIOR_ReplyPort, mp,
-		ASOIOR_Size,      sizeof(*io),
-		TAG_END);
-	if (io != NULL) {
-		if (IExec->OpenDevice(TIMERNAME, UNIT_ENTROPY, (struct IORequest *)io, 0) == IOERR_SUCCESS) {
-			io->io_Command = TR_READENTROPY;
-			io->io_Data    = buffer;
-			io->io_Length  = length;
-
-			if (IExec->DoIO((struct IORequest *)io) == IOERR_SUCCESS)
-				result = true;
-
-			IExec->CloseDevice((struct IORequest *)io);
-		}
-
-		IExec->FreeSysObject(ASOT_IOREQUEST, io);
-	}
-
-	IExec->FreeSysObject(ASOT_PORT, mp);
-
-	return result;
-}
-
-#endif
 

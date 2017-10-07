@@ -108,6 +108,14 @@ AC_CACHE_CHECK([whether we are building for a Win32 host], [ac_cv_win32_host],
  [ac_cv_win32_host=no], [ac_cv_win32_host=yes]))
 AM_CONDITIONAL([WIN32_HOST], [test "x$ac_cv_win32_host" = "xyes"])
 
+AC_CACHE_CHECK([whether we are building for an AmigaOS 4.x host], [ac_cv_amigaos4_host],
+	       AC_COMPILE_IFELSE([AC_LANG_SOURCE([[#ifdef __amigaos4__
+ choke me
+ #endif
+ ]])],
+ [ac_cv_amigaos4_host=no], [ac_cv_amigaos4_host=yes]))
+AM_CONDITIONAL([AMIGAOS4_HOST], [test "x$ac_cv_amigaos4_host" = "xyes"])
+
 AC_CHECK_HEADERS([fts.h stdbool.h strings.h unistd.h])
 
 AC_CHECK_TYPES([int8_t])
