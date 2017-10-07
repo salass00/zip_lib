@@ -31,18 +31,26 @@
 /****** zip.library/zip_close ******************************************
 *
 *   NAME
-*      zip_close -- Description
+*      zip_close -- Close archive
 *
 *   SYNOPSIS
-*      zip_int32_t zip_close(zip_t *za);
+*      zip_int32_t zip_close(zip_t *archive);
 *
 *   FUNCTION
+*       The zip_close() function closes archive and frees the memory
+*       allocated for it. If any files within were changed, those changes are
+*       written to disk first. If writing changes fails, zip_close() fails
+*       and archive is left unchanged. If archive contains no files, the file
+*       is completely removed (no empty archive is written).
+*
+*       To close a zip file without saving changes, use zip_discard().
 *
 *   INPUTS
-*       za - 
+*       archive - Zip archive handle.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion 0 is returned. Otherwise, -1 is returned
+*       and the error code in archive is set to indicate the error. 
 *
 *   EXAMPLE
 *
@@ -51,12 +59,13 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_open(), zip_discard()
 *
 *****************************************************************************
 *
 */
 
-zip_int32_t _main_zip_close(struct ZipIFace *Self, zip_t *za) {
-	return zip_close(za);
+zip_int32_t _main_zip_close(struct ZipIFace *Self, zip_t *archive) {
+	return zip_close(archive);
 }
 

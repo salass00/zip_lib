@@ -31,20 +31,31 @@
 /****** zip.library/zip_dir_add ******************************************
 *
 *   NAME
-*      zip_dir_add -- Description
+*      zip_dir_add -- Add a directory to an archive
 *
 *   SYNOPSIS
-*      zip_int64_t zip_dir_add(zip_t *za, const char *name, zip_flags_t flags);
+*      zip_int64_t zip_dir_add(zip_t *archive, const char *name,
+*          zip_flags_t flags);
 *
 *   FUNCTION
+*       The function zip_dir_add() adds a directory to a zip archive. The
+*       argument archive specifies the zip archive to which the directory
+*       should be added. name is the directory's name in the zip archive. The
+*       flags argument can be any of:
+*
+*       ZIP_FL_ENC_GUESS - Guess encoding of name (default).
+*       ZIP_FL_ENC_UTF_8 - Interpret name as UTF-8.
+*       ZIP_FL_ENC_CP437 - Interpret name as code page 437 (CP-437).
 *
 *   INPUTS
-*       za - 
-*       name - 
-*       flags - 
+*       archive - Zip archive handle.
+*       name    - Name of the directory to add.
+*       flags   - Flags.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion, the index of the new entry in the archive
+*       is returned. Otherwise, -1 is returned and the error code in archive
+*       is set to indicate the error. 
 *
 *   EXAMPLE
 *
@@ -58,7 +69,7 @@
 *
 */
 
-zip_int64_t _main_zip_dir_add(struct ZipIFace *Self, zip_t *za, const char *name, zip_flags_t flags) {
-	return zip_dir_add(za, name, flags);
+zip_int64_t _main_zip_dir_add(struct ZipIFace *Self, zip_t *archive, const char *name, zip_flags_t flags) {
+	return zip_dir_add(archive, name, flags);
 }
 

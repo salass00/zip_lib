@@ -31,20 +31,38 @@
 /****** zip.library/zip_open ******************************************
 *
 *   NAME
-*      zip_open -- Description
+*      zip_open -- Open zip archive
 *
 *   SYNOPSIS
-*      zip_t *zip_open(const char *fn, zip_int32_t _flags, zip_int32_t * zep);
+*      zip_t *zip_open(const char *path, int flags, int *errorp);
 *
 *   FUNCTION
+*       The zip_open() function opens the zip archive specified by path and
+*       returns a pointer to a struct zip, used to manipulate the archive.
+*       The flags are specified by or'ing the following values, or 0 for none
+*       of them.
+*
+*       ZIP_CHECKCONS - Perform additional stricter consistency checks on the
+*                       archive, and error if they fail.
+*       ZIP_CREATE    - Create the archive if it does not exist.
+*       ZIP_EXCL      - Error if archive already exists.
+*       ZIP_TRUNCATE  - If archive exists, ignore its current contents. In
+*                       other words, handle it the same way as an empty
+*                       archive.
+*       ZIP_RDONLY    - Open archive in read-only mode.
+*
+*       If an error occurs and errorp is non-NULL, it will be set to the
+*       corresponding error code.
 *
 *   INPUTS
-*       fn - 
-*       _flags - 
-*       zep - 
+*       path   - Path to zip archive.
+*       flags  - Flags.
+*       errorp - Pointer to a storage area for the error code, or NULL.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion zip_open() returns a struct zip pointer.
+*       Otherwise, NULL is returned and zip_open() sets *errorp to indicate
+*       the error. 
 *
 *   EXAMPLE
 *
@@ -53,14 +71,13 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_fdopen(), zip_open_from_source(), zip_close(), zip_discard()
 *
 *****************************************************************************
 *
 */
 
-zip_t *_main_zip_open(struct ZipIFace *Self, const char *fn,
-	zip_int32_t _flags, zip_int32_t *zep)
-{
-	return zip_open(fn, _flags, (int *)zep);
+zip_t *_main_zip_open(struct ZipIFace *Self, const char *path, int flags, int *errorp) {
+	return zip_open(path, flags, errorp);
 }
 

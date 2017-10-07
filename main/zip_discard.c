@@ -31,15 +31,18 @@
 /****** zip.library/zip_discard ******************************************
 *
 *   NAME
-*      zip_discard -- Description
+*      zip_discard -- Close archive and discard changes
 *
 *   SYNOPSIS
-*      void zip_discard(zip_t *za);
+*      void zip_discard(zip_t *archive);
 *
 *   FUNCTION
+*       The zip_discard() function closes archive and frees the memory
+*       allocated for it. Any changes to the archive are not written to disk
+*       and discarded.
 *
 *   INPUTS
-*       za - 
+*       archive - Zip archive handle.
 *
 *   RESULT
 *       This function does not return a result
@@ -51,12 +54,13 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_open(), zip_close()
 *
 *****************************************************************************
 *
 */
 
-void _main_zip_discard(struct ZipIFace *Self, zip_t *za) {
-	zip_discard(za);
+void _main_zip_discard(struct ZipIFace *Self, zip_t *archive) {
+	zip_discard(archive);
 }
 

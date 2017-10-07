@@ -31,22 +31,36 @@
 /****** zip.library/zip_file_add ******************************************
 *
 *   NAME
-*      zip_file_add -- Description
+*      zip_file_add -- Add a file to an archive
 *
 *   SYNOPSIS
-*      zip_int64_t zip_file_add(zip_t *za, const char *name, 
-*          zip_source_t * source, zip_flags_t flags);
+*      zip_int64_t zip_file_add(zip_t *archive, const char *name, 
+*          zip_source_t *source, zip_flags_t flags);
 *
 *   FUNCTION
+*       The function zip_file_add() adds a file to a zip archive. The
+*       argument archive specifies the zip archive to which the file should
+*       be added. name is the file's name in the zip archive. The flags
+*       argument can be any combination of ZIP_FL_OVERWRITE with one of
+*       ZIP_FL_ENC_*:
+*
+*       ZIP_FL_OVERWRITE - Overwrite any existing file of the same name.
+*       ZIP_FL_ENC_GUESS - Guess encoding of name (default).
+*       ZIP_FL_ENC_UTF_8 - Interpret name as UTF-8.
+*       ZIP_FL_ENC_CP437 - Interpret name as code page 437 (CP-437).
+*
+*       The data is obtained from the source argument, see zip_source().
 *
 *   INPUTS
-*       za - 
-*       name - 
-*       source - 
-*       flags - 
+*       archive - Zip archive handle.
+*       name    - Name of file to add.
+*       source  - Zip source handle.
+*       flags   - Flags.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion, zip_file_add() returns the index of the
+*       new file in the archive. Otherwise, -1 is returned and the error code
+*       in archive is set to indicate the error. 
 *
 *   EXAMPLE
 *
@@ -55,6 +69,7 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_file_replace()
 *
 *****************************************************************************
 *

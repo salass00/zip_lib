@@ -31,22 +31,34 @@
 /****** zip.library/zip_file_replace ******************************************
 *
 *   NAME
-*      zip_file_replace -- Description
+*      zip_file_replace -- Replace a file in an archive
 *
 *   SYNOPSIS
-*      zip_int32_t zip_file_replace(zip_t *za, zip_uint64_t idx, 
-*          zip_source_t * source, zip_flags_t flags);
+*      zip_int32_t zip_file_replace(zip_t *archive, zip_uint64_t index,
+*          zip_source_t *source, zip_flags_t flags);
 *
 *   FUNCTION
+*       The function zip_file_replace() replaces an existing file in a zip
+*       archive. The argument archive specifies the zip archive to which the
+*       file should be added. index specifies which file should be replaced.
+*       The flags argument can be any of:
+*
+*       ZIP_FL_ENC_GUESS - Guess encoding of name (default).
+*       ZIP_FL_ENC_UTF_8 - Interpret name as UTF-8.
+*       ZIP_FL_ENC_CP437 - Interpret name as code page 437 (CP-437).
+*
+*       The data is obtained from the source argument, see zip_source().
 *
 *   INPUTS
-*       za - 
-*       idx - 
-*       source - 
-*       flags - 
+*       archive - Zip archive handle
+*       index   - Index of file to replace
+*       source  - Zip source handle.
+*       flags   - Flags.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion, zip_file_replace() returns 0. Otherwise,
+*       -1 is returned and the error code in archive is set to indicate the
+*       error.
 *
 *   EXAMPLE
 *
@@ -55,14 +67,15 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_file_add()
 *
 *****************************************************************************
 *
 */
 
-zip_int32_t _main_zip_file_replace(struct ZipIFace *Self, zip_t *za,
-	zip_uint64_t idx, zip_source_t * source, zip_flags_t flags)
+zip_int32_t _main_zip_file_replace(struct ZipIFace *Self, zip_t *archive,
+	zip_uint64_t index, zip_source_t *source, zip_flags_t flags)
 {
-	return zip_file_replace(za, idx, source, flags);
+	return zip_file_replace(archive, index, source, flags);
 }
 

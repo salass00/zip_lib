@@ -31,21 +31,26 @@
 /****** zip.library/zip_open_from_source ******************************************
 *
 *   NAME
-*      zip_open_from_source -- Description
+*      zip_open_from_source -- Open zip archive
 *
 *   SYNOPSIS
 *      zip_t *zip_open_from_source(zip_source_t *zs, int flags, 
 *          zip_error_t *ze);
 *
 *   FUNCTION
+*       The zip_open_from_source() function opens a zip archive encapsulated
+*       by the zip_source zs using the provided flags. In case of error, the
+*       zip_error ze is filled in.
 *
 *   INPUTS
-*       zs - 
-*       flags - 
-*       ze - 
+*       zs    - Zip source handle.
+*       flags - Flags.
+*       ze    - Pointer to error storage, or NULL.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion zip_open_from_source() returns a struct
+*       zip pointer. Otherwise, NULL is returned and zip_open_from(source)
+*       sets ze to indicate the error.
 *
 *   EXAMPLE
 *
@@ -54,6 +59,7 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_fdopen(), zip_open(), zip_close(), zip_discard()
 *
 *****************************************************************************
 *

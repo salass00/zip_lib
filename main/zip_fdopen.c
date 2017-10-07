@@ -31,20 +31,35 @@
 /****** zip.library/zip_fdopen ******************************************
 *
 *   NAME
-*      zip_fdopen -- Description
+*      zip_fdopen -- Open zip archive using open file descriptor
 *
 *   SYNOPSIS
-*      zip_t *zip_fdopen(zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t * zep);
+*      zip_t *zip_fdopen(int fd, int flags, int *errorp);
 *
 *   FUNCTION
+*       The zip archive specified by the open file descriptor fd is opened
+*       and a pointer to a struct zip, used to manipulate the archive, is
+*       returned. In contrast to zip_open(), using zip_fdopen the archive can
+*       only be opened in read-only mode. The fd argument may not be used any
+*       longer after calling zip_fdopen. The flags are specified by or'ing
+*       the following values, or 0 for none of them.
+*
+*       ZIP_CHECKCONS - Perform additional stricter consistency checks on the
+*                       archive, and error if they fail.
+*
+*       If an error occurs and errorp is non-NULL, it will be set to the
+*       corresponding error code.
 *
 *   INPUTS
-*       fd_orig - 
-*       _flags - 
-*       zep - 
+*       fd     - Open file descriptor.
+*       flags  - Flags.
+*       errorp - Pointer to a storage area for the error code, or NULL.
 *
 *   RESULT
-*       The result ...
+*       Upon successful completion zip_fdopen() returns a struct zip pointer,
+*       and fd should not be used any longer, nor passed to close().
+*       Otherwise, NULL is returned and *errorp is set to indicate the error.
+*       In the error case, fd remains unchanged.
 *
 *   EXAMPLE
 *
@@ -53,12 +68,13 @@
 *   BUGS
 *
 *   SEE ALSO
+*       zip_open(), zip_close(), zip_discard()
 *
 *****************************************************************************
 *
 */
 
-zip_t *_main_zip_fdopen(struct ZipIFace *Self, zip_int32_t fd_orig, zip_int32_t _flags, zip_int32_t *zep) {
-	return zip_fdopen(fd_orig, _flags, zep);
+zip_t *_main_zip_fdopen(struct ZipIFace *Self, int fd, int flags, int *errorp) {
+	return zip_fdopen(fd, flags, errorp);
 }
 
