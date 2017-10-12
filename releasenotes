@@ -32,7 +32,7 @@ zip.library 53.5 (5.10.2017)
   /dev/urandom which does not exist on AmigaOS.
 
 
-zip.library 53.6 (xx.xx.2017)
+zip.library 53.6 (12.10.2017)
 
 - Added support for zip_register_progress_callback,
   zip_register_progress_callback_with_state, zip_file_get_error,
