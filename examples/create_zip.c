@@ -7,7 +7,7 @@
  * ppc-amigaos-gcc -O2 -Wall -Wwrite-strings -Werror -o create_zip -I/SDK/local/newlib/lib/libzip/include create_zip.c
  *
  * Usage:
- * create_zip <archive> <file1> <file2> <file3> ...
+ * create_zip <archive> <file1> <file2> <file3> ... [PASSWORD=<password>]
  */
 
 #include <proto/exec.h>
