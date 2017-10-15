@@ -14,7 +14,6 @@
 #include <proto/dos.h>
 #include <proto/zip.h>
 #include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 struct Library *ZipBase;
