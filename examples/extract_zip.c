@@ -42,6 +42,8 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 	zip_file_t  *zf = NULL;
 	BPTR         file = ZERO;
 	int          readlen, writelen;
+	zip_uint64_t done;
+	zip_uint64_t size;
 	BOOL         result = FALSE;
 
 	/* Open archive */
@@ -118,6 +120,12 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 		 * (or at least it used to be) so maybe it's OK.
          */
 		if (namebuf[0] != '\0') {
+			/* Get uncompressed size, if available */
+			if ((stat.valid & ZIP_STAT_SIZE) == ZIP_STAT_SIZE)
+				size = stat.size;
+			else
+				size = -1;
+
 			/* Open file in archive */
 			zf = IZip->zip_fopen_index(za, index, 0);
 			if (zf == NULL) {
@@ -132,9 +140,25 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 				goto cleanup;
 			}
 
+			done = 0;
+			printf("Extracting %s... 0%%", stat.name);
+			fflush(stdout); /* No newline was written so stdout must be flushed manually */
+
 			while ((readlen = IZip->zip_fread(zf, buffer, BUFFER_SIZE)) > 0) {
 				writelen = IDOS->Write(file, buffer, readlen);
+
+				if (writelen != -1) {
+					done += writelen;
+
+					if (size != -1) {
+						/* Update progress if uncompressed file size is known */
+						printf("\rExtracting %s... %u%%", stat.name, (unsigned)((done * 100) / size));
+						fflush(stdout); /* No newline was written so stdout must be flushed manually */
+					}
+				}
+
 				if (writelen != readlen) {
+					printf("\n");
 					IDOS->PrintFault(IDOS->IoErr(), stat.name);
 					goto cleanup;
 				}
@@ -144,7 +168,8 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 				fprintf(stderr, "%s (index %lld): %s (line %d)\n", archive, index, IZip->zip_file_strerror(zf), __LINE__);
 				goto cleanup;
 			}
-		
+
+			printf("\rExtracting %s... Done\n", stat.name);
 
 			/* Close file in archive */
 			IZip->zip_fclose(zf);
