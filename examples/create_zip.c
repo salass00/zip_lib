@@ -29,14 +29,14 @@ enum {
 };
 
 static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level, CONST_STRPTR password) {
-	zip_t             *za = NULL;
-	int                i, error, status;
-	zip_error_t        ze;
-	CONST_STRPTR       path;
-	CONST_STRPTR       name;
-	zip_source_t      *zs;
-	zip_int64_t        idx;
-	BOOL               result = FALSE;
+	zip_t        *za = NULL;
+	int           i, error, status;
+	zip_error_t   ze;
+	CONST_STRPTR  path;
+	CONST_STRPTR  name;
+	zip_source_t *zs;
+	zip_int64_t   index;
+	BOOL          result = FALSE;
 
 	/* Delete any existing files by the same name */
 	status = IDOS->Delete(archive);
@@ -49,7 +49,7 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 	}
 
 	/* Create zip archive */
-	za = IZip->zip_open(archive, ZIP_CREATE, &error);
+	za = IZip->zip_open(archive, ZIP_CREATE | ZIP_EXCL, &error);
 	if (za == NULL) {
 		IZip->zip_error_init_with_code(&ze, error);
 		fprintf(stderr, "%s: %s (line %d)\n", archive, IZip->zip_error_strerror(&ze), __LINE__);
@@ -85,15 +85,15 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 				name = path;
 
 			/* Add to archive */
-			idx = IZip->zip_file_add(za, name, zs, ZIP_FL_ENC_GUESS);
-			if (idx == -1) {
+			index = IZip->zip_file_add(za, name, zs, ZIP_FL_ENC_GUESS);
+			if (index == -1) {
 				fprintf(stderr, "%s: %s (line %d)\n", name, IZip->zip_strerror(za), __LINE__);
 				IZip->zip_source_free(zs);
 				goto cleanup;
 			}
 
 			/* Set compression level */
-			status = IZip->zip_set_file_compression(za, idx, ZIP_CM_DEFLATE, comp_level);
+			status = IZip->zip_set_file_compression(za, index, ZIP_CM_DEFAULT, comp_level);
 			if (status == -1) {
 				fprintf(stderr, "%s: %s (line %d)\n", name, IZip->zip_strerror(za), __LINE__);
 				goto cleanup;
@@ -101,7 +101,7 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 
 			if (password != NULL) {
 				/* Enable encryption */
-				status = IZip->zip_file_set_encryption(za, idx, ZIP_EM_AES_256, NULL);
+				status = IZip->zip_file_set_encryption(za, index, ZIP_EM_AES_256, NULL);
 				if (status == -1) {
 					fprintf(stderr, "%s: %s (line %d)\n", name, IZip->zip_strerror(za), __LINE__);
 					goto cleanup;
