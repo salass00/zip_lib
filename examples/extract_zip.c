@@ -116,7 +116,7 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
          * entries seem to have a slash at the end of the name which means that the file name
          * component will be empty here.
 		 *
-		 * This kind of cludge is needed for the xadmaster LhA client when using xadmaster
+		 * This kind of cludge is needed for the xadmaster LhA client too when using xadmaster
 		 * (or at least it used to be) so maybe it's OK.
          */
 		if (namebuf[0] != '\0') {
