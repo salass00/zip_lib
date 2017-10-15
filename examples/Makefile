@@ -16,3 +16,7 @@ extract_zip: extract_zip.o
 	$(CC) $(LDFLAGS) -o $@.debug $^ $(LIBS)
 	$(STRIP) -R.comment -o $@ $@.debug
 
+.PHONY: clean
+clean:
+	rm -f create_zip extract_zip *.debug *.o
+
