@@ -38,7 +38,7 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 	zip_stat_t   stat;
 	TEXT         pathbuf[1024];
 	TEXT         namebuf[256];
-	BPTR         currentdir, dirlock = ZERO;
+	BPTR         dirlock = ZERO;
 	zip_file_t  *zf = NULL;
 	BPTR         file = ZERO;
 	int          readlen, writelen;
@@ -110,7 +110,6 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 				goto cleanup;
 			}
 		}
-		currentdir = IDOS->SetCurrentDir(dirlock);
 
 		/* Not sure if there's a better way to check if an entry is a directory but all directory
          * entries seem to have a slash at the end of the name which means that the file name
@@ -120,6 +119,9 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 		 * (or at least it used to be) so maybe it's OK.
          */
 		if (namebuf[0] != '\0') {
+			/* Add file name back to path */
+			IDOS->AddPart(pathbuf, namebuf, sizeof(pathbuf));
+
 			/* Get uncompressed size, if available */
 			if ((stat.valid & ZIP_STAT_SIZE) == ZIP_STAT_SIZE)
 				size = stat.size;
@@ -134,7 +136,8 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 			}
 
 			/* Open destination file */
-			file = IDOS->Open(namebuf, MODE_NEWFILE);
+			file = IDOS->Open(pathbuf, MODE_NEWFILE);
+
 			if (file == ZERO) {
 				IDOS->PrintFault(IDOS->IoErr(), stat.name);
 				goto cleanup;
@@ -180,8 +183,7 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 			file = ZERO;
 		}
 
-		/* Reset current directory and unlock */
-		IDOS->SetCurrentDir(currentdir);
+		/* Unlock destination directory */
 		IDOS->UnLock(dirlock);
 		dirlock = ZERO;
 	}
@@ -202,8 +204,7 @@ cleanup:
 	}
 
 	if (dirlock != ZERO) {
-		/* Reset current directory and unlock */
-		IDOS->SetCurrentDir(currentdir);
+		/* Unlock destination directory */
 		IDOS->UnLock(dirlock);
 	}
 
