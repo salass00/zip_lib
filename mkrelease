@@ -15,6 +15,7 @@ makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+makedir all force ${destdir}/zip_lib-$numvers/Examples
 
 copy clone Install ${destdir}/zip_lib-$numvers
 copy clone LICENSE ${destdir}/zip_lib-$numvers
@@ -30,6 +31,9 @@ copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/newl
 copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip-build/lib/libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip-build/libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+copy clone examples/create_zip.c ${destdir}/zip_lib-$numvers/Examples
+copy clone examples/extract_zip.c ${destdir}/zip_lib-$numvers/Examples
+copy clone examples/Makefile ${destdir}/zip_lib-$numvers/Examples
 
 sed "s/zip_lib-xx.xx/zip_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
 
@@ -48,6 +52,9 @@ copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/zip_lib.readme.inf
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE-libzip.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/releasenotes.info
+copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib-$numvers/Examples.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/Examples/create_zip.c.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/Examples/extract_zip.c.info
 
 changetooltype ${destdir}/zip_lib-$numvers/Install.info ADD "APPNAME=zip.library"
 
