@@ -26,6 +26,24 @@
  */
 
 #include <proto/zip.h>
+#include <stdarg.h>
+
+zip_int64_t zip_source_make_command_bitmap(zip_source_cmd_t cmd0, ...) {
+	zip_int64_t bitmap;
+	va_list     ap;
+	int         cmd;
+
+	bitmap = ZIP_SOURCE_MAKE_COMMAND_BITMASK(cmd0);
+
+	va_start(ap, cmd0);
+
+	while ((cmd = va_arg(ap, int)) >= 0)
+		bitmap |= ZIP_SOURCE_MAKE_COMMAND_BITMASK(cmd);
+
+	va_end(ap);
+
+	return bitmap;
+}
 
 int zip_archive_set_tempdir(zip_t *archive, const char *tempdir) {
 	return IZip->zip_archive_set_tempdir(archive, tempdir);
