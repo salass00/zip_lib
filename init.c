@@ -33,7 +33,9 @@
 
 /* Version Tag */
 #include "zip.library_rev.h"
-static CONST UBYTE USED verstag[] = VERSTAG;
+
+static CONST TEXT USED verstag[] = VERSTAG;
+static CONST TEXT USED extversion[] = "\0$EXTVER: libzip " LIBZIP_VERSION " (" DATE ")";
 
 struct ExecIFace   *IExec;
 struct NewlibIFace *INewlib;
