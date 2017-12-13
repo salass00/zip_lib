@@ -21,9 +21,15 @@ OS_SOURCES=\
 	zip_source_win32utf8.c \
 	zip_source_win32w.c
 else
+if AMIGAOS4_HOST
+OS_SOURCES=\
+	zip_random_amigaos4.c \
+	zip_source_file.c
+else
 OS_SOURCES=\
 	zip_random_unix.c \
 	zip_source_file.c
+endif
 endif
 
 libzip_la_SOURCES=\
