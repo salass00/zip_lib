@@ -49,6 +49,12 @@
 # endif
 #endif
 
+#ifdef __amigaos4__
+# ifndef DOS_DOS_H
+#  include <dos/dos.h>
+# endif
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #if 0
@@ -418,6 +424,12 @@ ZIP_EXTERN zip_source_t *zip_source_win32handle(zip_t *, void *, zip_uint64_t, z
 ZIP_EXTERN zip_source_t *zip_source_win32handle_create(void *, zip_uint64_t, zip_int64_t, zip_error_t *);
 ZIP_EXTERN zip_source_t *zip_source_win32w(zip_t *, const wchar_t *, zip_uint64_t, zip_int64_t);
 ZIP_EXTERN zip_source_t *zip_source_win32w_create(const wchar_t *, zip_uint64_t, zip_int64_t, zip_error_t *);
+#endif
+#ifdef __amigaos4__
+ZIP_EXTERN zip_source_t *zip_source_amigaos(zip_t *, const char *, zip_uint64_t, zip_int64_t);
+ZIP_EXTERN zip_source_t *zip_source_amigaos_create(const char *, zip_uint64_t, zip_int64_t, zip_error_t *);
+ZIP_EXTERN zip_source_t *zip_source_amigaos_fh(zip_t *, BPTR, zip_uint64_t, zip_int64_t);
+ZIP_EXTERN zip_source_t *zip_source_amigaos_fh_create(BPTR, zip_uint64_t, zip_int64_t, zip_error_t *);
 #endif
 ZIP_EXTERN zip_int64_t zip_source_write(zip_source_t *, const void *, zip_uint64_t);
 ZIP_EXTERN zip_source_t *zip_source_zip(zip_t *, zip_t *, zip_uint64_t, zip_flags_t, zip_uint64_t, zip_int64_t);
