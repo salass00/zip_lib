@@ -29,43 +29,56 @@
 
 #include <devices/timer.h>
 #include <proto/exec.h>
-
-/*
- * AmigaOS doesn't have /dev/urandom so we use the timer.device
- * entropy unit instead.
- *
- * There is also RANDOM: but many people probably don't have it
- * enabled as it's not mounted by default.
- */
+#include <proto/dos.h>
 
 bool
 zip_random(zip_uint8_t *buffer, zip_uint16_t length)
 {
-	struct MsgPort *mp;
-	struct IOStdReq *io;
+	BPTR fh;
+	APTR window;
 	bool result = false;
 
-	mp = IExec->AllocSysObject(ASOT_PORT, NULL);
-	io = IExec->AllocSysObjectTags(ASOT_IOREQUEST,
-		ASOIOR_ReplyPort, mp,
-		ASOIOR_Size,      sizeof(*io),
-		TAG_END);
-	if (io != NULL) {
-		if (IExec->OpenDevice(TIMERNAME, UNIT_ENTROPY, (struct IORequest *)io, 0) == IOERR_SUCCESS) {
-			io->io_Command = TR_READENTROPY;
-			io->io_Data    = buffer;
-			io->io_Length  = length;
+	/* Disable "Please insert disk ..." requesters */
+	window = IDOS->SetProcWindow((APTR)-1);
+	fh = IDOS->Open("RANDOM:", MODE_OLDFILE);
+	IDOS->SetProcWindow(window);
 
-			if (IExec->DoIO((struct IORequest *)io) == IOERR_SUCCESS)
-				result = true;
+	if (fh != ZERO) {
+		if (IDOS->Read(fh, buffer, length) == length)
+			result = true;
 
-			IExec->CloseDevice((struct IORequest *)io);
-		}
-
-		IExec->FreeSysObject(ASOT_IOREQUEST, io);
+		IDOS->Close(fh);
 	}
 
-	IExec->FreeSysObject(ASOT_PORT, mp);
+	if (!result) {
+		/* Read directly from the timer.device entropy unit if the
+		 * RANDOM: device is not available.
+		 */
+		struct MsgPort *mp;
+		struct IOStdReq *io;
+
+		mp = IExec->AllocSysObject(ASOT_PORT, NULL);
+		io = IExec->AllocSysObjectTags(ASOT_IOREQUEST,
+			ASOIOR_ReplyPort, mp,
+			ASOIOR_Size,      sizeof(*io),
+			TAG_END);
+		if (io != NULL) {
+			if (IExec->OpenDevice(TIMERNAME, UNIT_ENTROPY, (struct IORequest *)io, 0) == IOERR_SUCCESS) {
+				io->io_Command = TR_READENTROPY;
+				io->io_Data    = buffer;
+				io->io_Length  = length;
+
+				if (IExec->DoIO((struct IORequest *)io) == IOERR_SUCCESS)
+					result = true;
+
+				IExec->CloseDevice((struct IORequest *)io);
+			}
+
+			IExec->FreeSysObject(ASOT_IOREQUEST, io);
+		}
+
+		IExec->FreeSysObject(ASOT_PORT, mp);
+	}
 
 	return result;
 }

@@ -38,6 +38,7 @@ static CONST TEXT USED verstag[] = VERSTAG;
 static CONST TEXT USED extversion[] = "\0$EXTVER: libzip " LIBZIP_VERSION " (" DATE ")";
 
 struct ExecIFace   *IExec;
+struct DOSIFace    *IDOS;
 struct NewlibIFace *INewlib;
 struct ZIFace      *IZ;
 struct BZip2IFace  *IBZip2;
@@ -134,6 +135,7 @@ static BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		CloseInterface((struct Interface *)IBZip2);
 		CloseInterface((struct Interface *)IZ);
 		CloseInterface((struct Interface *)INewlib);
+		CloseInterface((struct Interface *)IDOS);
 
 		IExec->Remove((struct Node *)libBase);
 		IExec->DeleteLibrary((struct Library *)libBase);
@@ -158,21 +160,27 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 
 	libBase->segList = seglist;
 
+	IDOS = (struct DOSIFace *)OpenInterface("dos.library", 53);
+	if (IDOS == NULL) {
+		IExec->Alert(AG_OpenLib | AO_DOSLib);
+		goto cleanup;
+	}
+
 	INewlib = (struct NewlibIFace *)OpenInterface("newlib.library", 53);
 	if (INewlib == NULL) {
-		IExec->Alert(AG_OpenLib|AO_NewlibLib);
+		IExec->Alert(AG_OpenLib | AO_NewlibLib);
 		goto cleanup;
 	}
 
 	IZ = (struct ZIFace *)OpenInterface("z.library", 53);
 	if (IZ == NULL || !LIB_IS_AT_LEAST(IZ->Data.LibBase, 53, 5)) {
-		IExec->Alert(AG_OpenLib|AO_Unknown);
+		IExec->Alert(AG_OpenLib | AO_Unknown);
 		goto cleanup;
 	}
 
 	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
 	if (IBZip2 == NULL || !LIB_IS_AT_LEAST(IBZip2->Data.LibBase, 53, 4)) {
-		IExec->Alert(AG_OpenLib|AO_Unknown);
+		IExec->Alert(AG_OpenLib | AO_Unknown);
 		goto cleanup;
 	}
 
@@ -183,6 +191,7 @@ cleanup:
 	CloseInterface((struct Interface *)IBZip2);
 	CloseInterface((struct Interface *)IZ);
 	CloseInterface((struct Interface *)INewlib);
+	CloseInterface((struct Interface *)IDOS);
 
 	IExec->DeleteLibrary((struct Library *)libBase);
 	return NULL;
