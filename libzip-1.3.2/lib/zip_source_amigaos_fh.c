@@ -389,9 +389,9 @@ read_file(void *state, void *data, zip_uint64_t len, zip_source_cmd_t cmd)
 				return (zip_int64_t)ret;
 			}
 
-			default:
-				zip_error_set(&ctx->error, ZIP_ER_OPNOTSUPP, 0);
-				return -1;
+		default:
+			zip_error_set(&ctx->error, ZIP_ER_OPNOTSUPP, 0);
+			return -1;
 	}
 }
 
