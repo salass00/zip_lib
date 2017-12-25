@@ -1,6 +1,12 @@
 An AmigaOS shared library implementation of libzip. Currently it is based on
 the 1.3.2 version.
 
+Requirements:
+
+- z.library version 53.5 or newer.
+
+- bzip2.library version 53.4 or newer.
+
 Installation:
 
 Copy Libs/zip.library LIBS:
