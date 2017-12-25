@@ -9,11 +9,10 @@ set numvers `cut "$fullvers" word 2`
 
 delete all force ${destdir}
 makedir all force ${destdir}/zip_lib-$numvers/Libs
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/proto
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/interfaces
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/proto
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/interfaces
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
+makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
 makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 makedir all force ${destdir}/zip_lib-$numvers/Examples
 
@@ -22,12 +21,12 @@ copy clone LICENSE ${destdir}/zip_lib-$numvers
 copy clone ${libzipdir}/LICENSE ${destdir}/zip_lib-$numvers/LICENSE-libzip
 copy clone releasenotes ${destdir}/zip_lib-$numvers
 copy clone zip.library ${destdir}/zip_lib-$numvers/Libs
-copy clone include/proto/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/proto
-copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/interfaces
-copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/inline4
-copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include/libraries
-copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/include
-copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/libzip/include
+copy clone include/proto/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/proto
+copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/interfaces
+copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
+copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
+copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
+copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
 copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip-build/lib/libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip-build/libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
