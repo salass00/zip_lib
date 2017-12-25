@@ -53,3 +53,5 @@ zip.library 53.7 (xx.xx.2017)
 - The libzip version which the library is based on is now embedded as an extra
   version string ($EXTVER) in the library file
 
+- Added error requesters for missing or too old z.library and bzip2.library.
+

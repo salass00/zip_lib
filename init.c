@@ -25,8 +25,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <dos/dos.h>
 #include <proto/exec.h>
+#include <proto/dos.h>
 #include <proto/z.h>
 #include <proto/bzip2.h>
 #include <proto/zip.h>
@@ -93,6 +93,39 @@ static void CloseInterface(struct Interface *interface) {
 
 	IExec->DropInterface(interface);
 	IExec->CloseLibrary(library);
+}
+
+static BOOL CheckInterface(struct Interface *interface, CONST_STRPTR name, int32 version, int32 revision) {
+	CONST_STRPTR bodytext;
+	ULONG        args[5];
+
+	bodytext = "Failed to open %s V%ld\n\n";
+
+	args[0] = (ULONG)name;
+	args[1] = version;
+
+	if (interface != NULL) {
+		if (LIB_IS_AT_LEAST(interface->Data.LibBase, version, revision))
+			return TRUE;
+
+		bodytext = "You need %s V%ld.%ld+\nYou only have V%ld.%ld\n\n";
+
+		args[2] = revision;
+		args[3] = interface->Data.LibBase->lib_Version;
+		args[4] = interface->Data.LibBase->lib_Revision;
+	}
+
+	IDOS->TimedDosRequesterTags(
+		TDR_Timeout,      30,
+		TDR_NonBlocking,  TRUE,
+		TDR_TitleString,  VERS,
+		TDR_FormatString, bodytext,
+		TDR_GadgetString, "OK",
+		TDR_ImageType,    TDRIMAGE_ERROR,
+		TDR_ArgArray,     args,
+		TAG_END);
+
+	return FALSE;
 }
 
 /* Open the library */
@@ -173,14 +206,12 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 	}
 
 	IZ = (struct ZIFace *)OpenInterface("z.library", 53);
-	if (IZ == NULL || !LIB_IS_AT_LEAST(IZ->Data.LibBase, 53, 5)) {
-		IExec->Alert(AG_OpenLib | AO_Unknown);
+	if (!CheckInterface((struct Interface *)IZ, "z.library", 53, 5)) {
 		goto cleanup;
 	}
 
 	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
-	if (IBZip2 == NULL || !LIB_IS_AT_LEAST(IBZip2->Data.LibBase, 53, 4)) {
-		IExec->Alert(AG_OpenLib | AO_Unknown);
+	if (!CheckInterface((struct Interface *)IBZip2, "bzip2.library", 53, 4)) {
 		goto cleanup;
 	}
 
