@@ -55,3 +55,8 @@ zip.library 53.7 (13.1.2018)
 
 - Added error requesters for missing or too old z.library and bzip2.library.
 
+
+zip.library 53.8 (xx.xx.2018)
+
+- Updated libzip to version 1.4.0.
+

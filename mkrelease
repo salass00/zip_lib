@@ -5,7 +5,7 @@ echo "Execute *"make all*" first to compile the library."
 quit
 endif
 
-set libzipdir libzip-1.3.2
+set libzipdir libzip-1.4.0
 set destdir RAM:mkrelease
 set fullvers `version file zip.library`
 set numvers `cut "$fullvers" word 2`
@@ -29,10 +29,10 @@ copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common
 copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
 copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
 copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
-copy clone libzip-build/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
+copy clone ${libzipdir}/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
 copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
-copy clone libzip-build/lib/libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
-copy clone libzip-build/libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
+;copy clone libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
+copy clone libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
 copy clone examples/create_zip.c ${destdir}/zip_lib-$numvers/Examples
 copy clone examples/extract_zip.c ${destdir}/zip_lib-$numvers/Examples
 copy clone examples/Makefile ${destdir}/zip_lib-$numvers/Examples

@@ -1,0 +1,13 @@
+prefix=/SDK/local/newlib
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=/SDK/local/common/include
+
+zipcmp=/SDK/local/newlib/bin/zipcmp
+
+Name: libzip
+Description: library for handling zip archives
+Version: 1.4.0
+Libs:  -L${libdir} -lzip
+Cflags: -I${includedir}
+
