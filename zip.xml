@@ -546,5 +546,7 @@
 			<arg name="data" type="const void *"/>
 			<arg name="len" type="zip_uint64_t"/>
 		</method>
+
+		<method name="zip_libzip_version" result="const char *"/>
 	</interface>
 </library>

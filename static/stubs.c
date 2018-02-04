@@ -459,3 +459,7 @@ zip_int64_t zip_source_write(zip_source_t *source, const void *data, zip_uint64_
 	return IZip->zip_source_write(source, data, len);
 }
 
+const char *zip_libzip_version(void) {
+	return IZip->zip_libzip_version();
+}
+

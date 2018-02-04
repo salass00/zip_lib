@@ -59,6 +59,7 @@ SRCS = lib/gladman-fcrypt.c \
        lib/zip_get_num_entries.c \
        lib/zip_hash.c \
        lib/zip_io_util.c \
+       lib/zip_libzip_version.c \
        lib/zip_memdup.c \
        lib/zip_name_locate.c \
        lib/zip_new.c \

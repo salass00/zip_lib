@@ -60,3 +60,5 @@ zip.library 53.8 (xx.xx.2018)
 
 - Updated libzip to version 1.4.0.
 
+- Added zip_libzip_version() function.
+
