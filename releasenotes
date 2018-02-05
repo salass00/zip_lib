@@ -62,3 +62,6 @@ zip.library 53.8 (xx.xx.2018)
 
 - Added zip_libzip_version() function.
 
+- Added zip_source_buffer_fragment() and zip_source_buffer_fragment_create()
+  functions.
+

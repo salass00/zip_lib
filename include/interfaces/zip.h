@@ -130,6 +130,8 @@ struct ZipIFace
 	zip_int64_t APICALL (*zip_source_tell_write)(struct ZipIFace *Self, zip_source_t * source);
 	zip_int64_t APICALL (*zip_source_write)(struct ZipIFace *Self, zip_source_t * source, const void * data, zip_uint64_t len);
 	const char * APICALL (*zip_libzip_version)(struct ZipIFace *Self);
+	zip_source_t * APICALL (*zip_source_buffer_fragment)(struct ZipIFace *Self, zip_t * archive, const zip_buffer_fragment_t * frags, zip_uint64_t nfrags, int freep);
+	zip_source_t * APICALL (*zip_source_buffer_fragment_create)(struct ZipIFace *Self, const zip_buffer_fragment_t * frags, zip_uint64_t nfrags, int freep, zip_error_t * error);
 };
 
 #ifdef __cplusplus

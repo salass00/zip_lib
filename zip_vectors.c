@@ -108,5 +108,7 @@ STATIC CONST APTR main_v1_vectors[] =
     _main_zip_source_tell_write,
     _main_zip_source_write,
     _main_zip_libzip_version,
+    _main_zip_source_buffer_fragment,
+    _main_zip_source_buffer_fragment_create,
     (APTR)-1
 };

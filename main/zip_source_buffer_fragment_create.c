@@ -28,17 +28,23 @@
 #include <interfaces/zip.h>
 #include "../zip_vectors.h"
 
-/****** zip/main/zip_libzip_version ******************************************
+/****** zip.library/zip_source_buffer_fragment_create ******************************************
 *
 *   NAME
-*      zip_libzip_version -- Description
+*      zip_source_buffer_fragment_create -- Description
 *
 *   SYNOPSIS
-*      const char *zip_libzip_version(void);
+*      zip_source_t *zip_source_buffer_fragment_create(
+*          const zip_buffer_fragment_t *frags, zip_uint64_t nfrags, 
+*          int freep, zip_error_t *error);
 *
 *   FUNCTION
 *
 *   INPUTS
+*       frags - 
+*       nfrags - 
+*       freep - 
+*       error - 
 *
 *   RESULT
 *       The result ...
@@ -55,7 +61,10 @@
 *
 */
 
-const char *_main_zip_libzip_version(struct ZipIFace *Self) {
-	return zip_libzip_version();
+zip_source_t *_main_zip_source_buffer_fragment_create(struct ZipIFace *Self,
+	const zip_buffer_fragment_t *frags, zip_uint64_t nfrags, int freep,
+	zip_error_t *error)
+{
+	return zip_source_buffer_fragment_create(frags, nfrags, freep, error);
 }
 

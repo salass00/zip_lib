@@ -463,3 +463,16 @@ const char *zip_libzip_version(void) {
 	return IZip->zip_libzip_version();
 }
 
+zip_source_t *zip_source_buffer_fragment(zip_t *archive,
+	const zip_buffer_fragment_t *frags, zip_uint64_t nfrags,
+	int freep)
+{
+	return IZip->zip_source_buffer_fragment(archive, frags, nfrags, freep);
+}
+
+zip_source_t *zip_source_buffer_fragment_create(const zip_buffer_fragment_t *frags,
+	zip_uint64_t nfrags, int freep, zip_error_t *error)
+{
+	return IZip->zip_source_buffer_fragment_create(frags, nfrags, freep, error);
+}
+

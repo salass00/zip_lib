@@ -114,3 +114,5 @@ extern zip_int64_t          VARARGS68K _main_zip_source_tell(struct ZipIFace *, 
 extern zip_int64_t          VARARGS68K _main_zip_source_tell_write(struct ZipIFace *, zip_source_t * source);
 extern zip_int64_t          VARARGS68K _main_zip_source_write(struct ZipIFace *, zip_source_t * source, const void * data, zip_uint64_t len);
 extern const char *         VARARGS68K _main_zip_libzip_version(struct ZipIFace *);
+extern zip_source_t *       VARARGS68K _main_zip_source_buffer_fragment(struct ZipIFace *, zip_t * archive, const zip_buffer_fragment_t * frags, zip_uint64_t nfrags, int freep);
+extern zip_source_t *       VARARGS68K _main_zip_source_buffer_fragment_create(struct ZipIFace *, const zip_buffer_fragment_t * frags, zip_uint64_t nfrags, int freep, zip_error_t * error);

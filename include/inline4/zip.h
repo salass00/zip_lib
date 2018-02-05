@@ -121,5 +121,7 @@
 #define zip_source_tell_write(source) IZip->zip_source_tell_write((source))
 #define zip_source_write(source, data, len) IZip->zip_source_write((source), (data), (len))
 #define zip_libzip_version() IZip->zip_libzip_version()
+#define zip_source_buffer_fragment(archive, frags, nfrags, freep) IZip->zip_source_buffer_fragment((archive), (frags), (nfrags), (freep))
+#define zip_source_buffer_fragment_create(frags, nfrags, freep, error) IZip->zip_source_buffer_fragment_create((frags), (nfrags), (freep), (error))
 
 #endif /* INLINE4_ZIP_H */

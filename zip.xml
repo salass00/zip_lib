@@ -548,5 +548,19 @@
 		</method>
 
 		<method name="zip_libzip_version" result="const char *"/>
+
+		<method name="zip_source_buffer_fragment" result="zip_source_t *">
+			<arg name="archive" type="zip_t *"/>
+			<arg name="frags" type="const zip_buffer_fragment_t *"/>
+			<arg name="nfrags" type="zip_uint64_t"/>
+			<arg name="freep" type="int"/>
+		</method>
+
+		<method name="zip_source_buffer_fragment_create" result="zip_source_t *">
+			<arg name="frags" type="const zip_buffer_fragment_t *"/>
+			<arg name="nfrags" type="zip_uint64_t"/>
+			<arg name="freep" type="int"/>
+			<arg name="error" type="zip_error_t *"/>
+		</method>
 	</interface>
 </library>
