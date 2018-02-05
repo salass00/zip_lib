@@ -37,13 +37,16 @@ STATIC_SRCS = $(wildcard static/*.c)
 STATIC_OBJS = $(STATIC_SRCS:.c=.o)
 
 .PHONY: all
-all: $(TARGET) libzip.a
+all: compile-libzip $(TARGET) libzip.a compile-examples
 
 init.o: $(TARGET)_rev.h zip_vectors.c zip_vectors.h
 $(main_OBJS): zip_vectors.h
 
-$(LIBZIPDIR)/libzip.a:
+.PHONY: compile-libzip
+compile-libzip:
 	$(MAKE) -C $(LIBZIPDIR)
+
+$(LIBZIPDIR)/libzip.a: compile-libzip
 
 $(TARGET): $(OBJS) $(LIBZIPDIR)/libzip.a
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
@@ -53,11 +56,16 @@ libzip.a: $(STATIC_OBJS)
 	$(AR) -crv $@ $^
 	$(RANLIB) $@
 
+.PHONY: compile-examples
+compile-examples:
+	$(MAKE) -C examples
+
 .PHONY: clean
 clean:
 	$(MAKE) -C $(LIBZIPDIR) clean
 	rm -f $(TARGET) $(TARGET).debug *.o main/*.o
 	rm -f libzip.a static/*.o
+	$(MAKE) -C examples clean
 
 .PHONY: revision
 revision:

@@ -3,6 +3,7 @@ STRIP = ppc-amigaos-strip
 
 OPTIMIZE = -O2
 DEBUG    = -g
+INCLUDES = -I../include -I../libzip-1.4.0/lib
 WARNINGS = -Wall -Wwrite-strings -Werror
 
 CFLAGS  = $(OPTIMIZE) $(DEBUG) $(WARNINGS)
