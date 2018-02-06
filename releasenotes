@@ -51,12 +51,12 @@ zip.library 53.7 (13.1.2018)
 - Updated libzip to version 1.3.2.
 
 - The libzip version which the library is based on is now embedded as an extra
-  version string ($EXTVER) in the library file
+  version string ($EXTVER) in the library file.
 
 - Added error requesters for missing or too old z.library and bzip2.library.
 
 
-zip.library 53.8 (xx.xx.2018)
+zip.library 53.8 (6.2.2018)
 
 - Updated libzip to version 1.4.0.
 
