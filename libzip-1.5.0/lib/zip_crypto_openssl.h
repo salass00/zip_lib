@@ -37,6 +37,10 @@
 #include <openssl/aes.h>
 #include <openssl/hmac.h>
 
+#ifdef __amigaos4__
+#include <inline4/amissl.h>
+#endif
+
 #define _zip_crypto_aes_t AES_KEY
 #define _zip_crypto_hmac_t HMAC_CTX
 
@@ -50,6 +54,6 @@ _zip_crypto_hmac_t *_zip_crypto_hmac_new(const zip_uint8_t *secret, zip_uint64_t
 bool _zip_crypto_hmac_output(_zip_crypto_hmac_t *hmac, zip_uint8_t *data);
 
 #define _zip_crypto_pbkdf2(key, key_length, salt, salt_length, iterations, output, output_length) \
-	(PKCS5_PBKDF2_HMAC_SHA1((const char *)(key), (key_length), (salt), (salt_length), (iterations), (output_length), (output)))
+	(PKCS5_PBKDF2_HMAC_SHA1((const char *)(key), (key_length), (unsigned char *)(salt), (salt_length), (iterations), (output_length), (output)))
 
 #endif /*  HAD_ZIP_CRYPTO_OPENSSL_H */

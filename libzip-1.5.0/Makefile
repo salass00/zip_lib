@@ -4,18 +4,18 @@ RANLIB = ppc-amigaos-ranlib
 
 OPTIMIZE = -O3
 DEBUG    = -g
-INCLUDES = -I. -I./lib -I./lib/gladman-fcrypt
+INCLUDES = -I. -I./lib
 DEFINES  = -DHAVE_CONFIG_H
 WARNINGS = -Wall -Wwrite-strings -Werror
 
 CFLAGS = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(DEFINES) $(WARNINGS)
 
-SRCS = lib/gladman-fcrypt.c \
-       lib/zip_add_entry.c \
+SRCS = lib/zip_add_entry.c \
        lib/zip_algorithm_bzip2.c \
        lib/zip_algorithm_deflate.c \
        lib/zip_buffer.c \
        lib/zip_close.c \
+       lib/zip_crypto_openssl.c \
        lib/zip_delete.c \
        lib/zip_dir_add.c \
        lib/zip_dirent.c \
@@ -113,7 +113,8 @@ SRCS = lib/gladman-fcrypt.c \
        lib/zip_unchange_all.c \
        lib/zip_unchange_archive.c \
        lib/zip_unchange_data.c \
-       lib/zip_utf-8.c
+       lib/zip_utf-8.c \
+       lib/zip_winzip_aes.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -126,5 +127,5 @@ libzip.a: $(OBJS)
 
 .PHONY: clean
 clean:
-	rm -f libzip.a lib/*.o lib/gladman-fcrypt/*.o
+	rm -f libzip.a lib/*.o
 
