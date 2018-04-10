@@ -65,3 +65,10 @@ zip.library 53.8 (6.2.2018)
 - Added zip_source_buffer_fragment() and zip_source_buffer_fragment_create()
   functions.
 
+
+zip.library 53.9 (xx.xx.2018)
+
+- Updated libzip to version 1.5.0.
+
+- Now uses AmiSSL for AES encryption/decryption.
+

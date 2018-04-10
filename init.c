@@ -25,10 +25,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <libraries/amisslmaster.h>
 #include <proto/exec.h>
 #include <proto/dos.h>
 #include <proto/z.h>
 #include <proto/bzip2.h>
+#include <proto/amisslmaster.h>
+#include <proto/amissl.h>
 #include <proto/zip.h>
 
 /* Version Tag */
@@ -37,11 +40,14 @@
 static CONST TEXT USED verstag[] = VERSTAG;
 static CONST TEXT USED extversion[] = "\0$EXTVER: libzip " LIBZIP_VERSION " (" DATE ")";
 
-struct ExecIFace   *IExec;
-struct DOSIFace    *IDOS;
-struct NewlibIFace *INewlib;
-struct ZIFace      *IZ;
-struct BZip2IFace  *IBZip2;
+struct ExecIFace         *IExec;
+struct DOSIFace          *IDOS;
+struct NewlibIFace       *INewlib;
+struct ZIFace            *IZ;
+struct BZip2IFace        *IBZip2;
+struct AmiSSLMasterIFace *IAmiSSLMaster;
+struct Library           *AmiSSLBase;
+struct AmiSSLIFace       *IAmiSSL;
 
 struct ZipBase {
 	struct Library libNode;
@@ -128,6 +134,48 @@ static BOOL CheckInterface(struct Interface *interface, CONST_STRPTR name, int32
 	return FALSE;
 }
 
+static void CloseAmiSSL(void) {
+	if (IAmiSSL != NULL) {
+		IExec->DropInterface((struct Interface *)IAmiSSL);
+		IAmiSSL = NULL;
+	}
+
+	if (AmiSSLBase != NULL) {
+		IAmiSSLMaster->CloseAmiSSL();
+		AmiSSLBase = NULL;
+	}
+
+	if (IAmiSSLMaster != NULL) {
+		CloseInterface((struct Interface *)IAmiSSLMaster);
+		IAmiSSLMaster = NULL;
+	}
+}
+
+static BOOL OpenAmiSSL(void) {
+	IAmiSSLMaster = (struct AmiSSLMasterIFace *)OpenInterface("amisslmaster.library", AMISSLMASTER_MIN_VERSION);
+	if (IAmiSSLMaster == NULL)
+		return FALSE;
+
+	if (!IAmiSSLMaster->InitAmiSSLMaster(AMISSL_CURRENT_VERSION, TRUE)) {
+		CloseAmiSSL();
+		return FALSE;
+	}
+
+	AmiSSLBase = IAmiSSLMaster->OpenAmiSSL();
+	if (AmiSSLBase == NULL) {
+		CloseAmiSSL();
+		return FALSE;
+	}
+
+	IAmiSSL = (struct AmiSSLIFace *)IExec->GetInterface(AmiSSLBase, "main", 1, NULL);
+	if (IAmiSSL == NULL) {
+		CloseAmiSSL();
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 /* Open the library */
 static struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG version) {
 	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase; 
@@ -165,6 +213,8 @@ static BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		result = libBase->segList;
 
 		/* Undo what the init code did */
+		CloseAmiSSL();
+
 		CloseInterface((struct Interface *)IBZip2);
 		CloseInterface((struct Interface *)IZ);
 		CloseInterface((struct Interface *)INewlib);
@@ -214,6 +264,8 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 	if (!CheckInterface((struct Interface *)IBZip2, "bzip2.library", 53, 4)) {
 		goto cleanup;
 	}
+
+	OpenAmiSSL();
 
 	return libBase;
 

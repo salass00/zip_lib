@@ -34,6 +34,10 @@
 
 #include "zipint.h"
 
+#ifdef __amigaos4__
+#include <proto/amissl.h>
+#endif
+
 
 zip_encryption_implementation
 _zip_get_encryption_implementation(zip_uint16_t em, int operation) {
@@ -48,6 +52,11 @@ _zip_get_encryption_implementation(zip_uint16_t em, int operation) {
     case ZIP_EM_AES_128:
     case ZIP_EM_AES_192:
     case ZIP_EM_AES_256:
+#ifdef __amigaos4__
+	if (IAmiSSL == NULL) {
+	    return NULL;
+	}
+#endif
 	return operation == ZIP_CODEC_DECODE ? zip_source_winzip_aes_decode : zip_source_winzip_aes_encode;
 #endif
 
