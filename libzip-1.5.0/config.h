@@ -29,6 +29,7 @@
 /* #undef HAVE_GETPROGNAME */
 /* #undef HAVE_GNUTLS */
 #define HAVE_LIBBZ2
+/* #define HAVE_LIBLZMA */
 #define HAVE_OPEN
 #define HAVE_OPENSSL
 #define HAVE_MKSTEMP

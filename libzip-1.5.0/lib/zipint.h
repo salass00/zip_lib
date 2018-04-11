@@ -146,6 +146,8 @@ extern zip_compression_algorithm_t zip_algorithm_bzip2_compress;
 extern zip_compression_algorithm_t zip_algorithm_bzip2_decompress;
 extern zip_compression_algorithm_t zip_algorithm_deflate_compress;
 extern zip_compression_algorithm_t zip_algorithm_deflate_decompress;
+extern zip_compression_algorithm_t zip_algorithm_lzma_compress;
+extern zip_compression_algorithm_t zip_algorithm_lzma_decompress;
 
 bool zip_compression_method_supported(zip_int32_t method, bool compress);
 
