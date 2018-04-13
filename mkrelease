@@ -5,7 +5,7 @@ echo "Execute *"make all*" first to compile the library."
 quit
 endif
 
-set libzipdir libzip-1.4.0
+set libzipdir libzip-1.5.0
 set destdir RAM:mkrelease
 set fullvers `version file zip.library`
 set numvers `cut "$fullvers" word 2`
