@@ -19,17 +19,18 @@
 struct Library *ZipBase;
 struct ZipIFace *IZip;
 
-#define TEMPLATE "ARCHIVE/A,PASSWORD/K"
+#define TEMPLATE "ARCHIVE/A,PASSWORD/K,NODECOMP/S"
 
 enum {
 	ARG_ARCHIVE,
 	ARG_PASSWORD,
+	ARG_NODECOMP,
 	ARG_MAX
 };
 
 #define BUFFER_SIZE 65536 /* 64 KiB */
 
-static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
+static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password, BOOL nodecomp) {
 	zip_t       *za;
 	int          error, status;
 	zip_error_t  ze;
@@ -129,7 +130,7 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password) {
 				size = -1;
 
 			/* Open file in archive */
-			zf = IZip->zip_fopen_index(za, index, 0);
+			zf = IZip->zip_fopen_index(za, index, nodecomp ? ZIP_FL_COMPRESSED : 0);
 			if (zf == NULL) {
 				fprintf(stderr, "%s (index %lld): %s (line %d)\n", archive, index, IZip->zip_strerror(za), __LINE__);
 				goto cleanup;
@@ -223,6 +224,7 @@ int main(void) {
 	int32          args[ARG_MAX];
 	CONST_STRPTR   archive;
 	CONST_STRPTR   password;
+	BOOL           nodecomp;
 	int            rc = RETURN_ERROR;
 
 	memset(args, 0, sizeof(args));
@@ -250,8 +252,9 @@ int main(void) {
 
 	archive  = (CONST_STRPTR)args[ARG_ARCHIVE];
 	password = (CONST_STRPTR)args[ARG_PASSWORD];
+	nodecomp = args[ARG_NODECOMP] ? TRUE : FALSE;
 
-	if (extract_zip(archive, password))
+	if (extract_zip(archive, password, nodecomp))
 		rc = RETURN_OK;
 
 cleanup:
