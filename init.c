@@ -45,9 +45,6 @@ struct DOSIFace          *IDOS;
 struct NewlibIFace       *INewlib;
 struct ZIFace            *IZ;
 struct BZip2IFace        *IBZip2;
-#ifdef ENABLE_LZMA
-struct LZMAIFace         *ILZMA;
-#endif
 struct AmiSSLMasterIFace *IAmiSSLMaster;
 struct Library           *AmiSSLBase;
 struct AmiSSLIFace       *IAmiSSL;
@@ -218,9 +215,6 @@ static BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		/* Undo what the init code did */
 		CloseAmiSSL();
 
-#ifdef ENABLE_LZMA
-		CloseInterface((struct Interface *)ILZMA);
-#endif
 		CloseInterface((struct Interface *)IBZip2);
 		CloseInterface((struct Interface *)IZ);
 		CloseInterface((struct Interface *)INewlib);
@@ -271,22 +265,12 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 		goto cleanup;
 	}
 
-#ifdef ENABLE_LZMA
-	ILZMA = (struct LZMAIFace *)OpenInterface("lzma.library", 53);
-	if (!CheckInterface((struct Interface *)ILZMA, "lzma.library", 53, 1)) {
-		goto cleanup;
-	}
-#endif
-
 	OpenAmiSSL();
 
 	return libBase;
 
 cleanup:
 
-#ifdef ENABLE_LZMA
-	CloseInterface((struct Interface *)ILZMA);
-#endif
 	CloseInterface((struct Interface *)IBZip2);
 	CloseInterface((struct Interface *)IZ);
 	CloseInterface((struct Interface *)INewlib);

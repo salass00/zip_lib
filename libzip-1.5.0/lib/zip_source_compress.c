@@ -67,9 +67,7 @@ static struct implementation implementations[] = {
 #if defined(HAVE_LIBBZ2)
     {ZIP_CM_BZIP2, &zip_algorithm_bzip2_compress, &zip_algorithm_bzip2_decompress},
 #endif
-#if defined(HAVE_LIBLZMA)
-    {ZIP_CM_LZMA, &zip_algorithm_lzma_compress, &zip_algorithm_lzma_decompress},
-#endif
+    {ZIP_CM_LZMA, NULL, &zip_algorithm_lzma_decompress},
 };
 
 static size_t implementations_size = sizeof(implementations) / sizeof(implementations[0]);

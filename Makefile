@@ -31,7 +31,7 @@ STRIPFLAGS = -R.comment --strip-unneeded-rel-relocs
 main_SRCS = $(wildcard main/*.c)
 main_OBJS = $(main_SRCS:.c=.o)
 
-OBJS = init.o zlib-stubs.o bzip2-stubs.o lzma-stubs.o $(main_OBJS)
+OBJS = init.o zlib-stubs.o bzip2-stubs.o $(main_OBJS)
 
 STATIC_SRCS = $(wildcard static/*.c)
 STATIC_OBJS = $(STATIC_SRCS:.c=.o)

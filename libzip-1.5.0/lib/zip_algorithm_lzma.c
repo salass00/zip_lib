@@ -27,16 +27,31 @@
 
 #include "zipint.h"
 
-#include <lzma.h>
-#include <limits.h>
+#include "lzma/LzmaDec.h"
 #include <stdlib.h>
+
+static void *SzAlloc(void *p, size_t size) {
+	return malloc(size);
+}
+
+static void SzFree(void *p, void *address) {
+	free(address);
+}
+
+static ISzAlloc alloc = { SzAlloc, SzFree };
 
 struct ctx {
 	zip_error_t *error;
 	bool compress;
 	int compression_flags;
 	bool end_of_input;
-	lzma_stream zstr;
+	size_t avail_in;
+	void *next_in;
+	union {
+		struct {
+			CLzmaDec state;
+		} dec;
+	};
 };
 
 static void *
@@ -55,14 +70,15 @@ allocate(bool compress, int compression_flags, zip_error_t *error) {
 	}
 	ctx->end_of_input = false;
 
-	memset(&ctx->zstr, 0, sizeof(ctx->zstr));
+	if (compress) {
+		/* FIXME: Implement compression */
+		free(ctx);
+		return NULL;
+	} else {
+		LzmaDec_Construct(&ctx->dec.state);
+	}
 
 	return ctx;
-}
-
-static void *
-compress_allocate(zip_uint16_t method, int compression_flags, zip_error_t *error) {
-	return allocate(true, compression_flags, error);
 }
 
 static void *
@@ -82,53 +98,12 @@ compression_flags(void *ud) {
 	return 0;
 }
 
-static int
-map_error(lzma_ret ret) {
-	switch (ret) {
-		case LZMA_OK:
-		case LZMA_STREAM_END:
-			return ZIP_ER_OK;
-		case LZMA_MEM_ERROR:
-			return ZIP_ER_MEMORY;
-		case LZMA_FORMAT_ERROR:
-		case LZMA_DATA_ERROR:
-		case LZMA_BUF_ERROR:
-			return ZIP_ER_COMPRESSED_DATA;
-		case LZMA_OPTIONS_ERROR:
-		case LZMA_PROG_ERROR:
-			return ZIP_ER_INVAL;
-		default:
-			return ZIP_ER_INTERNAL;
-	}
-}
-
 static bool
 start(void *ud) {
 	struct ctx *ctx = (struct ctx *)ud;
-	lzma_ret ret;
 
-	ctx->zstr.avail_in = 0;
-	ctx->zstr.next_in = NULL;
-	ctx->zstr.avail_out = 0;
-	ctx->zstr.next_out = NULL;
-
-	if (ctx->compress) {
-		lzma_options_lzma options;
-
-		if (lzma_lzma_preset(&options, ctx->compression_flags)) {
-			zip_error_set(ctx->error, ZIP_ER_INTERNAL, 0);
-			return false;
-		}
-
-		ret = lzma_alone_encoder(&ctx->zstr, &options);
-	} else {
-		ret = lzma_alone_decoder(&ctx->zstr, UINT64_MAX);
-	}
-
-	if (ret != LZMA_OK) {
-		zip_error_set(ctx->error, map_error(ret), 0);
-		return false;
-	}
+	ctx->avail_in = 0;
+	ctx->next_in = NULL;
 
 	return true;
 }
@@ -137,22 +112,66 @@ static bool
 end(void *ud) {
 	struct ctx *ctx = (struct ctx *)ud;
 
-	lzma_end(&ctx->zstr);
+	LzmaDec_Free(&ctx->dec.state, &alloc);
 
 	return true;
+}
+
+static int
+map_error(SRes res) {
+	switch (res) {
+		case SZ_OK:
+			return ZIP_ER_OK;
+
+		case SZ_ERROR_MEM:
+			return ZIP_ER_MEMORY;
+
+		case SZ_ERROR_DATA:
+		case SZ_ERROR_UNSUPPORTED:
+		case SZ_ERROR_INPUT_EOF:
+			return ZIP_ER_COMPRESSED_DATA;
+
+		default:
+			return ZIP_ER_INTERNAL;
+	}
 }
 
 static bool
 input(void *ud, zip_uint8_t *data, zip_uint64_t length) {
 	struct ctx *ctx = (struct ctx *)ud;
 
-	if (length > UINT_MAX || ctx->zstr.avail_in > 0) {
+	if (length > UINT_MAX || ctx->avail_in != 0) {
 		zip_error_set(ctx->error, ZIP_ER_INVAL, 0);
 		return false;
 	}
 
-	ctx->zstr.avail_in = length;
-	ctx->zstr.next_in = data;
+	if (ctx->dec.state.dic == NULL) {
+		SRes res;
+
+		if (length < 9) {
+			zip_error_set(ctx->error, ZIP_ER_INTERNAL, 0);
+			return false;
+		}
+
+		if (data[2] != 5 || data[3] != 0) {
+			zip_error_set(ctx->error, ZIP_ER_COMPRESSED_DATA, 0);
+			return false;
+		}
+
+		res = LzmaDec_Allocate(&ctx->dec.state, &data[4], 5, &alloc);
+		if (res != SZ_OK) {
+			zip_error_set(ctx->error, map_error(res), 0);
+			return false;
+		}
+
+		LzmaDec_Init(&ctx->dec.state);
+
+		data += 9;
+		length -= 9;
+	}
+
+	ctx->avail_in = length;
+	ctx->next_in = data;
 
 	return true;
 }
@@ -167,44 +186,43 @@ end_of_input(void *ud) {
 static zip_compression_status_t
 process(void *ud, zip_uint8_t *data, zip_uint64_t *length) {
 	struct ctx *ctx = (struct ctx *)ud;
-	lzma_ret ret;
+	const Byte *src;
+	Byte *dst;
+	SizeT src_len, dst_len;
+	ELzmaFinishMode finish_mode;
+	ELzmaStatus status;
+	SRes res;
 
-	if (ctx->zstr.avail_in == 0 && !ctx->end_of_input) {
+	if (ctx->avail_in == 0) {
 		*length = 0;
 		return ZIP_COMPRESSION_NEED_DATA;
 	}
 
-	ctx->zstr.avail_out = ZIP_MIN(UINT_MAX, *length);
-	ctx->zstr.next_out = data;
+	src = ctx->next_in;
+	src_len = ctx->avail_in;
 
-	ret = lzma_code(&ctx->zstr, ctx->end_of_input ? LZMA_FINISH : LZMA_RUN);
+	dst = (Byte *)data;
+	dst_len = *length;
 
-	*length = *length - ctx->zstr.avail_out;
+	finish_mode = LZMA_FINISH_ANY;
 
-	switch (ret) {
-		case LZMA_OK:
-			if (ctx->zstr.avail_in == 0) {
-				return ZIP_COMPRESSION_NEED_DATA;
-			}
-			return ZIP_COMPRESSION_OK;
-		case LZMA_STREAM_END:
-			return ZIP_COMPRESSION_END;
-		default:
-			zip_error_set(ctx->error, map_error(ret), 0);
-			return ZIP_COMPRESSION_ERROR;
+	res = LzmaDec_DecodeToBuf(&ctx->dec.state, dst, &dst_len, src, &src_len, finish_mode, &status);
+
+	ctx->avail_in -= src_len;
+	ctx->next_in += src_len;
+
+	*length = dst_len;
+
+	if (res != SZ_OK) {
+		zip_error_set(ctx->error, map_error(res), 0);
+		return false;
 	}
-}
 
-zip_compression_algorithm_t zip_algorithm_lzma_compress = {
-	compress_allocate,
-	deallocate,
-	compression_flags,
-	start,
-	end,
-	input,
-	end_of_input,
-	process
-};
+	if (status == LZMA_STATUS_FINISHED_WITH_MARK)
+		return ZIP_COMPRESSION_END;
+
+	return ZIP_COMPRESSION_OK;
+}
 
 zip_compression_algorithm_t zip_algorithm_lzma_decompress = {
 	decompress_allocate,

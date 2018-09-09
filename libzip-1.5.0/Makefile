@@ -115,7 +115,8 @@ SRCS = lib/zip_add_entry.c \
        lib/zip_unchange_archive.c \
        lib/zip_unchange_data.c \
        lib/zip_utf-8.c \
-       lib/zip_winzip_aes.c
+       lib/zip_winzip_aes.c \
+       lib/lzma/LzmaDec.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -128,5 +129,5 @@ libzip.a: $(OBJS)
 
 .PHONY: clean
 clean:
-	rm -f libzip.a lib/*.o
+	rm -f libzip.a lib/*.o lib/lzma/*.o
 
