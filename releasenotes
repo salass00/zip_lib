@@ -75,5 +75,7 @@ zip.library 53.9 (13.4.2018)
 
 zip.library 53.10 (xx.xx.2018)
 
+- Updated libzip to version 1.5.1.
+
 - Added lzma decompression support using decoder from LZMA SDK.
 
