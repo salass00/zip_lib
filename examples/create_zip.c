@@ -68,6 +68,11 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 
 	if (files != NULL) {
 		for (i = 0; (path = files[i]) != NULL; i++) {
+			if (IDOS->CheckSignal(SIGBREAKF_CTRL_C)) {
+				fputs("Break signal received\n", stderr);
+				goto cleanup;
+			}
+
 			/* Open source file */
 			zs = IZip->zip_source_file(za, path, 0, 0);
 			if (zs == NULL) {
@@ -138,6 +143,9 @@ int main(void) {
 	const int      comp_level = 9;
 	CONST_STRPTR   password;
 	int            rc = RETURN_ERROR;
+
+	/* Disable builtin break handling */
+	signal(SIGINT, SIG_IGN);
 
 	memset(args, 0, sizeof(args));
 

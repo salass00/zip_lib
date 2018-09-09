@@ -82,6 +82,11 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password, BOOL nodeco
 	}
 
 	for (index = 0; index < num_entries; index++) {
+		if (IDOS->CheckSignal(SIGBREAKF_CTRL_C)) {
+			fputs("Break signal received\n", stderr);
+			goto cleanup;
+		}
+
 		status = IZip->zip_stat_index(za, index, 0, &stat);
 		if (status == -1) {
 			fprintf(stderr, "%s (index %lld): %s (line %d)\n", archive, index, IZip->zip_strerror(za), __LINE__);
@@ -138,7 +143,6 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password, BOOL nodeco
 
 			/* Open destination file */
 			file = IDOS->Open(pathbuf, MODE_NEWFILE);
-
 			if (file == ZERO) {
 				IDOS->PrintFault(IDOS->IoErr(), stat.name);
 				goto cleanup;
@@ -151,7 +155,7 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password, BOOL nodeco
 			while ((readlen = IZip->zip_fread(zf, buffer, BUFFER_SIZE)) > 0) {
 				writelen = IDOS->Write(file, buffer, readlen);
 
-				if (writelen != -1) {
+				if (writelen >= 0) {
 					done += writelen;
 
 					if (size != -1) {
@@ -162,13 +166,20 @@ static BOOL extract_zip(CONST_STRPTR archive, CONST_STRPTR password, BOOL nodeco
 				}
 
 				if (writelen != readlen) {
-					printf("\n");
+					putc('\n', stdout);
 					IDOS->PrintFault(IDOS->IoErr(), stat.name);
+					goto cleanup;
+				}
+
+				if (IDOS->CheckSignal(SIGBREAKF_CTRL_C)) {
+					putc('\n', stdout);
+					fputs("Break signal received\n", stderr);
 					goto cleanup;
 				}
 			}
 
 			if (readlen == -1) {
+				putc('\n', stdout);
 				fprintf(stderr, "%s (index %lld): %s (line %d)\n", archive, index, IZip->zip_file_strerror(zf), __LINE__);
 				goto cleanup;
 			}
@@ -226,6 +237,9 @@ int main(void) {
 	CONST_STRPTR   password;
 	BOOL           nodecomp;
 	int            rc = RETURN_ERROR;
+
+	/* Disable builtin break handling */
+	signal(SIGINT, SIG_IGN);
 
 	memset(args, 0, sizeof(args));
 
