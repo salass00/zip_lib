@@ -73,7 +73,7 @@ zip.library 53.9 (13.4.2018)
 - Now uses AmiSSL for AES encryption/decryption.
 
 
-zip.library 53.10 (xx.xx.2018)
+zip.library 53.10 (9.9.2018)
 
 - Updated libzip to version 1.5.1.
 
