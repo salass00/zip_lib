@@ -47,6 +47,7 @@ compile-libzip:
 	$(MAKE) -C $(LIBZIPDIR)
 
 $(LIBZIPDIR)/libzip.a: compile-libzip
+	@true
 
 $(TARGET): $(OBJS) $(LIBZIPDIR)/libzip.a
 	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
