@@ -29,7 +29,7 @@ copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common
 copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
 copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
 copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
-copy clone ${libzipdir}/lib/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
+copy clone ${libzipdir}/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
 copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 ;copy clone libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
 copy clone libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
