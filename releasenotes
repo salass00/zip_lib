@@ -86,3 +86,6 @@ zip.library 53.11 (xx.xx.2021)
 
 - Now requires lzma.library 53.1 or newer.
 
+- Added the functions: zip_compression_method_supported() and
+  zip_encryption_method_supported().
+

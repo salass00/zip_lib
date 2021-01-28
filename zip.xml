@@ -562,5 +562,15 @@
 			<arg name="freep" type="int"/>
 			<arg name="error" type="zip_error_t *"/>
 		</method>
+
+		<method name="zip_compression_method_supported" result="int">
+			<arg name="method" type="zip_int32_t"/>
+			<arg name="compress" type="int"/>
+		</method>
+
+		<method name="zip_encryption_method_supported" result="int">
+			<arg name="method" type="zip_uint16_t"/>
+			<arg name="encode" type="int"/>
+		</method>
 	</interface>
 </library>
