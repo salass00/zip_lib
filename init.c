@@ -45,6 +45,7 @@ struct DOSIFace          *IDOS;
 struct NewlibIFace       *INewlib;
 struct ZIFace            *IZ;
 struct BZip2IFace        *IBZip2;
+struct LZMAIFace         *ILZMA;
 struct AmiSSLMasterIFace *IAmiSSLMaster;
 struct Library           *AmiSSLBase;
 struct AmiSSLIFace       *IAmiSSL;
@@ -215,6 +216,7 @@ static BPTR libExpunge(struct LibraryManagerInterface *Self) {
 		/* Undo what the init code did */
 		CloseAmiSSL();
 
+		CloseInterface((struct Interface *)ILZMA);
 		CloseInterface((struct Interface *)IBZip2);
 		CloseInterface((struct Interface *)IZ);
 		CloseInterface((struct Interface *)INewlib);
@@ -262,6 +264,11 @@ static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct Exe
 
 	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
 	if (!CheckInterface((struct Interface *)IBZip2, "bzip2.library", 53, 4)) {
+		goto cleanup;
+	}
+
+	ILZMA = (struct LZMAIFace *)OpenInterface("lzma.library", 53);
+	if (!CheckInterface((struct Interface *)ILZMA, "lzma.library", 53, 1)) {
 		goto cleanup;
 	}
 

@@ -1,7 +1,7 @@
 TARGET  = zip.library
 VERSION = 53
 
-LIBZIPDIR = libzip-1.5.1
+LIBZIPDIR = libzip-1.7.3
 
 CC     = ppc-amigaos-gcc
 STRIP  = ppc-amigaos-strip
@@ -19,7 +19,7 @@ endif
 
 OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g
-INCLUDES = -I./include -I./$(LIBZIPDIR)/lib
+INCLUDES = -I./include -I./$(LIBZIPDIR) -I./$(LIBZIPDIR)/lib
 WARNINGS = -Wall -Wwrite-strings -Werror
 
 CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
@@ -31,7 +31,7 @@ STRIPFLAGS = -R.comment --strip-unneeded-rel-relocs
 main_SRCS = $(wildcard main/*.c)
 main_OBJS = $(main_SRCS:.c=.o)
 
-OBJS = init.o zlib-stubs.o bzip2-stubs.o $(main_OBJS)
+OBJS = init.o zlib-stubs.o bzip2-stubs.o lzma-stubs.o $(main_OBJS)
 
 STATIC_SRCS = $(wildcard static/*.c)
 STATIC_OBJS = $(STATIC_SRCS:.c=.o)
