@@ -34,7 +34,9 @@
 #ifndef HAD_ZIP_CRYPTO_OPENSSL_H
 #define HAD_ZIP_CRYPTO_OPENSSL_H
 
+#ifndef __amigaos4__
 #define HAVE_SECURE_RANDOM
+#endif
 
 #include <openssl/aes.h>
 #include <openssl/hmac.h>

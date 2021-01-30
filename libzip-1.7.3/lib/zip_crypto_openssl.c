@@ -130,6 +130,7 @@ _zip_crypto_hmac_output(_zip_crypto_hmac_t *hmac, zip_uint8_t *data) {
 }
 
 
+#ifndef __amigaos4__
 ZIP_EXTERN bool
 zip_secure_random(zip_uint8_t *buffer, zip_uint16_t length) {
 #ifdef __amigaos4__
@@ -139,4 +140,5 @@ zip_secure_random(zip_uint8_t *buffer, zip_uint16_t length) {
 #endif
     return RAND_bytes(buffer, length) == 1;
 }
+#endif
 
