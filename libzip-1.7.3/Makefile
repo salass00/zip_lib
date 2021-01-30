@@ -13,6 +13,7 @@ CFLAGS = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(DEFINES) $(WARNINGS)
 SRCS = lib/zip_add_entry.c \
        lib/zip_algorithm_bzip2.c \
        lib/zip_algorithm_deflate.c \
+       lib/zip_algorithm_lzma.c \
        lib/zip_algorithm_xz.c \
        lib/zip_buffer.c \
        lib/zip_close.c \
@@ -121,6 +122,7 @@ SRCS = lib/zip_add_entry.c \
        lib/zip_unchange_data.c \
        lib/zip_utf-8.c \
        lib/zip_winzip_aes.c \
+       lib/lzma/LzmaDec.c
 
 OBJS = $(SRCS:.c=.o)
 
