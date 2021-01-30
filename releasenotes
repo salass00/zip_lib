@@ -80,7 +80,7 @@ zip.library 53.10 (9.9.2018)
 - Added lzma decompression support using decoder from LZMA SDK.
 
 
-zip.library 53.11 (xx.xx.2021)
+zip.library 53.11 (30.1.2021)
 
 - Updated libzip to version 1.7.3.
 

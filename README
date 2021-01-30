@@ -7,6 +7,8 @@ Requirements:
 
 - bzip2.library version 53.4 or newer.
 
+- lzma.library version 53.1 or newer.
+
 Installation:
 
 Copy Libs/zip.library LIBS:
