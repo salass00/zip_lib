@@ -90,7 +90,7 @@ zip.library 53.11 (30.1.2021)
   zip_encryption_method_supported().
 
 
-zip.library 53.12 (xx.xx.2021)
+zip.library 53.12 (31.1.2021)
 
 - Added back ZIP_CM_LZMA decompression support from V53.10.
 
