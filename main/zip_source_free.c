@@ -56,8 +56,14 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 void _main_zip_source_free(struct ZipIFace *Self, zip_source_t *src)
 {
+	APTR old_r13 = r13;
+
+	r13 = Self->Data.EnvironmentVector;
 	zip_source_free(src);
+	r13 = old_r13;
 }
 

@@ -61,9 +61,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_file_set_external_attributes(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_flags_t flags, zip_uint8_t opsys, zip_uint32_t attributes)
 {
-	return zip_file_set_external_attributes(za, idx, flags, opsys, attributes);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_file_set_external_attributes(za, idx, flags, opsys, attributes);
+	r13 = old_r13;
+
+	return res;
 }
 

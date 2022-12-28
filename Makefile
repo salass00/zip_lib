@@ -1,7 +1,7 @@
 TARGET  = zip.library
 VERSION = 53
 
-LIBZIPDIR = libzip-1.7.3
+LIBZIPDIR = libzip-1.9.2
 
 CC     = ppc-amigaos-gcc
 STRIP  = ppc-amigaos-strip
@@ -19,12 +19,14 @@ endif
 
 OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g
-INCLUDES = -I./include -I./$(LIBZIPDIR) -I./$(LIBZIPDIR)/lib
+INCLUDES = -I./include -I. -I./$(LIBZIPDIR) -I./$(LIBZIPDIR)/lib
 WARNINGS = -Wall -Wwrite-strings -Werror
 
 CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -static
 LIBS    = 
+
+SDATAFLAGS = -msdata=sysv -G65536 -mno-readonly-in-sdata
 
 STRIPFLAGS = -R.comment --strip-unneeded-rel-relocs
 
@@ -38,6 +40,8 @@ STATIC_OBJS = $(STATIC_SRCS:.c=.o)
 
 .PHONY: all
 all: compile-libzip $(TARGET) libzip.a compile-examples
+
+$(OBJS): CFLAGS += $(SDATAFLAGS)
 
 init.o: $(TARGET)_rev.h zip_vectors.c zip_vectors.h
 $(main_OBJS): zip_vectors.h

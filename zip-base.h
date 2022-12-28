@@ -25,50 +25,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#ifndef ZIP_BASE_H
+#define ZIP_BASE_H 1
 
-/****** zip.library/zip_compression_method_supported ******************************************
-*
-*   NAME
-*      zip_compression_method_supported -- Description
-*
-*   SYNOPSIS
-*      int zip_compression_method_supported(zip_int32_t method, 
-*          int compress);
-*
-*   FUNCTION
-*
-*   INPUTS
-*       method - 
-*       compress - 
-*
-*   RESULT
-*       The result ...
-*
-*   EXAMPLE
-*
-*   NOTES
-*
-*   BUGS
-*
-*   SEE ALSO
-*
-*****************************************************************************
-*
-*/
+#include <proto/exec.h>
+#include <proto/dos.h>
+#include <proto/elf.h>
 
-register APTR r13 __asm("r13");
+struct ZipBase {
+	struct Library      LibNode;
+	BPTR                SegList;
+	Elf32_Handle        ElfHandle;
 
-int _main_zip_compression_method_supported(struct ZipIFace *Self, zip_int32_t method, int compress)
-{
-	APTR old_r13 = r13;
-	int res;
+	struct ExecIFace   *IExec;
+	struct DOSIFace    *IDOS;
+	struct ElfIFace    *IElf;
+	struct NewlibIFace *INewlib;
+};
 
-	r13 = Self->Data.EnvironmentVector;
-	res = zip_compression_method_supported(method, compress);
-	r13 = old_r13;
+struct ZipInterfaceData {
+	UBYTE *DataSegment;
+	ULONG  DataOffset;
+};
 
-	return res;
-}
+#endif /* ZIP_BASE_H */
 

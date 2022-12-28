@@ -56,7 +56,17 @@
 *
 */
 
-zip_int32_t _main_zip_error_get_sys_type(struct ZipIFace *Self, zip_int32_t ze) {
-	return zip_error_get_sys_type(ze);
+register APTR r13 __asm("r13");
+
+zip_int32_t _main_zip_error_get_sys_type(struct ZipIFace *Self, zip_int32_t ze)
+{
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_error_get_sys_type(ze);
+	r13 = old_r13;
+
+	return res;
 }
 

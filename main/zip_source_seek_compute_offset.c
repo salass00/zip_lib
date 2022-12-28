@@ -62,9 +62,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int64_t _main_zip_source_seek_compute_offset(struct ZipIFace *Self, zip_uint64_t offset,
 	zip_uint64_t length, void *data, zip_uint64_t data_length, zip_error_t *error)
 {
-	return zip_source_seek_compute_offset(offset, length, data, data_length, error);
+	APTR old_r13 = r13;
+	zip_int64_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_source_seek_compute_offset(offset, length, data, data_length, error);
+	r13 = old_r13;
+
+	return res;
 }
 

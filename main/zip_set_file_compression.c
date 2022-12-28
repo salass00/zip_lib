@@ -60,9 +60,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_set_file_compression(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_int32_t method, zip_flags_t flags)
 {
-	return zip_set_file_compression(za, idx, method, flags);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_set_file_compression(za, idx, method, flags);
+	r13 = old_r13;
+
+	return res;
 }
 

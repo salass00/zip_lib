@@ -56,7 +56,17 @@
 *
 */
 
-zip_int32_t _main_zip_fclose(struct ZipIFace *Self, zip_file_t *zf) {
-	return zip_fclose(zf);
+register APTR r13 __asm("r13");
+
+zip_int32_t _main_zip_fclose(struct ZipIFace *Self, zip_file_t *zf)
+{
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_fclose(zf);
+	r13 = old_r13;
+
+	return res;
 }
 

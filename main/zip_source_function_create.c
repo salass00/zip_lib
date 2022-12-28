@@ -59,9 +59,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_source_t *_main_zip_source_function_create(struct ZipIFace *Self, zip_source_callback fn,
 	void *userdata, zip_error_t *error)
 {
-	return zip_source_function_create(fn, userdata, error);
+	APTR old_r13 = r13;
+	zip_source_t *res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_source_function_create(fn, userdata, error);
+	r13 = old_r13;
+
+	return res;
 }
 

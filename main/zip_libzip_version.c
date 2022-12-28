@@ -55,7 +55,16 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 const char *_main_zip_libzip_version(struct ZipIFace *Self) {
-	return zip_libzip_version();
+	APTR old_r13 = r13;
+	const char *res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_libzip_version();
+	r13 = old_r13;
+
+	return res;
 }
 

@@ -26,49 +26,44 @@
  */
 
 #include <interfaces/zip.h>
+#include "zip-base.h"
 #include "../zip_vectors.h"
 
-/****** zip.library/zip_compression_method_supported ******************************************
-*
-*   NAME
-*      zip_compression_method_supported -- Description
-*
-*   SYNOPSIS
-*      int zip_compression_method_supported(zip_int32_t method, 
-*          int compress);
-*
-*   FUNCTION
-*
-*   INPUTS
-*       method - 
-*       compress - 
-*
-*   RESULT
-*       The result ...
-*
-*   EXAMPLE
-*
-*   NOTES
-*
-*   BUGS
-*
-*   SEE ALSO
-*
-*****************************************************************************
-*
-*/
+extern CONST struct TagItem main_v1_Tags[];
 
 register APTR r13 __asm("r13");
 
-int _main_zip_compression_method_supported(struct ZipIFace *Self, zip_int32_t method, int compress)
+struct ZipIFace * _main_Clone(struct ZipIFace *Self)
 {
+	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
+	struct ExecIFace *iexec = zb->IExec;
+	struct ZipIFace *izip;
+	struct ZipInterfaceData *zid;
 	APTR old_r13 = r13;
-	int res;
 
-	r13 = Self->Data.EnvironmentVector;
-	res = zip_compression_method_supported(method, compress);
+	izip = (struct ZipIFace *)iexec->MakeInterface(&zb->LibNode, main_v1_Tags);
+	if (izip == NULL)
+		return NULL;
+
+	zid = (struct ZipInterfaceData *)((BYTE *)izip - izip->Data.NegativeSize);
+
+	zid->DataSegment = zb->IElf->CopyDataSegment(zb->ElfHandle, &zid->DataOffset);
+	if (zid->DataSegment == NULL)
+	{
+		iexec->DeleteInterface((struct Interface *)izip);
+		return NULL;
+	}
+
+	izip->Data.EnvironmentVector = zid->DataSegment + zid->DataOffset;
+
+	r13 = izip->Data.EnvironmentVector;
+
+	/* FIXME: Setup global library interfaces */
+
 	r13 = old_r13;
 
-	return res;
+	izip->Data.Flags |= IFLF_CLONED|IFLF_CLONE_EXPUNGE;
+
+	return izip;
 }
 

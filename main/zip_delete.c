@@ -57,7 +57,17 @@
 *
 */
 
-zip_int32_t _main_zip_delete(struct ZipIFace *Self, zip_t *za, zip_uint64_t idx) {
-	return zip_delete(za, idx);
+register APTR r13 __asm("r13");
+
+zip_int32_t _main_zip_delete(struct ZipIFace *Self, zip_t *za, zip_uint64_t idx)
+{
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_delete(za, idx);
+	r13 = old_r13;
+
+	return res;
 }
 

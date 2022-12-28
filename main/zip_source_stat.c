@@ -57,7 +57,17 @@
 *
 */
 
-int _main_zip_source_stat(struct ZipIFace *Self, zip_source_t *zs, zip_stat_t *zstat) {
-	return zip_source_stat(zs, zstat);
+register APTR r13 __asm("r13");
+
+int _main_zip_source_stat(struct ZipIFace *Self, zip_source_t *zs, zip_stat_t *zstat)
+{
+	APTR old_r13 = r13;
+	int res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_source_stat(zs, zstat);
+	r13 = old_r13;
+
+	return res;
 }
 

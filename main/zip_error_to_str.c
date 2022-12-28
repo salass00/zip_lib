@@ -59,7 +59,17 @@
 *
 */
 
-zip_int32_t _main_zip_error_to_str(struct ZipIFace *Self, char *buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se) {
-	return zip_error_to_str(buf, len, ze, se);
+register APTR r13 __asm("r13");
+
+zip_int32_t _main_zip_error_to_str(struct ZipIFace *Self, char *buf, zip_uint64_t len, zip_int32_t ze, zip_int32_t se)
+{
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_error_to_str(buf, len, ze, se);
+	r13 = old_r13;
+
+	return res;
 }
 

@@ -5,8 +5,8 @@
 	<interface name="main" version="1.0" flags="protected" struct="ZipIFace" prefix="_main_" global="IZip">
 		<method name="Obtain" result="uint32"/>
 		<method name="Release" result="uint32"/>
-		<method name="Expunge" result="void" status="unimplemented"/>
-		<method name="Clone" result="struct Interface *" status="unimplemented"/>
+		<method name="Expunge" result="void"/>
+		<method name="Clone" result="struct ZipIFace *"/>
 
 		<method name="zip_archive_set_tempdir" result="zip_int32_t">
 			<arg name="archive" type="zip_t *"/>

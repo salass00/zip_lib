@@ -77,7 +77,17 @@
 *
 */
 
-zip_t *_main_zip_open(struct ZipIFace *Self, const char *path, int flags, int *errorp) {
-	return zip_open(path, flags, errorp);
+register APTR r13 __asm("r13");
+
+zip_t *_main_zip_open(struct ZipIFace *Self, const char *path, int flags, int *errorp)
+{
+	APTR old_r13 = r13;
+	zip_t *res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_open(path, flags, errorp);
+	r13 = old_r13;
+
+	return res;
 }
 

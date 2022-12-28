@@ -64,10 +64,19 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_file_extra_field_set(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_uint16_t ef_id, zip_uint16_t ef_idx, const zip_uint8_t *data, zip_uint16_t len,
 	zip_flags_t flags)
 {
-	return zip_file_extra_field_set(za, idx, ef_id, ef_idx, data, len, flags);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_file_extra_field_set(za, idx, ef_id, ef_idx, data, len, flags);
+	r13 = old_r13;
+
+	return res;
 }
 

@@ -58,9 +58,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_set_archive_flag(struct ZipIFace *Self, zip_t *za,
 	zip_uint32_t flag, zip_int32_t value)
 {
-	return zip_set_archive_flag(za, flag, value);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_set_archive_flag(za, flag, value);
+	r13 = old_r13;
+
+	return res;
 }
 

@@ -57,7 +57,17 @@
 *
 */
 
-int _main_zip_encryption_method_supported(struct ZipIFace *Self, zip_uint16_t method, int encode) {
-	return zip_encryption_method_supported(method, encode);
+register APTR r13 __asm("r13");
+
+int _main_zip_encryption_method_supported(struct ZipIFace *Self, zip_uint16_t method, int encode)
+{
+	APTR old_r13 = r13;
+	int res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_encryption_method_supported(method, encode);
+	r13 = old_r13;
+
+	return res;
 }
 

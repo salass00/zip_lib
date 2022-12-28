@@ -58,9 +58,15 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 void _main_zip_register_progress_callback(struct ZipIFace *Self, zip_t *za,
 	zip_progress_callback_t cb)
 {
+	APTR old_r13 = r13;
+
+	r13 = Self->Data.EnvironmentVector;
 	zip_register_progress_callback(za, cb);
+	r13 = old_r13;
 }
 

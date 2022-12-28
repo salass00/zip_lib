@@ -56,7 +56,17 @@
 *
 */
 
-int _main_zip_source_begin_write(struct ZipIFace *Self, zip_source_t *zs) {
-	return zip_source_begin_write(zs);
+register APTR r13 __asm("r13");
+
+int _main_zip_source_begin_write(struct ZipIFace *Self, zip_source_t *zs)
+{
+	APTR old_r13 = r13;
+	int res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_source_begin_write(zs);
+	r13 = old_r13;
+
+	return res;
 }
 

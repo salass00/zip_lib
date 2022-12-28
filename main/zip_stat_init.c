@@ -56,8 +56,14 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 void _main_zip_stat_init(struct ZipIFace *Self, zip_stat_t *st)
 {
+	APTR old_r13 = r13;
+
+	r13 = Self->Data.EnvironmentVector;
 	zip_stat_init(st);
+	r13 = old_r13;
 }
 

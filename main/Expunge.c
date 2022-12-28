@@ -26,49 +26,20 @@
  */
 
 #include <interfaces/zip.h>
+#include "zip-base.h"
 #include "../zip_vectors.h"
 
-/****** zip.library/zip_compression_method_supported ******************************************
-*
-*   NAME
-*      zip_compression_method_supported -- Description
-*
-*   SYNOPSIS
-*      int zip_compression_method_supported(zip_int32_t method, 
-*          int compress);
-*
-*   FUNCTION
-*
-*   INPUTS
-*       method - 
-*       compress - 
-*
-*   RESULT
-*       The result ...
-*
-*   EXAMPLE
-*
-*   NOTES
-*
-*   BUGS
-*
-*   SEE ALSO
-*
-*****************************************************************************
-*
-*/
-
-register APTR r13 __asm("r13");
-
-int _main_zip_compression_method_supported(struct ZipIFace *Self, zip_int32_t method, int compress)
+void _main_Expunge(struct ZipIFace *Self)
 {
-	APTR old_r13 = r13;
-	int res;
+	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
+	struct ZipInterfaceData *zid;
 
-	r13 = Self->Data.EnvironmentVector;
-	res = zip_compression_method_supported(method, compress);
-	r13 = old_r13;
+	zid = (struct ZipInterfaceData *)((BYTE *)Self - Self->Data.NegativeSize);
 
-	return res;
+	/* FIXME: Close library interfaces */
+
+	zb->IElf->FreeDataSegmentCopy(zb->ElfHandle, zid->DataSegment);
+
+	zb->IExec->DeleteInterface((struct Interface *)Self);
 }
 

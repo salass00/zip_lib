@@ -61,9 +61,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_source_t *_main_zip_source_buffer_fragment(struct ZipIFace *Self, zip_t *archive,
 	const zip_buffer_fragment_t *frags, zip_uint64_t nfrags, int freep)
 {
-	return zip_source_buffer_fragment(archive, frags, nfrags, freep);
+	APTR old_r13 = r13;
+	zip_source_t *res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_source_buffer_fragment(archive, frags, nfrags, freep);
+	r13 = old_r13;
+
+	return res;
 }
 

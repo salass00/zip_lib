@@ -57,9 +57,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_set_default_password(struct ZipIFace *Self, zip_t *za,
 	const char *passwd)
 {
-	return zip_set_default_password(za, passwd);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_set_default_password(za, passwd);
+	r13 = old_r13;
+
+	return res;
 }
 

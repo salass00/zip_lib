@@ -60,9 +60,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int32_t _main_zip_file_extra_field_delete(struct ZipIFace *Self, zip_t *za,
 	zip_uint64_t idx, zip_uint16_t ef_idx, zip_flags_t flags)
 {
-	return zip_file_extra_field_delete(za, idx, ef_idx, flags);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_file_extra_field_delete(za, idx, ef_idx, flags);
+	r13 = old_r13;
+
+	return res;
 }
 

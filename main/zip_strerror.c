@@ -56,7 +56,16 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 const char *_main_zip_strerror(struct ZipIFace *Self, zip_t *za) {
-	return zip_strerror(za);
+	APTR old_r13 = r13;
+	const char *res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_strerror(za);
+	r13 = old_r13;
+
+	return res;
 }
 

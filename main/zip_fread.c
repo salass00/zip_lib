@@ -58,9 +58,18 @@
 *
 */
 
+register APTR r13 __asm("r13");
+
 zip_int64_t _main_zip_fread(struct ZipIFace *Self, zip_file_t *zf,
 	APTR outbuf, zip_uint64_t toread)
 {
-	return zip_fread(zf, outbuf, toread);
+	APTR old_r13 = r13;
+	zip_int64_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_fread(zf, outbuf, toread);
+	r13 = old_r13;
+
+	return res;
 }
 

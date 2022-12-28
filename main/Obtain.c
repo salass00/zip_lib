@@ -28,7 +28,8 @@
 #include <interfaces/zip.h>
 #include "../zip_vectors.h"
 
-uint32 _main_Obtain(struct ZipIFace *Self) {
+uint32 _main_Obtain(struct ZipIFace *Self)
+{
 	return ++Self->Data.RefCount;
 }
 

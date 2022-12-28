@@ -25,36 +25,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <libraries/amisslmaster.h>
-#include <proto/exec.h>
-#include <proto/dos.h>
-#include <proto/z.h>
-#include <proto/bzip2.h>
-#include <proto/amisslmaster.h>
-#include <proto/amissl.h>
 #include <proto/zip.h>
+#include "zip-base.h"
 
 /* Version Tag */
 #include "zip.library_rev.h"
 
 static CONST TEXT USED verstag[] = VERSTAG;
 static CONST TEXT USED extversion[] = "\0$EXTVER: libzip " LIBZIP_VERSION " (" DATE ")";
-
-struct ExecIFace         *IExec;
-struct DOSIFace          *IDOS;
-struct NewlibIFace       *INewlib;
-struct ZIFace            *IZ;
-struct BZip2IFace        *IBZip2;
-struct LZMAIFace         *ILZMA;
-struct AmiSSLMasterIFace *IAmiSSLMaster;
-struct Library           *AmiSSLBase;
-struct AmiSSLIFace       *IAmiSSL;
-
-struct ZipBase {
-	struct Library libNode;
-	BPTR segList;
-	/* If you need more data fields, add them here */
-};
 
 /*
  * The system (and compiler) rely on a symbol named _start which marks
@@ -68,118 +46,16 @@ struct ZipBase {
  *
  */
 
-int32 _start(void) {
+int32 _start(void)
+{
 	/* If you feel like it, open DOS and print something to the user */
 	return RETURN_FAIL;
 }
 
-static struct Interface *OpenInterface(CONST_STRPTR name, ULONG version) {
-	struct Library   *library;
-	struct Interface *interface;
-
-	library = IExec->OpenLibrary(name, version);
-	if (library == NULL)
-		return NULL;
-
-	interface = IExec->GetInterface(library, "main", 1, NULL);
-	if (interface == NULL) {
-		IExec->CloseLibrary(library);
-		return NULL;
-	}
-
-	return interface;
-}
-
-static void CloseInterface(struct Interface *interface) {
-	struct Library *library;
-
-	if (interface == NULL)
-		return;
-
-	library = interface->Data.LibBase;
-
-	IExec->DropInterface(interface);
-	IExec->CloseLibrary(library);
-}
-
-static BOOL CheckInterface(struct Interface *interface, CONST_STRPTR name, int32 version, int32 revision) {
-	CONST_STRPTR bodytext;
-	ULONG        args[5];
-
-	bodytext = "Failed to open %s V%ld\n\n";
-
-	args[0] = (ULONG)name;
-	args[1] = version;
-
-	if (interface != NULL) {
-		if (LIB_IS_AT_LEAST(interface->Data.LibBase, version, revision))
-			return TRUE;
-
-		bodytext = "You need %s V%ld.%ld+\nYou only have V%ld.%ld\n\n";
-
-		args[2] = revision;
-		args[3] = interface->Data.LibBase->lib_Version;
-		args[4] = interface->Data.LibBase->lib_Revision;
-	}
-
-	IDOS->TimedDosRequesterTags(
-		TDR_Timeout,      30,
-		TDR_NonBlocking,  TRUE,
-		TDR_TitleString,  VERS,
-		TDR_FormatString, bodytext,
-		TDR_GadgetString, "OK",
-		TDR_ImageType,    TDRIMAGE_ERROR,
-		TDR_ArgArray,     args,
-		TAG_END);
-
-	return FALSE;
-}
-
-static void CloseAmiSSL(void) {
-	if (IAmiSSL != NULL) {
-		IExec->DropInterface((struct Interface *)IAmiSSL);
-		IAmiSSL = NULL;
-	}
-
-	if (AmiSSLBase != NULL) {
-		IAmiSSLMaster->CloseAmiSSL();
-		AmiSSLBase = NULL;
-	}
-
-	if (IAmiSSLMaster != NULL) {
-		CloseInterface((struct Interface *)IAmiSSLMaster);
-		IAmiSSLMaster = NULL;
-	}
-}
-
-static BOOL OpenAmiSSL(void) {
-	IAmiSSLMaster = (struct AmiSSLMasterIFace *)OpenInterface("amisslmaster.library", AMISSLMASTER_MIN_VERSION);
-	if (IAmiSSLMaster == NULL)
-		return FALSE;
-
-	if (!IAmiSSLMaster->InitAmiSSLMaster(AMISSL_CURRENT_VERSION, TRUE)) {
-		CloseAmiSSL();
-		return FALSE;
-	}
-
-	AmiSSLBase = IAmiSSLMaster->OpenAmiSSL();
-	if (AmiSSLBase == NULL) {
-		CloseAmiSSL();
-		return FALSE;
-	}
-
-	IAmiSSL = (struct AmiSSLIFace *)IExec->GetInterface(AmiSSLBase, "main", 1, NULL);
-	if (IAmiSSL == NULL) {
-		CloseAmiSSL();
-		return FALSE;
-	}
-
-	return TRUE;
-}
-
 /* Open the library */
-static struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG version) {
-	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase; 
+static struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG version)
+{
+	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
 
 	if (version > VERSION)
 		return NULL;
@@ -188,108 +64,145 @@ static struct ZipBase *libOpen(struct LibraryManagerInterface *Self, ULONG versi
 	   Return 0 before incrementing OpenCnt to fail opening */
 
 	/* Add up the open count */
-	libBase->libNode.lib_OpenCnt++;
-	return libBase;
+	zb->LibNode.lib_OpenCnt++;
+	return zb;
 }
 
 /* Close the library */
-static BPTR libClose(struct LibraryManagerInterface *Self) {
-	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase;
+static BPTR libClose(struct LibraryManagerInterface *Self)
+{
+	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
 
 	/* Make sure to undo what open did */
 
 	/* Make the close count */
-	libBase->libNode.lib_OpenCnt--;
+	zb->LibNode.lib_OpenCnt--;
 
 	return ZERO;
 }
 
+struct Interface *open_interface(struct ZipBase *zb, CONST_STRPTR name, ULONG version)
+{
+	struct ExecIFace *iexec = zb->IExec;
+	struct Library *library;
+	struct Interface *interface;
+
+	library = iexec->OpenLibrary(name, version);
+	if (library == NULL)
+		return NULL;
+
+	interface = iexec->GetInterface(library, "main", 1, NULL);
+	if (interface == NULL)
+	{
+		iexec->CloseLibrary(library);
+		return NULL;
+	}
+
+	return interface;
+}
+
+void close_interface(struct ZipBase *zb, struct Interface *interface)
+{
+	struct ExecIFace *iexec = zb->IExec;
+
+	if (interface == NULL)
+		return;
+
+	iexec->DropInterface(interface);
+}
 
 /* Expunge the library */
-static BPTR libExpunge(struct LibraryManagerInterface *Self) {
+static BPTR libExpunge(struct LibraryManagerInterface *Self)
+{
+	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
+	struct ExecIFace *iexec = zb->IExec;
 	/* If your library cannot be expunged, return 0 */
 	BPTR result = ZERO;
-	struct ZipBase *libBase = (struct ZipBase *)Self->Data.LibBase;
-	if (libBase->libNode.lib_OpenCnt == 0) {
-		result = libBase->segList;
+
+	if (zb->LibNode.lib_OpenCnt == 0)
+	{
+		result = zb->SegList;
 
 		/* Undo what the init code did */
-		CloseAmiSSL();
+		zb->IElf->CloseElfTags(zb->ElfHandle,
+			CET_ReClose, TRUE,
+			TAG_END);
 
-		CloseInterface((struct Interface *)ILZMA);
-		CloseInterface((struct Interface *)IBZip2);
-		CloseInterface((struct Interface *)IZ);
-		CloseInterface((struct Interface *)INewlib);
-		CloseInterface((struct Interface *)IDOS);
+		close_interface(zb, (struct Interface *)zb->INewlib);
+		close_interface(zb, (struct Interface *)zb->IElf);
+		close_interface(zb, (struct Interface *)zb->IDOS);
 
-		IExec->Remove((struct Node *)libBase);
-		IExec->DeleteLibrary((struct Library *)libBase);
-	} else {
+		iexec->Remove((struct Node *)zb);
+		iexec->DeleteLibrary((struct Library *)zb);
+	}
+	else
+	{
 		result = ZERO;
-		libBase->libNode.lib_Flags |= LIBF_DELEXP;
+		zb->LibNode.lib_Flags |= LIBF_DELEXP;
 	}
 	return result;
 }
 
 /* The ROMTAG Init Function */
-static struct ZipBase *libInit(struct ZipBase *libBase, BPTR seglist, struct ExecIFace *iexec) {
-	IExec = iexec;
+static struct ZipBase *libInit(struct ZipBase *zb, BPTR seglist, struct ExecIFace *iexec)
+{
+	zb->LibNode.lib_Node.ln_Type = NT_LIBRARY;
+	zb->LibNode.lib_Node.ln_Pri  = 0;
+	zb->LibNode.lib_Node.ln_Name = (STRPTR)"zip.library";
+	zb->LibNode.lib_Flags        = LIBF_SUMUSED|LIBF_CHANGED;
+	zb->LibNode.lib_Version      = VERSION;
+	zb->LibNode.lib_Revision     = REVISION;
+	zb->LibNode.lib_IdString     = (STRPTR)VSTRING;
 
-	libBase->libNode.lib_Node.ln_Type = NT_LIBRARY;
-	libBase->libNode.lib_Node.ln_Pri  = 0;
-	libBase->libNode.lib_Node.ln_Name = (STRPTR)"zip.library";
-	libBase->libNode.lib_Flags        = LIBF_SUMUSED|LIBF_CHANGED;
-	libBase->libNode.lib_Version      = VERSION;
-	libBase->libNode.lib_Revision     = REVISION;
-	libBase->libNode.lib_IdString     = (STRPTR)VSTRING;
+	zb->SegList = seglist;
+	zb->IExec   = iexec;
 
-	libBase->segList = seglist;
-
-	IDOS = (struct DOSIFace *)OpenInterface("dos.library", 53);
-	if (IDOS == NULL) {
-		IExec->Alert(AG_OpenLib | AO_DOSLib);
+	zb->IDOS = (struct DOSIFace *)open_interface(zb, "dos.library", 53);
+	if (zb->IDOS == NULL)
+	{
+		iexec->Alert(AG_OpenLib | AO_DOSLib);
 		goto cleanup;
 	}
 
-	INewlib = (struct NewlibIFace *)OpenInterface("newlib.library", 53);
-	if (INewlib == NULL) {
-		IExec->Alert(AG_OpenLib | AO_NewlibLib);
+	zb->IElf = (struct ElfIFace *)open_interface(zb, "elf.library", 53);
+	if (zb->IElf == NULL)
+	{
+		iexec->Alert(AG_OpenLib | AO_Unknown);
 		goto cleanup;
 	}
 
-	IZ = (struct ZIFace *)OpenInterface("z.library", 53);
-	if (!CheckInterface((struct Interface *)IZ, "z.library", 53, 5)) {
+	zb->INewlib = (struct NewlibIFace *)open_interface(zb, "newlib.library", 53);
+	if (zb->INewlib == NULL)
+	{
+		iexec->Alert(AG_OpenLib | AO_NewlibLib);
 		goto cleanup;
 	}
 
-	IBZip2 = (struct BZip2IFace *)OpenInterface("bzip2.library", 53);
-	if (!CheckInterface((struct Interface *)IBZip2, "bzip2.library", 53, 4)) {
-		goto cleanup;
+	zb->IDOS->GetSegListInfoTags(zb->SegList,
+		GSLI_ElfHandle, &zb->ElfHandle,
+		TAG_END);
+	if (zb->ElfHandle != NULL)
+	{
+		zb->ElfHandle = zb->IElf->OpenElfTags(
+			OET_ElfHandle, zb->ElfHandle,
+			TAG_END);
+		if (zb->ElfHandle != NULL)
+			return zb;
 	}
-
-	ILZMA = (struct LZMAIFace *)OpenInterface("lzma.library", 53);
-	if (!CheckInterface((struct Interface *)ILZMA, "lzma.library", 53, 1)) {
-		goto cleanup;
-	}
-
-	OpenAmiSSL();
-
-	return libBase;
 
 cleanup:
+	close_interface(zb, (struct Interface *)zb->INewlib);
+	close_interface(zb, (struct Interface *)zb->IElf);
+	close_interface(zb, (struct Interface *)zb->IDOS);
 
-	CloseInterface((struct Interface *)IBZip2);
-	CloseInterface((struct Interface *)IZ);
-	CloseInterface((struct Interface *)INewlib);
-	CloseInterface((struct Interface *)IDOS);
-
-	IExec->DeleteLibrary((struct Library *)libBase);
+	iexec->DeleteLibrary((struct Library *)zb);
 	return NULL;
 }
 
 /* ------------------- Manager Interface ------------------------ */
 /* These are generic. Replace if you need more fancy stuff */
-static uint32 _manager_Obtain(struct LibraryManagerInterface *Self) {
+static uint32 _manager_Obtain(struct LibraryManagerInterface *Self)
+{
 	uint32 res;
 	__asm__ __volatile__(
 	"1:	lwarx	%0,0,%1\n"
@@ -303,7 +216,8 @@ static uint32 _manager_Obtain(struct LibraryManagerInterface *Self) {
 	return res;
 }
 
-static uint32 _manager_Release(struct LibraryManagerInterface *Self) {
+static uint32 _manager_Release(struct LibraryManagerInterface *Self)
+{
 	uint32 res;
 	__asm__ __volatile__(
 	"1:	lwarx	%0,0,%1\n"
@@ -318,7 +232,8 @@ static uint32 _manager_Release(struct LibraryManagerInterface *Self) {
 }
 
 /* Manager interface vectors */
-static CONST APTR lib_manager_vectors[] = {
+static CONST APTR lib_manager_vectors[] =
+{
 	_manager_Obtain,
 	_manager_Release,
 	NULL,
@@ -332,10 +247,10 @@ static CONST APTR lib_manager_vectors[] = {
 
 /* "__library" interface tag list */
 static CONST struct TagItem lib_managerTags[] = {
-	{ MIT_Name,			(Tag)"__library"		},
-	{ MIT_VectorTable,	(Tag)lib_manager_vectors},
-	{ MIT_Version,		1						},
-	{ TAG_DONE,			0						}
+	{ MIT_Name,        (Tag)"__library"         },
+	{ MIT_VectorTable, (Tag)lib_manager_vectors },
+	{ MIT_Version,     1                        },
+	{ TAG_DONE,        0                        }
 };
 
 /* ------------------- Library Interface(s) ------------------------ */
@@ -345,31 +260,37 @@ static CONST struct TagItem lib_managerTags[] = {
 /* Uncomment this line (and see below) if your library has a 68k jump table */
 /* extern APTR VecTable68K[]; */
 
-static CONST struct TagItem main_v1_Tags[] = {
-	{ MIT_Name,			(Tag)"main"			},
-	{ MIT_VectorTable,	(Tag)main_v1_vectors	},
-	{ MIT_Version,		1					},
-	{ TAG_DONE,			0					}
+CONST struct TagItem main_v1_Tags[] =
+{
+	{ MIT_Name,			(Tag)"main"                     },
+	{ MIT_VectorTable,	(Tag)main_v1_vectors            },
+	{ MIT_Version,		1                               },
+	{ MIT_Flags,        IFLF_PRIVATE                    },
+	{ MIT_DataSize,     sizeof(struct ZipInterfaceData) },
+	{ TAG_DONE,			0                               }
 };
 
-static CONST CONST_APTR libInterfaces[] = {
+static CONST CONST_APTR libInterfaces[] =
+{
 	lib_managerTags,
 	main_v1_Tags,
 	NULL
 };
 
-static CONST struct TagItem libCreateTags[] = {
-	{ CLT_DataSize,		sizeof(struct ZipBase)	},
-	{ CLT_InitFunc,		(Tag)libInit			},
-	{ CLT_Interfaces,	(Tag)libInterfaces		},
+static CONST struct TagItem libCreateTags[] =
+{
+	{ CLT_DataSize,   sizeof(struct ZipBase) },
+	{ CLT_InitFunc,   (Tag)libInit           },
+	{ CLT_Interfaces, (Tag)libInterfaces     },
 	/* Uncomment the following line if you have a 68k jump table */
-	/* { CLT_Vector68K, (Tag)VecTable68K }, */
-	{TAG_DONE,		 0 }
+	/* { CLT_Vector68K,  (Tag)VecTable68K       }, */
+	{ TAG_DONE,       0                      }
 };
 
 
 /* ------------------- ROM Tag ------------------------ */
-static CONST struct Resident lib_res USED = {
+static CONST struct Resident lib_res USED =
+{
 	RTC_MATCHWORD,
 	(struct Resident *)&lib_res,
 	(APTR)(&lib_res + 1),

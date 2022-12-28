@@ -57,7 +57,10 @@
 *
 */
 
-zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, zip_t *za, const char *tempdir) {
+register APTR r13 __asm("r13");
+
+zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, zip_t *za, const char *tempdir)
+{
 	/* This function was never documented and no longer exists in libzip 1.2.0 */
 #if LIBZIP_VERSION_MAJOR > 1 || (LIBZIP_VERSION_MAJOR == 1 && LIBZIP_VERSION_MINOR >= 2)
 	if (tempdir) {
@@ -65,7 +68,14 @@ zip_int32_t _main_zip_archive_set_tempdir(struct ZipIFace *Self, zip_t *za, cons
 	}
 	return 0;
 #else
-	return zip_archive_set_tempdir(za, tempdir);
+	APTR old_r13 = r13;
+	zip_int32_t res;
+
+	r13 = Self->Data.EnvironmentVector;
+	res = zip_archive_set_tempdir(za, tempdir);
+	r13 = old_r13;
+
+	return res;
 #endif
 }
 
