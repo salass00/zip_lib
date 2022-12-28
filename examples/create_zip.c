@@ -25,7 +25,7 @@ enum {
 	ARG_ARCHIVE,
 	ARG_FILES,
 	ARG_PASSWORD,
-	ARG_MAX
+	NUM_ARGS
 };
 
 static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level, CONST_STRPTR password) {
@@ -136,7 +136,7 @@ cleanup:
 
 int main(void) {
 	struct RDArgs *rda;
-	int32          args[ARG_MAX];
+	int32          args[NUM_ARGS];
 	CONST_STRPTR   archive;
 	CONST_STRPTR  *files;
 	/* Compression level in the range 1-9, where 1 is fastest and 9 is best (slowest) compression */

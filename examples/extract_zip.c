@@ -25,7 +25,7 @@ enum {
 	ARG_ARCHIVE,
 	ARG_PASSWORD,
 	ARG_NODECOMP,
-	ARG_MAX
+	NUM_ARGS
 };
 
 #define BUFFER_SIZE 65536 /* 64 KiB */
@@ -232,7 +232,7 @@ cleanup:
 
 int main(void) {
 	struct RDArgs *rda;
-	int32          args[ARG_MAX];
+	int32          args[NUM_ARGS];
 	CONST_STRPTR   archive;
 	CONST_STRPTR   password;
 	BOOL           nodecomp;
