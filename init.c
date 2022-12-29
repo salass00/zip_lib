@@ -104,11 +104,15 @@ struct Interface *open_interface(struct ZipBase *zb, CONST_STRPTR name, ULONG ve
 void close_interface(struct ZipBase *zb, struct Interface *interface)
 {
 	struct ExecIFace *iexec = zb->IExec;
+	struct Library *library;
 
 	if (interface == NULL)
 		return;
 
+	library = interface->Data.LibBase;
+
 	iexec->DropInterface(interface);
+	iexec->CloseLibrary(library);
 }
 
 /* Expunge the library */
@@ -133,7 +137,7 @@ static BPTR libExpunge(struct LibraryManagerInterface *Self)
 		close_interface(zb, (struct Interface *)zb->IDOS);
 
 		iexec->Remove((struct Node *)zb);
-		iexec->DeleteLibrary((struct Library *)zb);
+		iexec->DeleteLibrary(&zb->LibNode);
 	}
 	else
 	{
@@ -187,7 +191,9 @@ static struct ZipBase *libInit(struct ZipBase *zb, BPTR seglist, struct ExecIFac
 			OET_ElfHandle, zb->ElfHandle,
 			TAG_END);
 		if (zb->ElfHandle != NULL)
+		{
 			return zb;
+		}
 	}
 
 cleanup:
@@ -195,7 +201,7 @@ cleanup:
 	close_interface(zb, (struct Interface *)zb->IElf);
 	close_interface(zb, (struct Interface *)zb->IDOS);
 
-	iexec->DeleteLibrary((struct Library *)zb);
+	iexec->DeleteLibrary(&zb->LibNode);
 	return NULL;
 }
 
@@ -264,9 +270,9 @@ CONST struct TagItem main_v1_Tags[] =
 {
 	{ MIT_Name,			(Tag)"main"                     },
 	{ MIT_VectorTable,	(Tag)main_v1_vectors            },
-	{ MIT_Version,		1                               },
-	{ MIT_Flags,        IFLF_PRIVATE                    },
 	{ MIT_DataSize,     sizeof(struct ZipInterfaceData) },
+	{ MIT_Flags,        IFLF_PRIVATE                    },
+	{ MIT_Version,		1                               },
 	{ TAG_DONE,			0                               }
 };
 

@@ -54,7 +54,7 @@ $(LIBZIPDIR)/libzip.a: compile-libzip
 	@true
 
 $(TARGET): $(OBJS) $(LIBZIPDIR)/libzip.a
-	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
+	$(CC) $(LDFLAGS) $(SDATAFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
 	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 libzip.a: $(STATIC_OBJS)

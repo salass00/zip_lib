@@ -31,6 +31,11 @@
 #include <proto/exec.h>
 #include <proto/dos.h>
 #include <proto/elf.h>
+#include <proto/z.h>
+#include <proto/bzip2.h>
+#include <proto/lzma.h>
+#include <proto/amisslmaster.h>
+#include <proto/amissl.h>
 
 struct ZipBase {
 	struct Library      LibNode;
@@ -44,9 +49,18 @@ struct ZipBase {
 };
 
 struct ZipInterfaceData {
+	struct ZIFace            *IZ;
+	struct BZip2IFace        *IBZip2;
+	struct LZMAIFace         *ILZMA;
+	struct AmiSSLMasterIFace *IAmiSSLMaster;
+	struct AmiSSLIFace       *IAmiSSL;
+
 	UBYTE *DataSegment;
 	ULONG  DataOffset;
 };
+
+struct Interface *open_interface(struct ZipBase *zb, CONST_STRPTR name, ULONG version);
+void close_interface(struct ZipBase *zb, struct Interface *interface);
 
 #endif /* ZIP_BASE_H */
 

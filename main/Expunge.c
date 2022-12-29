@@ -32,14 +32,26 @@
 void _main_Expunge(struct ZipIFace *Self)
 {
 	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
+	struct ExecIFace *iexec = zb->IExec;
 	struct ZipInterfaceData *zid;
 
 	zid = (struct ZipInterfaceData *)((BYTE *)Self - Self->Data.NegativeSize);
 
-	/* FIXME: Close library interfaces */
+	if (zid->IAmiSSL != NULL)
+	{
+		zid->IAmiSSLMaster->CloseAmiSSL();
+	}
 
-	zb->IElf->FreeDataSegmentCopy(zb->ElfHandle, zid->DataSegment);
+	iexec->DropInterface((struct Interface *)zid->IAmiSSLMaster);
+	iexec->DropInterface((struct Interface *)zid->ILZMA);
+	iexec->DropInterface((struct Interface *)zid->IBZip2);
+	iexec->DropInterface((struct Interface *)zid->IZ);
 
-	zb->IExec->DeleteInterface((struct Interface *)Self);
+	if (zid->DataSegment != NULL)
+	{
+		zb->IElf->FreeDataSegmentCopy(zb->ElfHandle, zid->DataSegment);
+	}
+
+	iexec->DeleteInterface((struct Interface *)Self);
 }
 
