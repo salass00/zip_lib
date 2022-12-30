@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_fclose ******************************************
 *
@@ -63,7 +64,7 @@ zip_int32_t _main_zip_fclose(struct ZipIFace *Self, zip_file_t *zf)
 	APTR old_r13 = r13;
 	zip_int32_t res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_fclose(zf);
 	r13 = old_r13;
 

@@ -26,108 +26,59 @@
  */
 
 #include <interfaces/zip.h>
-#include "zip-base.h"
-#include "../zip_vectors.h"
-
-#include <libraries/amisslmaster.h>
-
-struct ExecIFace   *IExec;
-struct DOSIFace    *IDOS;
-struct NewlibIFace *INewlib;
-struct ZIFace      *IZ;
-struct BZip2IFace  *IBZip2;
-struct LZMAIFace   *ILZMA;
-struct AmiSSLIFace *IAmiSSL;
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 extern CONST struct TagItem main_v1_Tags[];
 
-register APTR r13 __asm("r13");
+static BOOL open_libs(struct ZipBase *zipbase, struct ZipIData *id)
+{
+	id->IZ = (struct ZIFace *)open_interface("z.library", 53);
+	if (id->IZ == NULL)
+	{
+		return FALSE;
+	}
+
+	id->IBZip2 = (struct BZip2IFace *)open_interface("bzip2.library", 53);
+	if (id->IBZip2 == NULL)
+	{
+		return FALSE;
+	}
+
+	id->ILZMA = (struct LZMAIFace *)open_interface("lzma.library", 53);
+	if (id->ILZMA == NULL)
+	{
+		return FALSE;
+	}
+
+	/* Cannot open AmiSSL here as Clone() is called from ramlib */
+
+	return TRUE;
+}
 
 struct ZipIFace * _main_Clone(struct ZipIFace *Self)
 {
-	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
-	struct ExecIFace *iexec = zb->IExec;
-	struct ZipIFace *izip;
-	struct ZipInterfaceData *zid;
-	APTR old_r13 = r13;
+	struct ZipBase   *zipbase = (struct ZipBase *)Self->Data.LibBase;
+	struct ZipIFace  *new_iface;
+	struct ZipIData  *id;
 
-	izip = (struct ZipIFace *)iexec->MakeInterface(&zb->LibNode, main_v1_Tags);
-	if (izip == NULL)
+	new_iface = (struct ZipIFace *)IExec->MakeInterface(&zipbase->LibNode, main_v1_Tags);
+	if (new_iface == NULL)
 		return NULL;
 
-	zid = (struct ZipInterfaceData *)((BYTE *)izip - izip->Data.NegativeSize);
+	id = (struct ZipIData *)INTERFACE_DATA(new_iface);
 
-	/* Need IUtility to clear memory? */
+	memset(id, 0, sizeof(*id));
 
-	zid->DataSegment = zb->IElf->CopyDataSegment(zb->ElfHandle, &zid->DataOffset);
-	if (zid->DataSegment == NULL)
+	if (!open_libs(zipbase, id))
 	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
+		new_iface->Expunge();
+		return NULL;
 	}
 
-	izip->Data.EnvironmentVector = zid->DataSegment + zid->DataOffset;
-	r13 = izip->Data.EnvironmentVector;
+	/* Call Expunge() when RefCount goes to zero */
+	new_iface->Data.Flags |= IFLF_CLONED|IFLF_CLONE_EXPUNGE;
 
-	IExec   = zb->IExec;
-	IDOS    = zb->IDOS;
-	INewlib = zb->INewlib;
-
-	zid->IZ = (struct ZIFace *)open_interface(zb, "z.library", 53);
-	if (zid->IZ == NULL)
-	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
-	}
-
-	zid->IBZip2 = (struct BZip2IFace *)open_interface(zb, "bzip2.library", 53);
-	if (zid->IBZip2 == NULL)
-	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
-	}
-
-	zid->ILZMA = (struct LZMAIFace *)open_interface(zb, "lzma.library", 53);
-	if (zid->ILZMA == NULL)
-	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
-	}
-
-	zid->IAmiSSLMaster = (struct AmiSSLMasterIFace *)open_interface(zb, "amisslmaster.library", AMISSLMASTER_MIN_VERSION);
-	if (zid->IAmiSSLMaster == NULL)
-	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
-	}
-
-	if (zid->IAmiSSLMaster->OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
-		AmiSSL_UsesOpenSSLStructs, TRUE,
-		AmiSSL_GetIAmiSSL,         &zid->IAmiSSL,
-		AmiSSL_ErrNoPtr,           __errno(),
-		TAG_END) != 0)
-	{
-		izip->Expunge();
-		izip = NULL;
-		goto cleanup;
-	}
-
-	IZ      = zid->IZ;
-	IBZip2  = zid->IBZip2;
-	ILZMA   = zid->ILZMA;
-	IAmiSSL = zid->IAmiSSL;
-
-	izip->Data.Flags |= IFLF_CLONED|IFLF_CLONE_EXPUNGE;
-
-cleanup:
-
-	r13 = old_r13;
-
-	return izip;
+	return new_iface;
 }
 

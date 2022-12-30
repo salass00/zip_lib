@@ -41,10 +41,6 @@
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 
-#ifdef __amigaos4__
-#include <inline4/amissl.h>
-#endif
-
 #define _zip_crypto_aes_t EVP_CIPHER_CTX
 #define _zip_crypto_hmac_t HMAC_CTX
 

@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 uint32 _main_Release(struct ZipIFace *Self)
 {

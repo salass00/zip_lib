@@ -27,29 +27,46 @@
 
 #define LIBRARIES_BZIP2_H
 #include <bzlib.h>
-#include <proto/bzip2.h>
+#include <interfaces/bzip2.h>
+#include "zip-internal.h"
 
-int BZ2_bzCompressInit(bz_stream *strm, int blockSize100k, int verbosity, int workFactor) {
+register APTR r13 __asm("r13");
+
+#define _IBZIP2 (((struct ZipIData *)r13)->IBZip2)
+
+int BZ2_bzCompressInit(bz_stream *strm, int blockSize100k, int verbosity, int workFactor)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzCompressInit(strm, blockSize100k, verbosity, workFactor);
 }
 
-int BZ2_bzCompress(bz_stream *strm, int action) {
+int BZ2_bzCompress(bz_stream *strm, int action)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzCompress(strm, action);
 }
 
-int BZ2_bzCompressEnd(bz_stream *strm) {
+int BZ2_bzCompressEnd(bz_stream *strm)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzCompressEnd(strm);
 }
 
-int BZ2_bzDecompressInit(bz_stream *strm, int verbosity, int small) {
+int BZ2_bzDecompressInit(bz_stream *strm, int verbosity, int small)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzDecompressInit(strm, verbosity, small);
 }
 
-int BZ2_bzDecompress(bz_stream *strm) {
+int BZ2_bzDecompress(bz_stream *strm)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzDecompress(strm);
 }
 
-int BZ2_bzDecompressEnd(bz_stream *strm) {
+int BZ2_bzDecompressEnd(bz_stream *strm)
+{
+	struct BZip2IFace *IBZip2 = _IBZIP2;
 	return IBZip2->BZ2_bzDecompressEnd(strm);
 }
 

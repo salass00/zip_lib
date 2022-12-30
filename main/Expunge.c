@@ -26,32 +26,43 @@
  */
 
 #include <interfaces/zip.h>
-#include "zip-base.h"
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 void _main_Expunge(struct ZipIFace *Self)
 {
-	struct ZipBase *zb = (struct ZipBase *)Self->Data.LibBase;
-	struct ExecIFace *iexec = zb->IExec;
-	struct ZipInterfaceData *zid;
+	struct ZipIData *id = (struct ZipIData *)INTERFACE_DATA(Self);
 
-	zid = (struct ZipInterfaceData *)((BYTE *)Self - Self->Data.NegativeSize);
-
-	if (zid->IAmiSSL != NULL)
+	if (id->IAmiSSL != NULL)
 	{
-		zid->IAmiSSLMaster->CloseAmiSSL();
+		id->IAmiSSLMaster->CloseAmiSSL();
+		id->IAmiSSL = NULL;
 	}
 
-	iexec->DropInterface((struct Interface *)zid->IAmiSSLMaster);
-	iexec->DropInterface((struct Interface *)zid->ILZMA);
-	iexec->DropInterface((struct Interface *)zid->IBZip2);
-	iexec->DropInterface((struct Interface *)zid->IZ);
-
-	if (zid->DataSegment != NULL)
+	if (id->IAmiSSLMaster != NULL)
 	{
-		zb->IElf->FreeDataSegmentCopy(zb->ElfHandle, zid->DataSegment);
+		close_interface((struct Interface *)id->IAmiSSLMaster);
+		id->IAmiSSLMaster = NULL;
 	}
 
-	iexec->DeleteInterface((struct Interface *)Self);
+	if (id->ILZMA != NULL)
+	{
+		close_interface((struct Interface *)id->ILZMA);
+		id->ILZMA = NULL;
+	}
+
+	if (id->IBZip2 != NULL)
+	{
+		close_interface((struct Interface *)id->IBZip2);
+		id->IBZip2 = NULL;
+	}
+
+	if (id->IZ != NULL)
+	{
+		close_interface((struct Interface *)id->IZ);
+		id->IZ = NULL;
+	}
+
+	IExec->DeleteInterface((struct Interface *)Self);
 }
 

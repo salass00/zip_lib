@@ -25,12 +25,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ZIP_BASE_H
-#define ZIP_BASE_H 1
+#ifndef ZIP_INTERNAL_H
+#define ZIP_INTERNAL_H 1
 
 #include <proto/exec.h>
 #include <proto/dos.h>
-#include <proto/elf.h>
 #include <proto/z.h>
 #include <proto/bzip2.h>
 #include <proto/lzma.h>
@@ -38,29 +37,22 @@
 #include <proto/amissl.h>
 
 struct ZipBase {
-	struct Library      LibNode;
-	BPTR                SegList;
-	Elf32_Handle        ElfHandle;
-
-	struct ExecIFace   *IExec;
-	struct DOSIFace    *IDOS;
-	struct ElfIFace    *IElf;
-	struct NewlibIFace *INewlib;
+	struct Library LibNode;
+	BPTR           SegList;
 };
 
-struct ZipInterfaceData {
+struct ZipIData {
 	struct ZIFace            *IZ;
 	struct BZip2IFace        *IBZip2;
 	struct LZMAIFace         *ILZMA;
 	struct AmiSSLMasterIFace *IAmiSSLMaster;
 	struct AmiSSLIFace       *IAmiSSL;
-
-	UBYTE *DataSegment;
-	ULONG  DataOffset;
 };
 
-struct Interface *open_interface(struct ZipBase *zb, CONST_STRPTR name, ULONG version);
-void close_interface(struct ZipBase *zb, struct Interface *interface);
+#define INTERFACE_DATA(self) ((APTR)((ULONG)(self) - (self)->Data.NegativeSize))
 
-#endif /* ZIP_BASE_H */
+struct Interface *open_interface(CONST_STRPTR name, ULONG version);
+void close_interface(struct Interface *interface);
+
+#endif /* ZIP_INTERNAL_H */
 

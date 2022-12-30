@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_compression_method_supported ******************************************
 *
@@ -65,7 +66,7 @@ int _main_zip_compression_method_supported(struct ZipIFace *Self, zip_int32_t me
 	APTR old_r13 = r13;
 	int res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_compression_method_supported(method, compress);
 	r13 = old_r13;
 

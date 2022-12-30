@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_error_init ******************************************
 *
@@ -62,7 +63,7 @@ void _main_zip_error_init(struct ZipIFace *Self, zip_error_t *error)
 {
 	APTR old_r13 = r13;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	zip_error_init(error);
 	r13 = old_r13;
 }

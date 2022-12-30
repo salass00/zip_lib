@@ -26,14 +26,12 @@ CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -static
 LIBS    = 
 
-SDATAFLAGS = -msdata=sysv -G65536 -mno-readonly-in-sdata
-
 STRIPFLAGS = -R.comment --strip-unneeded-rel-relocs
 
 main_SRCS = $(wildcard main/*.c)
 main_OBJS = $(main_SRCS:.c=.o)
 
-OBJS = init.o zlib-stubs.o bzip2-stubs.o lzma-stubs.o $(main_OBJS)
+OBJS = init.o zlib-stubs.o bzip2-stubs.o lzma-stubs.o amissl-stubs.o $(main_OBJS)
 
 STATIC_SRCS = $(wildcard static/*.c)
 STATIC_OBJS = $(STATIC_SRCS:.c=.o)
@@ -41,7 +39,7 @@ STATIC_OBJS = $(STATIC_SRCS:.c=.o)
 .PHONY: all
 all: compile-libzip $(TARGET) libzip.a compile-examples
 
-$(OBJS): CFLAGS += $(SDATAFLAGS)
+amissl-stubs.o: WARNINGS += -Wno-deprecated-declarations
 
 init.o: $(TARGET)_rev.h zip_vectors.c zip_vectors.h
 $(main_OBJS): zip_vectors.h
@@ -54,7 +52,7 @@ $(LIBZIPDIR)/libzip.a: compile-libzip
 	@true
 
 $(TARGET): $(OBJS) $(LIBZIPDIR)/libzip.a
-	$(CC) $(LDFLAGS) $(SDATAFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
+	$(CC) $(LDFLAGS) -nostartfiles -o $@.debug $^ $(LIBS)
 	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 libzip.a: $(STATIC_OBJS)

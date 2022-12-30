@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_file_extra_field_get ******************************************
 *
@@ -70,7 +71,7 @@ const zip_uint8_t *_main_zip_file_extra_field_get(struct ZipIFace *Self, zip_t *
 	APTR old_r13 = r13;
 	const zip_uint8_t *res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_file_extra_field_get(za, idx, ef_idx, idp, lenp, flags);
 	r13 = old_r13;
 

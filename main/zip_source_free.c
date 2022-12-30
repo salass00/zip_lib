@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_source_free ******************************************
 *
@@ -62,7 +63,7 @@ void _main_zip_source_free(struct ZipIFace *Self, zip_source_t *src)
 {
 	APTR old_r13 = r13;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	zip_source_free(src);
 	r13 = old_r13;
 }

@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_source_buffer_fragment ******************************************
 *
@@ -69,7 +70,7 @@ zip_source_t *_main_zip_source_buffer_fragment(struct ZipIFace *Self, zip_t *arc
 	APTR old_r13 = r13;
 	zip_source_t *res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_source_buffer_fragment(archive, frags, nfrags, freep);
 	r13 = old_r13;
 

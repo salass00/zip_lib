@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_register_progress_callback_with_state ******************************************
 *
@@ -69,7 +70,7 @@ int _main_zip_register_progress_callback_with_state(struct ZipIFace *Self, zip_t
 	APTR old_r13 = r13;
 	int res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_register_progress_callback_with_state(za, precision, cb, ud_free, ud);
 	r13 = old_r13;
 

@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_name_locate ******************************************
 *
@@ -67,7 +68,7 @@ zip_int64_t _main_zip_name_locate(struct ZipIFace *Self, zip_t *za,
 	APTR old_r13 = r13;
 	zip_int64_t res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_name_locate(za, fname, flags);
 	r13 = old_r13;
 

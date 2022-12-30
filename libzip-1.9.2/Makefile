@@ -10,8 +10,6 @@ WARNINGS = -Wall -Wwrite-strings -Werror -Wno-deprecated-declarations
 
 CFLAGS = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(DEFINES) $(WARNINGS)
 
-SDATAFLAGS = -msdata=sysv -G65536 -mno-readonly-in-sdata
-
 SRCS = lib/zip_add.c \
        lib/zip_add_dir.c \
        lib/zip_add_entry.c \
@@ -134,8 +132,6 @@ OBJS = $(SRCS:.c=.o)
 
 .PHONY: all
 all: libzip.a
-
-$(OBJS): CFLAGS += $(SDATAFLAGS)
 
 libzip.a: $(OBJS)
 	$(AR) -crv $@ $^

@@ -40,20 +40,27 @@
 #ifndef HAVE_SECURE_RANDOM
 ZIP_EXTERN bool
 zip_secure_random(zip_uint8_t *buffer, zip_uint16_t length) {
-	BPTR fh;
-	APTR window;
 	bool result = false;
 
-	/* Disable "Please insert disk ..." requesters */
-	window = IDOS->SetProcWindow((APTR)-1);
-	fh = IDOS->Open("RANDOM:", MODE_OLDFILE);
-	IDOS->SetProcWindow(window);
+	if (RAND_bytes(buffer, length) == 1) {
+		result = true;
+	}
 
-	if (fh != ZERO) {
-		if (IDOS->Read(fh, buffer, length) == length)
-			result = true;
+	if (!result) {
+		BPTR fh;
+		APTR window;
 
-		IDOS->Close(fh);
+		/* Disable "Please insert disk ..." requesters */
+		window = IDOS->SetProcWindow((APTR)-1);
+		fh = IDOS->Open("RANDOM:", MODE_OLDFILE);
+		IDOS->SetProcWindow(window);
+
+		if (fh != ZERO) {
+			if (IDOS->Read(fh, buffer, length) == length)
+				result = true;
+
+			IDOS->Close(fh);
+		}
 	}
 
 	if (!result) {

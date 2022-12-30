@@ -26,7 +26,8 @@
  */
 
 #include <interfaces/zip.h>
-#include "../zip_vectors.h"
+#include "zip-internal.h"
+#include "zip_vectors.h"
 
 /****** zip.library/zip_file_set_mtime ******************************************
 *
@@ -68,7 +69,7 @@ int _main_zip_file_set_mtime(struct ZipIFace *Self, zip_t *za, zip_uint64_t idx,
 	APTR old_r13 = r13;
 	int res;
 
-	r13 = Self->Data.EnvironmentVector;
+	r13 = (struct ZipIData *)INTERFACE_DATA(Self);
 	res = zip_file_set_mtime(za, idx, mtime, flags);
 	r13 = old_r13;
 
