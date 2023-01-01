@@ -33,6 +33,12 @@ void _main_Expunge(struct ZipIFace *Self)
 {
 	struct ZipIData *id = (struct ZipIData *)INTERFACE_DATA(Self);
 
+	if (Self->Data.RefCount != 0)
+	{
+		/* There are still users of this interface */
+		return;
+	}
+
 	if (id->IAmiSSL != NULL)
 	{
 		id->IAmiSSLMaster->CloseAmiSSL();
@@ -62,6 +68,12 @@ void _main_Expunge(struct ZipIFace *Self)
 		close_interface((struct Interface *)id->IZ);
 		id->IZ = NULL;
 	}
+
+	/* Stop DeleteInterface() call below from calling Self->Expunge() again.
+	 * Alternatively we could just call FreeVec(id) if we are fine with making
+	 * assumptions about how MakeInterface() allocates the memory.
+	 */
+	Self->Data.Flags &= ~(IFLF_CLONED|IFLF_CLONE_EXPUNGE);
 
 	IExec->DeleteInterface((struct Interface *)Self);
 }
