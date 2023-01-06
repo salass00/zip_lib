@@ -116,8 +116,16 @@ _zip_stdio_op_commit_write(zip_source_file_context_t *ctx) {
         return -1;
     }
     if (rename(ctx->tmpname, ctx->fname) < 0) {
+#ifdef __amigaos4__
+        if (errno == EEXIST) {
+            if (unlink(ctx->fname) >= 0 && rename(ctx->tmpname, ctx->fname) >= 0) {
+                return 0;
+            }
+        }
+#else
         zip_error_set(&ctx->error, ZIP_ER_RENAME, errno);
         return -1;
+#endif
     }
 
     return 0;
