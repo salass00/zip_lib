@@ -48,7 +48,7 @@ copy clone examples/Makefile ${destdir}/zip_lib/Examples
 
 copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib.info
 copy clone ENV:Sys/def_install.info ${destdir}/zip_lib/Install.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/zip_lib.readme.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/README.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/LICENSE.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/LICENSE-libzip.info
 copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/releasenotes.info
