@@ -5,65 +5,53 @@ echo "Execute *"make all*" first to compile the library."
 quit
 endif
 
-set libzipdir libzip-1.7.3
+set libzipdir libzip-1.9.2
 set destdir RAM:mkrelease
 set fullvers `version file zip.library`
 set numvers `cut "$fullvers" word 2`
 
 delete all force ${destdir}
-makedir all force ${destdir}/zip_lib-$numvers/Libs
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/proto
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/interfaces
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
-makedir all force ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
-makedir all force ${destdir}/zip_lib-$numvers/Examples
+makedir all force ${destdir}/zip_lib/Libs
+makedir all force ${destdir}/zip_lib/SDK/local/common/include/proto
+makedir all force ${destdir}/zip_lib/SDK/local/common/include/interfaces
+makedir all force ${destdir}/zip_lib/SDK/local/common/include/inline4
+makedir all force ${destdir}/zip_lib/SDK/local/common/include/libraries
+makedir all force ${destdir}/zip_lib/SDK/local/newlib/lib/pkgconfig
+makedir all force ${destdir}/zip_lib/Examples
 
-copy clone Install ${destdir}/zip_lib-$numvers
-copy clone LICENSE ${destdir}/zip_lib-$numvers
-copy clone ${libzipdir}/LICENSE ${destdir}/zip_lib-$numvers/LICENSE-libzip
-copy clone releasenotes ${destdir}/zip_lib-$numvers
-copy clone zip.library ${destdir}/zip_lib-$numvers/Libs
-copy clone include/proto/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/proto
-copy clone include/interfaces/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/interfaces
-copy clone include/inline4/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/inline4
-copy clone include/libraries/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include/libraries
-copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
-copy clone ${libzipdir}/zipconf.h ${destdir}/zip_lib-$numvers/SDK/local/common/include
-copy clone libzip.a ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
-;copy clone libzip.la ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib
-copy clone libzip.pc ${destdir}/zip_lib-$numvers/SDK/local/newlib/lib/pkgconfig
-copy clone examples/create_zip.c ${destdir}/zip_lib-$numvers/Examples
-copy clone examples/extract_zip.c ${destdir}/zip_lib-$numvers/Examples
-copy clone examples/Makefile ${destdir}/zip_lib-$numvers/Examples
+copy clone Install ${destdir}/zip_lib
+copy clone README ${destdir}/zip_lib
+copy clone LICENSE ${destdir}/zip_lib
+copy clone ${libzipdir}/LICENSE ${destdir}/zip_lib/LICENSE-libzip
+copy clone releasenotes ${destdir}/zip_lib
+copy clone zip.library ${destdir}/zip_lib/Libs
+copy clone include/proto/zip.h ${destdir}/zip_lib/SDK/local/common/include/proto
+copy clone include/interfaces/zip.h ${destdir}/zip_lib/SDK/local/common/include/interfaces
+copy clone include/inline4/zip.h ${destdir}/zip_lib/SDK/local/common/include/inline4
+copy clone include/libraries/zip.h ${destdir}/zip_lib/SDK/local/common/include/libraries
+copy clone ${libzipdir}/lib/zip.h ${destdir}/zip_lib/SDK/local/common/include
+copy clone ${libzipdir}/zipconf.h ${destdir}/zip_lib/SDK/local/common/include
+copy clone libzip.a ${destdir}/zip_lib/SDK/local/newlib/lib
+;copy clone libzip.la ${destdir}/zip_lib/SDK/local/newlib/lib
+copy clone libzip.pc ${destdir}/zip_lib/SDK/local/newlib/lib/pkgconfig
+copy clone examples/create_zip.c ${destdir}/zip_lib/Examples
+copy clone examples/extract_zip.c ${destdir}/zip_lib/Examples
+copy clone examples/Makefile ${destdir}/zip_lib/Examples
 
-sed "s/zip_lib-xx.xx/zip_lib-$numvers/g" AutoInstall > ${destdir}/AutoInstall
+copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib.info
+copy clone ENV:Sys/def_install.info ${destdir}/zip_lib/Install.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/zip_lib.readme.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/LICENSE.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/LICENSE-libzip.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/releasenotes.info
+copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib/Examples.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/Examples/create_zip.c.info
+copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib/Examples/extract_zip.c.info
 
-echo "Short:        Library for reading/writing zip files"  > ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo "Author:       Fredrik Wikstrom"                      >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo "Uploader:     Fredrik Wikstrom <fredrik@a500.org>"   >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo "Type:         util/libs"                             >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo "Version:      $numvers"                              >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo "Architecture: ppc-amigaos"                           >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-echo ""                                                    >> ${destdir}/zip_lib-$numvers/zip_lib.readme
-type README                                                >> ${destdir}/zip_lib-$numvers/zip_lib.readme
+changetooltype ${destdir}/zip_lib/Install.info ADD "APPNAME=zip.library"
 
-copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib-$numvers.info
-copy clone ENV:Sys/def_install.info ${destdir}/zip_lib-$numvers/Install.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/zip_lib.readme.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/LICENSE-libzip.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/releasenotes.info
-copy clone ENV:Sys/def_drawer.info ${destdir}/zip_lib-$numvers/Examples.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/Examples/create_zip.c.info
-copy clone ENV:Sys/def_ascii.info ${destdir}/zip_lib-$numvers/Examples/extract_zip.c.info
+delete force RAM:zip_lib-${numvers}.lha
+lha a -x -r RAM:zip_lib-${numvers}.lha ${destdir}/
 
-changetooltype ${destdir}/zip_lib-$numvers/Install.info ADD "APPNAME=zip.library"
-
-delete force RAM:zip_lib.lha
-lha a -x -r RAM:zip_lib.lha ${destdir}/
-
-echo "RAM:zip_lib.lha created"
-
-copy clone ${destdir}/zip_lib-$numvers/zip_lib.readme RAM:
+echo "RAM:zip_lib-${numvers}.lha created"
 

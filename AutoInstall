@@ -1,4 +1,4 @@
 ; AutoInstall script for AmiUpdate
 
-CopyStore zip_lib-xx.xx/Libs/zip.library LIBS:
+CopyStore zip_lib/Libs/zip.library LIBS:
 
