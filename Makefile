@@ -1,5 +1,5 @@
 TARGET  = zip.library
-VERSION = 53
+VERSION = 54
 
 LIBZIPDIR = libzip-1.9.2
 

@@ -95,7 +95,7 @@ zip.library 53.12 (31.1.2021)
 - Added back ZIP_CM_LZMA decompression support from V53.10.
 
 
-zip.library 54.1 (d.m.2023)
+zip.library 54.1 (7.1.2023)
 
 - Updated libzip to version 1.9.2.
 
