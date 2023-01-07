@@ -101,3 +101,12 @@ zip.library 54.1 (d.m.2023)
 
 - Updated to compile with AmiSSL 5.1 SDK.
 
+- The IZip interface is now private so that a new interface is structure is
+  created for every new GetInterface() call. This is done in order to keep
+  different AmiSSL interfaces for each user process. As a consequence the IZip
+  interface pointer should not be shared between processes (a way to overcome
+  this might be added to the API later).
+
+- Fixed the rename() call in zip_source_file_stdio_named.c so that it now
+  tries to delete the destination file if it already exists.
+
