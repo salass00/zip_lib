@@ -30,7 +30,7 @@ enum {
 
 static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level, CONST_STRPTR password) {
 	zip_t        *za = NULL;
-	int           i, error, status;
+	int           flags, i, error, status;
 	zip_error_t   ze;
 	CONST_STRPTR  path;
 	CONST_STRPTR  name;
@@ -38,18 +38,23 @@ static BOOL create_zip(CONST_STRPTR archive, CONST_STRPTR *files, int comp_level
 	zip_int64_t   index;
 	BOOL          result = FALSE;
 
-	/* Delete any existing files by the same name */
-	status = IDOS->Delete(archive);
-	if (status == 0) {
-		error = IDOS->IoErr();
-		if (error != ERROR_OBJECT_NOT_FOUND) {
-			IDOS->PrintFault(error, archive);
-			goto cleanup;
+	if (ZipBase->lib_Version < 54) {
+		/* ZIP_TRUNCATE didn't work in zip.library < 54.1 */
+		status = IDOS->Delete(archive); /* Delete any existing files by the same name */
+		if (status == 0) {
+			error = IDOS->IoErr();
+			if (error != ERROR_OBJECT_NOT_FOUND) {
+				IDOS->PrintFault(error, archive);
+				goto cleanup;
+			}
 		}
+		flags = ZIP_CREATE | ZIP_EXCL;
+	} else {
+		flags = ZIP_CREATE | ZIP_TRUNCATE;
 	}
 
 	/* Create zip archive */
-	za = IZip->zip_open(archive, ZIP_CREATE | ZIP_EXCL, &error);
+	za = IZip->zip_open(archive, flags, &error);
 	if (za == NULL) {
 		IZip->zip_error_init_with_code(&ze, error);
 		fprintf(stderr, "%s: %s (line %d)\n", archive, IZip->zip_error_strerror(&ze), __LINE__);
